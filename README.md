@@ -17,6 +17,8 @@
 
 这个项目的目的就是填补这个空白。我们从 Windows 最底层的 Win32 API 开始，一路讲到 Qt、WinUI、WebView2 等现代技术。你可能会问：为什么不直接学框架？因为只有理解了底层的消息机制、窗口模型、绘制原理，切换任何框架时都会顺畅很多。
 
+获得更好的阅读体验👉: [anatomy_gui](https://charliechen114514.github.io/anatomy_gui/)
+
 ---
 
 ## 技术覆盖

@@ -1,7 +1,7 @@
 site_name: anatomy_gui的文档  # 网站标题,显示在浏览器标签和页面顶部
 site_description: anatomy_gui的现代GUI全栈教程  # 网站描述,用于SEO优化
 site_author: Charliechen  # 作者名称,可以改成你的真实姓名或网名
-
+site_url: https://charliechen114514.github.io/anatomy_gui
 # 版权信息,显示在页面底部
 copyright: Copyright &copy; 2025 Charliechen - 保留所有权利
 
