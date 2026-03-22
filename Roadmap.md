@@ -8,7 +8,7 @@
 
 ```
 第〇篇  前言与准备          ← 世界观建立
-第一篇  Win32 原生编程      ← 地基（进行中 36%）
+第一篇  Win32 原生编程      ← 地基（进行中 75%）
 第二篇  GUI 核心概念        ← 跨框架通识
 第三篇  图形渲染            ← GDI → Direct2D → GPU
 第四篇  跨平台框架          ← Qt / wxWidgets / GTK
@@ -28,57 +28,45 @@
 
 **核心目标**：彻底理解 Windows GUI 的底层运作机制，这是读懂一切上层框架的基础。
 
-| 章节 | 内容 | 状态 | 优先级 |
-|:-----|:-----|:-----|:-------|
-| 1.1 | Windows 程序的本质 | ✅ 已完成 | — |
-| 1.2 | 消息机制 | ✅ 已完成 | — |
-| 1.3 | 常用系统消息 | ✅ 已完成 | — |
-| 1.3补充 | DPI 适配专题 | ✅ 已完成 | — |
-| 1.4 | 标准控件 | 🟡 进行中 | P0 |
-| 1.5 | 窗口布局与资源 | ❌ 待完成 | P0 |
-| 1.6 | GDI 基础绘图 | ❌ 待完成 | P1 |
-| 1.7 | Win32 进阶 | ❌ 待完成 | P1 |
-| 阶段小项目 | 纯 Win32 文本编辑器 | ❌ 待完成 | P0 |
+| 章节 | 内容 | 状态 | 对应文件 |
+|:-----|:-----|:-----|:--------|
+| 1.1 | Windows 程序的本质 | ✅ 已完成 | `1_ProgrammingGUI_NativeWindows.md` |
+| 1.2 | 消息机制 | ✅ 已完成 | `2_ProgrammingGUI_NativeWindows_2.md` |
+| 1.3 | 常用系统消息 | ✅ 已完成 | `5_ProgrammingGUI_NativeWindows_WM_NOTIFY.md` |
+| 1.3补充 | DPI 适配专题 | ✅ 已完成 | `3_ProgrammingGUI_WhatAboutDPI.md` |
+| 1.4 | 标准控件 | ✅ 已完成 | `4_`, `6_`, `7_`, `8_` (控件系列) |
+| 1.5 | 窗口布局与资源 | ✅ 已完成 | `9_` ~ `17_` (对话框与资源系列) |
+| 1.6 | GDI 基础绘图 | ❌ 待完成 | — |
+| 1.7 | Win32 进阶 | ❌ 待完成 | — |
+| 阶段小项目 | 纯 Win32 文本编辑器 | ❌ 待完成 | — |
 
-#### 1.4 标准控件（当前进行中）
+#### 1.4 标准控件（已完成）
 
-**基础控件详解：**
-- [ ] 按钮（Button）
-  - [ ] BS_PUSHBUTTON、BS_CHECKBOX、BS_RADIOBUTTON、BS_GROUPBOX
-  - [ ] BS_AUTOCHECKBOX、BS_AUTORADIOBUTTON
-- [ ] 编辑框（Edit Control）
-  - [ ] 单行/多行、密码模式、只读模式
-  - [ ] EM_GETLINE、EM_SETSEL 等消息
-- [ ] 列表框（ListBox）
-  - [ ] 单选 vs 多选、添加/删除/查找项
-  - [ ] 自绘列表框（Owner-Draw）
-- [ ] 组合框（ComboBox）
-  - [ ] 三种样式：Simple、Dropdown、Drop List
-  - [ ] CB_ADDSTRING、CB_GETCURSEL 等消息
-- [ ] 静态文本（Static）
-  - [ ] SS_TEXT、SS_ICON、SS_BITMAP、SS_GROUPBOX
+**基础控件：**
+- [x] 按钮、编辑框、静态控件 → `4_ProgrammingGUI_NativeWindows_Controls.md`
+- [x] WM_NOTIFY 机制 → `5_ProgrammingGUI_NativeWindows_WM_NOTIFY.md`
 
-**控件通信机制：**
-- [ ] WM_COMMAND 消息（控件 ID、通知码、句柄）
-- [ ] WM_NOTIFY 消息（NMHDR、LVN、TVN）
-- [ ] 子窗口概念（WS_CHILD、WS_VISIBLE、WS_TABSTOP）
+**高级控件：**
+- [x] ListView 控件 → `6_ProgrammingGUI_NativeWindows_ListView.md`
+- [x] TreeView 控件 → `7_ProgrammingGUI_NativeWindows_TreeView.md`
+- [x] 更多控件（标签页、进度条、滚动条等）→ `8_ProgrammingGUI_NativeWindows_MoreControls.md`
 
-#### 1.5 窗口布局与资源
+#### 1.5 窗口布局与资源（已完成）
 
 **对话框：**
-- [ ] 模态对话框（DialogBox、DialogBoxParam、WM_INITDIALOG）
-- [ ] 非模态对话框（CreateDialog、消息循环集成）
-- [ ] 对话框过程 vs 窗口过程
+- [x] 模态对话框（DialogBox、DialogBoxParam、WM_INITDIALOG）→ `9_ProgrammingGUI_NativeWindows_ModalDialog.md`
+- [x] 非模态对话框（CreateDialog、消息循环集成）→ `10_ProgrammingGUI_NativeWindows_ModelessDialog.md`
+- [x] 对话框过程 vs 窗口过程 → `11_ProgrammingGUI_NativeWindows_DialogProc.md`
 
 **资源文件：**
-- [ ] .rc 文件结构、resource.h、rc.exe 编译
-- [ ] 菜单资源（MENU、弹出菜单、动态创建）
-- [ ] 图标、光标、位图资源
-- [ ] 字符串表（String Table、国际化）
-- [ ] 对话框模板（DIALOG、DIALOGEX）
+- [x] .rc 文件结构、resource.h、rc.exe 编译 → `12_ProgrammingGUI_NativeWindows_ResourceFiles.md`
+- [x] 菜单资源（MENU、弹出菜单、动态创建）→ `13_ProgrammingGUI_NativeWindows_MenuResource.md`
+- [x] 图标、光标、位图资源 → `14_ProgrammingGUI_NativeWindows_IconCursorBitmap.md`
+- [x] 字符串表（String Table、国际化）→ `15_ProgrammingGUI_NativeWindows_StringTable.md`
+- [x] 对话框模板（DIALOG、DIALOGEX）→ `16_ProgrammingGUI_NativeWindows_DialogTemplate.md`
 
 **资源编辑器：**
-- [ ] Visual Studio Resource Editor 使用
+- [x] Visual Studio Resource Editor 使用 → `17_ProgrammingGUI_NativeWindows_VSResourceEditor.md`
 
 #### 1.6 GDI 基础绘图
 

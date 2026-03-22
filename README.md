@@ -3,7 +3,7 @@
 [![Platform](https://img.shields.io/badge/platform-Windows-0078D4?style=flat-square&logo=windows&logoColor=white)](https://learn.microsoft.com/zh-cn/windows/win32/)
 [![Language](https://img.shields.io/badge/language-C++-00599C?style=flat-square&logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
 [![IDE](https://img.shields.io/badge/IDE-Visual%20Studio-5C2D91?style=flat-square&logo=visualstudio&logoColor=white)](https://visualstudio.microsoft.com/)
-[![Progress](https://img.shields.io/badge/Win32-36%25-orange?style=flat-square)](Roadmap.md)
+[![Progress](https://img.shields.io/badge/Win32-65%25-orange?style=flat-square)](Roadmap.md)
 [![Writing](https://img.shields.io/badge/Writing-In%20Progress-brightgreen?style=flat-square)](tutorial/native_win32/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
@@ -33,12 +33,12 @@
 
 ```
 第〇篇  前言与准备          世界观建立
-第一篇  Win32 原生编程      地基（进行中 ████░░░░ 36%）
+第一篇  Win32 原生编程      地基（进行中 ██████░ 65%）
 第二篇  GUI 核心概念        跨框架通识
 第三篇  图形渲染            GDI → Direct2D → GPU
 第四篇  跨平台框架          Qt / wxWidgets / GTK
 第五篇  现代 Windows 技术   WinUI 3 / WebView2
-第六篇  Web 混合方案        Electron / CEF / Tauri
+第六篇  Web 混合方案        Electron / CEF 
 第七篇  工程化专题          多线程、DPI、打包、i18n
 第八篇  综合实战项目        贯穿全系列的收尾
 ```
@@ -47,25 +47,22 @@
 
 ## Win32 阶段进度
 
-[![Section 1.1](https://img.shields.io/badge/1.1-程序本质-brightgreen?style=flat)](tutorial/native_win32/0_ProgrammingGUI_Basic.md)
-[![Section 1.2](https://img.shields.io/badge/1.2-消息机制-brightgreen?style=flat)](tutorial/native_win32/1_ProgrammingGUI_NativeWindows.md)
-[![Section 1.3](https://img.shields.io/badge/1.3-系统消息-brightgreen?style=flat)](tutorial/native_win32/2_ProgrammingGUI_NativeWindows_2.md)
-[![Section DPI](https://img.shields.io/badge/DPI-适配专题-brightgreen?style=flat)](tutorial/native_win32/3_ProgrammingGUI_WhatAboutDPI.md)
-[![Section 1.4](https://img.shields.io/badge/1.4-标准控件-yellow?style=flat)](tutorial/native_win32/4_ProgrammingGUI_NativeWindows_Controls.md)
-[![Section 1.5](https://img.shields.io/badge/1.5-布局资源-lightgrey?style=flat)](Roadmap.md)
-[![Section 1.6](https://img.shields.io/badge/1.6-GDI绘图-lightgrey?style=flat)](Roadmap.md)
-[![Section 1.7](https://img.shields.io/badge/1.7-Win32进阶-lightgrey?style=flat)](Roadmap.md)
+当前进度：**65%** | 18个章节已完成
 
-| 章节 | 内容 | 状态 | 文件 |
-|:-----|:-----|:-----|:-----|
-| 1.1 | Windows 程序的本质 | 已完成 | [0_ProgrammingGUI_Basic.md](tutorial/native_win32/0_ProgrammingGUI_Basic.md) |
-| 1.2 | 消息机制 | 已完成 | [1_ProgrammingGUI_NativeWindows.md](tutorial/native_win32/1_ProgrammingGUI_NativeWindows.md) |
-| 1.3 | 常用系统消息 | 已完成 | [2_ProgrammingGUI_NativeWindows_2.md](tutorial/native_win32/2_ProgrammingGUI_NativeWindows_2.md) |
-| 1.3补充 | DPI 适配专题 | 已完成 | [3_ProgrammingGUI_WhatAboutDPI.md](tutorial/native_win32/3_ProgrammingGUI_WhatAboutDPI.md) |
-| 1.4 | 标准控件 | 进行中 | [4_ProgrammingGUI_NativeWindows_Controls.md](tutorial/native_win32/4_ProgrammingGUI_NativeWindows_Controls.md) |
-| 1.5 | 窗口布局与资源 | 待完成 | — |
-| 1.6 | GDI 基础绘图 | 待完成 | — |
-| 1.7 | Win32 进阶 | 待完成 | — |
+详细的章节目录请查看：[**教程首页 →**](tutorial/index.md)
+
+涵盖：基础篇(4章) | 控件篇(5章) | 对话框篇(3章) | 资源篇(6章)
+
+完整的章节目录请查看：[**教程首页 →**](tutorial/index.md)
+
+涵盖：基础篇(4章) | 控件篇(5章) | 对话框篇(3章) | 资源篇(6章)
+
+### 配套示例代码
+
+每个章节都配有完整的可运行示例，位于 [src/tutorial/native_win32/](src/tutorial/native_win32/) 目录：
+
+- **基础示例**：01_hello_world ~ 10_oop_wrapper（10个渐进式示例）
+- **练习项目**：6个实战练习（点击计数器、随机方块、鼠标追踪器、简单记事本、拖动小球、双缓冲）
 
 更多细节请查看 [Roadmap.md](Roadmap.md) 完整规划。
 
@@ -76,12 +73,38 @@
 [![Visual Studio](https://img.shields.io/badge/Visual%20Studio-2022-5C2D91?style=flat-square&logo=visualstudio&logoColor=white)](https://visualstudio.microsoft.com/vs/)
 [![Windows SDK](https://img.shields.io/badge/Windows%20SDK-Latest-0078D4?style=flat-square&logo=windows&logoColor=white)](https://developer.microsoft.com/windows/downloads/windows-sdk/)
 [![MSVC](https://img.shields.io/badge/MSVC-x64%20%2F%20x86-00599C?style=flat-square&logo=c%2B%2B&logoColor=white)]()
+[![CMake](https://img.shields.io/badge/CMake-3.20%2B-064F8C?style=flat-square&logo=cmake&logoColor=white)](https://cmake.org/)
+
+### 必需组件
 
 - **IDE**: Visual Studio 2022 Community（免费）
 - **SDK**: Windows SDK（随 VS 自动安装）
 - **编译器**: MSVC（支持 32/64 位）
+- **构建系统**: CMake 3.20+
 
-安装 VS 时勾选「使用 C++ 的桌面开发」工作负载即可。
+### 安装步骤
+
+1. 安装 **Visual Studio 2022 Community**
+2. 在安装器中勾选「使用 C++ 的桌面开发」工作负载
+3. 确保包含 Windows 10/11 SDK 和 CMake 工具
+
+### 构建项目
+
+```bash
+# 克隆仓库后
+cd gui/src/tutorial/native_win32
+
+# 配置（生成 compile_commands.json）
+cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+# 构建
+cmake --build build --config Release
+
+# 运行示例
+./build/01_hello_world/bin/01_hello_world.exe
+```
+
+每个示例独立可构建，支持 VS Code + CMake Tools 或 Visual Studio 直接打开。
 
 ---
 

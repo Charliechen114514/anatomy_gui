@@ -1,2 +1,4 @@
 # AI Matters!
 .claude
+.vscode
+build/
