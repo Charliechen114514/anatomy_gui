@@ -1,0 +1,1912 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="anatomy_gui的现代GUI全栈教程">
+      
+      
+        <meta name="author" content="Charliechen">
+      
+      
+      
+        <link rel="prev" href="../2_ProgrammingGUI_NativeWindows_2/">
+      
+      
+        <link rel="next" href="../4_ProgrammingGUI_NativeWindows_Controls/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../Awesome-Embedded.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>编程GUI到底什么是DPI —— Windows和Qt双平台实战指南 - anatomy_gui的文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#编程gui到底什么是dpi--windows和qt双平台实战指南" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="anatomy_gui的文档" class="md-header__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            anatomy_gui的文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              编程GUI到底什么是DPI —— Windows和Qt双平台实战指南
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换至暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="切换至亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="anatomy_gui的文档" class="md-nav__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    anatomy_gui的文档
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GUI 通用编程教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native win32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Native win32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_ProgrammingGUI_Basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程指南——从0开始 Win32 编程实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_ProgrammingGUI_NativeWindows_ModelessDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（九）——非模态对话框详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_ProgrammingGUI_NativeWindows_DialogProc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十）——对话框过程与窗口过程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_ProgrammingGUI_NativeWindows_ResourceFiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十一）——资源文件完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_ProgrammingGUI_NativeWindows_MenuResource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十二）——菜单资源实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_ProgrammingGUI_NativeWindows_IconCursorBitmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十三）——图标、光标、位图资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_ProgrammingGUI_NativeWindows_StringTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十四）——字符串表与国际化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_ProgrammingGUI_NativeWindows_DialogTemplate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十五）——对话框模板深入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_ProgrammingGUI_NativeWindows_VSResourceEditor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十六）——Visual Studio 资源编辑器使用指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_ProgrammingGUI_NativeWindows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Win32 原生编程实战——从 Hello World 到完整窗口程序
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_ProgrammingGUI_NativeWindows_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二）——从0开始搞定用户输入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编程GUI到底什么是DPI —— Windows和Qt双平台实战指南
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编程GUI到底什么是DPI —— Windows和Qt双平台实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#前言为什么我们非得折腾这个" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前言：为什么我们非得折腾这个
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#环境说明我们在什么平台上折腾" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        环境说明：我们在什么平台上折腾
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第一步--搞清楚dpi到底是个什么鬼" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一步 —— 搞清楚DPI到底是个什么鬼
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第二步--windows的dpi-awareness模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二步 —— Windows的DPI Awareness模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第二步 —— Windows的DPI Awareness模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dpi-unaware最原始的模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DPI Unaware：最原始的模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-dpi-awareness稍微进步了一点" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System DPI Awareness：稍微进步了一点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-monitor和per-monitor-v2正确的方向" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-Monitor和Per-Monitor V2：正确的方向
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第三步--qt是怎么处理这个问题的" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三步 —— Qt是怎么处理这个问题的
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第三步 —— Qt是怎么处理这个问题的">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#绘图相关的事情" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        绘图相关的事情
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#图像资源怎么处理" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        图像资源怎么处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第四步--win32实战从system-dpi-aware升级到per-monitor-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第四步 —— Win32实战：从System DPI Aware升级到Per-Monitor V2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第四步 —— Win32实战：从System DPI Aware升级到Per-Monitor V2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-声明dpi-awareness模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 声明DPI Awareness模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-找出所有硬编码的尺寸" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 找出所有硬编码的尺寸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-处理dpi变化消息" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 处理DPI变化消息
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-替换不支持dpi上下文的api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 替换不支持DPI上下文的API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-处理位图资源" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 处理位图资源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-测试清单" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 测试清单
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第五步--qt实战从入门到正确" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第五步 —— Qt实战：从入门到正确
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第五步 —— Qt实战：从入门到正确">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-确认qt的dpi配置" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 确认Qt的DPI配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-使用设备无关坐标系统" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 使用设备无关坐标系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-处理图像资源" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 处理图像资源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-处理低级绘图" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 处理低级绘图
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-测试环境变量" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 测试环境变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第六步--踩坑预警与进阶话题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第六步 —— 踩坑预警与进阶话题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第六步 —— 踩坑预警与进阶话题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dpi虚拟化的陷阱" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DPI虚拟化的陷阱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#混合模式dpi缩放" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        混合模式DPI缩放
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#虚拟桌面的孤岛问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        虚拟桌面的"孤岛"问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#非整数缩放的问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        非整数缩放的问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qt的dpi配置优先级x11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qt的DPI配置优先级（X11）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#测试工具推荐" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        测试工具推荐
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="测试工具推荐">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dprgadget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DprGadget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows内置工具" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows内置工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#收尾" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        收尾
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_ProgrammingGUI_NativeWindows_Controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（三）——从按钮到列表框
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_ProgrammingGUI_NativeWindows_WM_NOTIFY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（四）——WM_NOTIFY 消息机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_ProgrammingGUI_NativeWindows_ListView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（五）——ListView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_ProgrammingGUI_NativeWindows_TreeView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（六）——TreeView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_ProgrammingGUI_NativeWindows_MoreControls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（七）——更多高级控件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_ProgrammingGUI_NativeWindows_ModalDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（八）——模态对话框实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    GUI 通用编程教程
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../0_ProgrammingGUI_Basic/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Native win32
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="编程gui到底什么是dpi--windows和qt双平台实战指南">编程GUI到底什么是DPI —— Windows和Qt双平台实战指南<a class="headerlink" href="#编程gui到底什么是dpi--windows和qt双平台实战指南" title="链接到此章节">&para;</a></h1>
+<h2 id="前言为什么我们非得折腾这个">前言：为什么我们非得折腾这个<a class="headerlink" href="#前言为什么我们非得折腾这个" title="链接到此章节">&para;</a></h2>
+<p>说实话，如果你今年还在做GUI开发却没考虑过DPI问题，那你迟早要踩坑。笔者之前工作的时候，就出现了，换一个显示器，窗口不居中跑到边缘的问题。这事情真的不能怪显示器，纯粹是我们当年写代码的时候太"天真"了，默认世界上所有屏幕都是96 DPI。</p>
+<p>事情的起因是这样的：显示器厂商这些年在像素密度上卷得厉害，以前的屏幕大概每英寸96个像素就算标准配置，现在动不动就200多甚至300 DPI。但我们的GUI代码还停留在旧时代，硬编码了一堆"看起来差不多"的尺寸值，结果在高分屏上要么小到看不见，要么被系统拉伸成一团模糊。</p>
+<p>如果你跟我一样，需要维护一些"历史悠久"的桌面应用，或者打算从零开始写一个能在各种屏幕上都清晰显示的程序，那我们就得认真对待DPI这个问题了。这篇文章会带你完整走一遍Windows和Qt两个平台的DPI处理方案，把那些官方文档里分散在各种角落的知识点串起来，顺便分享一些笔者踩过的坑。</p>
+<h2 id="环境说明我们在什么平台上折腾">环境说明：我们在什么平台上折腾<a class="headerlink" href="#环境说明我们在什么平台上折腾" title="链接到此章节">&para;</a></h2>
+<p>在开始之前，先明确一下我们这篇文章涉及的技术栈和测试环境：</p>
+<ul>
+<li><strong>Windows平台</strong>：主要关注Win10 1703（Creators Update）及以上版本，因为这是Per-Monitor V2 DPI Awareness支持的起点</li>
+<li><strong>Qt版本</strong>：Qt 6.x系列，默认就是Per-Monitor DPI Aware V2（是的，笔者业余的时候很想写这个）</li>
+<li><strong>测试硬件</strong>：至少包含两个不同DPI的显示器（比如一个1080p的96 DPI，一个4K的192 DPI）</li>
+<li><strong>开发场景</strong>：既有从零开始的新项目，也有需要改造的老项目</li>
+</ul>
+<h2 id="第一步--搞清楚dpi到底是个什么鬼">第一步 —— 搞清楚DPI到底是个什么鬼<a class="headerlink" href="#第一步--搞清楚dpi到底是个什么鬼" title="链接到此章节">&para;</a></h2>
+<p>很多人一听到DPI就觉得是"图片清晰度"相关的东西，但在GUI编程的语境下，我们需要更准确地理解它。DPI（Dots Per Inch）指的是每英寸的像素点数，96 DPI意味着屏幕上每英寸有96个像素。这是一个物理密度概念。</p>
+<p>但真正让我们头疼的是"显示缩放比例"（Display Scale Factor）。当你在Windows的显示设置里把缩放调成150%的时候，系统会告诉应用程序"现在的DPI是144"（96 × 1.5），然后应用程序需要据此调整自己的布局和渲染。</p>
+<p>这里有个关键点需要理解：<strong>设备像素比</strong>（Device Pixel Ratio，简称DPR）。Qt的文档把它解释得很清楚 —— 如果你的窗口设置为200×200"设备无关像素"，在DPI为96（DPR=1.0）的屏幕上它实际占用200×200个物理像素，但在DPI为192（DPR=2.0）的屏幕上它会占用400×400个物理像素。</p>
+<p>这个模型的核心思想是：应用程序在一个"虚拟"的坐标系里工作，系统负责把虚拟坐标映射到真实的物理像素上。理想情况下，你只需要用"设备无关像素"来思考布局，剩下的事情让框架帮你处理。</p>
+<p>当然，理想很丰满，现实往往很骨感 —— 尤其是当你需要处理一些底层绘图操作的时候。</p>
+<h2 id="第二步--windows的dpi-awareness模式">第二步 —— Windows的DPI Awareness模式<a class="headerlink" href="#第二步--windows的dpi-awareness模式" title="链接到此章节">&para;</a></h2>
+<p>Windows这块的设计历史包袱比较重，所以有好几种DPI Awareness模式，我们得一个个搞清楚。</p>
+<h3 id="dpi-unaware最原始的模式">DPI Unaware：最原始的模式<a class="headerlink" href="#dpi-unaware最原始的模式" title="链接到此章节">&para;</a></h3>
+<p>DPI Unaware的应用程序基本上就是在告诉Windows："我就按96 DPI来写，别的我不管"。当这种程序跑在高DPI屏幕上时，Windows会把整个窗口的位图拉伸到预期大小，结果就是你看到的模糊界面。</p>
+<p>说实话，2025年了如果你还在写这种程序，那真的有点说不过去。但有些legacy代码确实是这样的，我们后面会讲怎么改造。</p>
+<h3 id="system-dpi-awareness稍微进步了一点">System DPI Awareness：稍微进步了一点<a class="headerlink" href="#system-dpi-awareness稍微进步了一点" title="链接到此章节">&para;</a></h3>
+<p>System DPI Aware的应用程序会在启动时获取主显示器的DPI，然后按照这个DPI来布局界面。听起来不错，但问题在于它只会在初始化时做一次这件事。当你把窗口拖到另一个DPI不同的显示器上时，Windows又会开始位图拉伸，于是你的界面又模糊了。</p>
+<p>很多老程序都属于这一类，它们是"一个DPI用到死"的典型代表。</p>
+<h3 id="per-monitor和per-monitor-v2正确的方向">Per-Monitor和Per-Monitor V2：正确的方向<a class="headerlink" href="#per-monitor和per-monitor-v2正确的方向" title="链接到此章节">&para;</a></h3>
+<p>Per-Monitor DPI Awareness是Windows 8.1引入的，它的核心思想是：当DPI变化时，系统会发送<code>WM_DPICHANGED</code>消息给你的窗口，然后你需要自己重新布局。</p>
+<p>但Per-Monitor V1的限制比较多，基本就是个"半成品"。Windows 10 Creators Update引入了Per-Monitor V2，这个才是真正可用的版本。当你的程序声明自己是PMv2 Aware时，你会得到这些好处：</p>
+<ol>
+<li>窗口（包括子窗口）会在DPI变化时收到通知</li>
+<li>你能看到每个显示器的真实像素数</li>
+<li>Windows不会对你的窗口进行位图拉伸</li>
+<li>非客户区（标题栏、滚动条等）会自动缩放</li>
+<li>Win32对话框会自动处理DPI缩放</li>
+<li>通用控件的位图资源会自动用正确的DPI渲染</li>
+</ol>
+<p>当然，天下没有免费的午餐 —— 既然你告诉Windows"我自己来处理DPI"，那当DPI变化时，如果你没有重新布局，你的界面就会变得要么太小要么太大，完全取决于新旧DPI的差异。</p>
+<p>下面这个表格总结了各种模式的行为差异：</p>
+<table>
+<thead>
+<tr>
+<th>DPI Awareness模式</th>
+<th>Windows引入版本</th>
+<th>应用程序看到的DPI</th>
+<th>DPI变化时的行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unaware</td>
+<td>-</td>
+<td>所有显示器都是96 DPI</td>
+<td>位图拉伸（模糊）</td>
+</tr>
+<tr>
+<td>System</td>
+<td>Vista</td>
+<td>所有显示器都是主显示器的DPI</td>
+<td>位图拉伸（模糊）</td>
+</tr>
+<tr>
+<td>Per-Monitor</td>
+<td>8.1</td>
+<td>当前窗口所在显示器的DPI</td>
+<td>顶级窗口收到通知，其他不管</td>
+</tr>
+<tr>
+<td>Per-Monitor V2</td>
+<td>Win10 1703</td>
+<td>当前窗口所在显示器的DPI</td>
+<td>顶级和子窗口都收到通知，非客户区、控件、对话框自动缩放</td>
+</tr>
+</tbody>
+</table>
+<h2 id="第三步--qt是怎么处理这个问题的">第三步 —— Qt是怎么处理这个问题的<a class="headerlink" href="#第三步--qt是怎么处理这个问题的" title="链接到此章节">&para;</a></h2>
+<p>Qt这块的设计就清爽多了，它提供了一个统一的API来屏蔽平台差异。Qt 6默认就是Per-Monitor DPI Aware V2，你不需要额外做什么就能获得基本的DPI支持。</p>
+<p>Qt的坐标系统模型是这样的：应用程序使用"设备无关像素"，然后通过设备像素比映射到物理像素。当你创建一个200×200的QWindow或QWidget时：</p>
+<ul>
+<li>在DPR为1.0的标准屏幕上，它占用200×200物理像素</li>
+<li>在DPR为2.0的高密度屏幕上，它占用400×400物理像素</li>
+</ul>
+<p>这个模型适用于Qt GUI的大部分高级API，包括Widget和Quick的几何尺寸、事件坐标、桌面和窗口几何等。</p>
+<h3 id="绘图相关的事情">绘图相关的事情<a class="headerlink" href="#绘图相关的事情" title="链接到此章节">&para;</a></h3>
+<p>如果你使用QPainter或者Qt Quick的图形绘制，Qt会自动处理高DPI渲染。你可以在统一的坐标系里工作，不需要关心显示器的实际像素密度。</p>
+<p>但是当你用低级API（比如OpenGL）时，你就得自己处理设备像素比了。Qt提供了<code>QWindow::devicePixelRatio()</code>和<code>QScreen::devicePixelRatio()</code>来获取这个值，你需要据此调整你的渲染逻辑。</p>
+<p>这里有个容易踩坑的地方：QImage和QPixmap代表的是原始像素，不在设备无关坐标系里。一个400×400的QImage在DPR为2.0的屏幕上只会填满200×200的窗口空间，或者如果在标准屏幕上绘制会被自动缩小到200×200。</p>
+<h3 id="图像资源怎么处理">图像资源怎么处理<a class="headerlink" href="#图像资源怎么处理" title="链接到此章节">&para;</a></h3>
+<p>要充分利用高DPI显示器的优势，你需要提供高分辨率的图像资源。Qt使用一个简单的命名约定：<code>logo@2x.png</code>表示2x分辨率的版本。当你把普通版本和高分辨率版本都加载到QIcon里时，Qt会自动选择最合适的版本。</p>
+<p>具体的做法我们在后面实战部分会详细演示。</p>
+<h2 id="第四步--win32实战从system-dpi-aware升级到per-monitor-v2">第四步 —— Win32实战：从System DPI Aware升级到Per-Monitor V2<a class="headerlink" href="#第四步--win32实战从system-dpi-aware升级到per-monitor-v2" title="链接到此章节">&para;</a></h2>
+<p>假设我们有一个老的Win32程序，目前是System DPI Aware的（大部分老程序都是这样），我们想把它升级到Per-Monitor V2。这里有一系列步骤需要完成。</p>
+<h3 id="41-声明dpi-awareness模式">4.1 声明DPI Awareness模式<a class="headerlink" href="#41-声明dpi-awareness模式" title="链接到此章节">&para;</a></h3>
+<p>首先我们需要在application manifest里声明程序是Per-Monitor V2 DPI Aware。如果你的程序还没有manifest，那就需要创建一个；如果已经有了，就添加dpiAwareness相关的内容：</p>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nt">&lt;application</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">&quot;urn:schemas-microsoft-com:asm.v3&quot;</span><span class="nt">&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="w">  </span><span class="nt">&lt;windowsSettings&gt;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">    </span><span class="nt">&lt;dpiAware</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/SMI/2005/WindowsSettings&quot;</span><span class="nt">&gt;</span>true/PM<span class="nt">&lt;/dpiAware&gt;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos="4 "></span></a><span class="w">    </span><span class="nt">&lt;dpiAwareness</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/SMI/2016/WindowsSettings&quot;</span><span class="nt">&gt;</span>PerMonitorV2<span class="nt">&lt;/dpiAwareness&gt;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">  </span><span class="nt">&lt;/windowsSettings&gt;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos="6 "></span></a><span class="nt">&lt;/application&gt;</span>
+</span></code></pre></div>
+<p>这个声明告诉Windows："嘿，我知道怎么处理DPI变化，别帮我拉伸位图了"。</p>
+<h3 id="42-找出所有硬编码的尺寸">4.2 找出所有硬编码的尺寸<a class="headerlink" href="#42-找出所有硬编码的尺寸" title="链接到此章节">&para;</a></h3>
+<p>这步是最烦人的，但也是必须的。你需要在代码里搜索所有假设DPI固定为96的地方。常见的罪魁祸首包括：</p>
+<ul>
+<li>直接写在代码里的像素值（比如<code>CreateWindow</code>时的x, y, width, height）</li>
+<li>缓存的字体大小</li>
+<li>缓存的DPI值</li>
+<li>硬编码的图标尺寸</li>
+</ul>
+<p>这里有个典型的错误示例：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">case</span><span class="w"> </span><span class="no">WM_CREATE</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="c1">// 这段代码假设程序运行在96 DPI下</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">HWND</span><span class="w"> </span><span class="n">hWndChild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateWindow</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;BUTTON&quot;</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;Click Me&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">        </span><span class="n">WS_CHILD</span><span class="o">|</span><span class="n">WS_VISIBLE</span><span class="o">|</span><span class="n">BS_PUSHBUTTON</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">        </span><span class="mi">50</span><span class="p">,</span><span class="w">   </span><span class="c1">// x</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">        </span><span class="mi">50</span><span class="p">,</span><span class="w">   </span><span class="c1">// y</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><a href="#__codelineno-1-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">        </span><span class="mi">100</span><span class="p">,</span><span class="w">  </span><span class="c1">// width</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><a href="#__codelineno-1-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">        </span><span class="mi">50</span><span class="p">,</span><span class="w">   </span><span class="c1">// height</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><a href="#__codelineno-1-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">        </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">HMENU</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><a href="#__codelineno-1-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p>按钮的位置和尺寸都是硬编码的，在高DPI屏幕上会显得很小。</p>
+<p>正确的做法是先定义一些"96 DPI下的基准值"，然后在运行时根据实际DPI进行缩放：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="cp">#define INITIALX_96DPI 50</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="cp">#define INITIALY_96DPI 50</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="cp">#define INITIALWIDTH_96DPI 100</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="cp">#define INITIALHEIGHT_96DPI 50</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos=" 5 "></span></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="kt">void</span><span class="w"> </span><span class="nf">UpdateButtonLayoutForDpi</span><span class="p">(</span><span class="n">HWND</span><span class="w"> </span><span class="n">hWnd</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">{</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><a href="#__codelineno-2-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">iDpi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetDpiForWindow</span><span class="p">(</span><span class="n">hWnd</span><span class="p">);</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><a href="#__codelineno-2-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">dpiScaledX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MulDiv</span><span class="p">(</span><span class="n">INITIALX_96DPI</span><span class="p">,</span><span class="w"> </span><span class="n">iDpi</span><span class="p">,</span><span class="w"> </span><span class="n">USER_DEFAULT_SCREEN_DPI</span><span class="p">);</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><a href="#__codelineno-2-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">dpiScaledY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MulDiv</span><span class="p">(</span><span class="n">INITIALY_96DPI</span><span class="p">,</span><span class="w"> </span><span class="n">iDpi</span><span class="p">,</span><span class="w"> </span><span class="n">USER_DEFAULT_SCREEN_DPI</span><span class="p">);</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><a href="#__codelineno-2-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">dpiScaledWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MulDiv</span><span class="p">(</span><span class="n">INITIALWIDTH_96DPI</span><span class="p">,</span><span class="w"> </span><span class="n">iDpi</span><span class="p">,</span><span class="w"> </span><span class="n">USER_DEFAULT_SCREEN_DPI</span><span class="p">);</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><a href="#__codelineno-2-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">dpiScaledHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MulDiv</span><span class="p">(</span><span class="n">INITIALHEIGHT_96DPI</span><span class="p">,</span><span class="w"> </span><span class="n">iDpi</span><span class="p">,</span><span class="w"> </span><span class="n">USER_DEFAULT_SCREEN_DPI</span><span class="p">);</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><a href="#__codelineno-2-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">dpiScaledX</span><span class="p">,</span><span class="w"> </span><span class="n">dpiScaledY</span><span class="p">,</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><a href="#__codelineno-2-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">                 </span><span class="n">dpiScaledWidth</span><span class="p">,</span><span class="w"> </span><span class="n">dpiScaledHeight</span><span class="p">,</span><span class="w"> </span><span class="n">SWP_NOZORDER</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">SWP_NOACTIVATE</span><span class="p">);</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a><a href="#__codelineno-2-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>MulDiv</code>这个API很有用，它执行<code>(a * b) / c</code>的操作，并且会处理中间结果的溢出问题。这里我们用它来把96 DPI下的基准值按比例缩放到实际DPI。</p>
+<p>然后在窗口创建时调用这个函数：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">case</span><span class="w"> </span><span class="no">WM_CREATE</span><span class="p">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><a href="#__codelineno-3-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><a href="#__codelineno-3-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="n">HWND</span><span class="w"> </span><span class="n">hWndChild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateWindow</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;BUTTON&quot;</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;Click Me&quot;</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><a href="#__codelineno-3-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">        </span><span class="n">WS_CHILD</span><span class="o">|</span><span class="n">WS_VISIBLE</span><span class="o">|</span><span class="n">BS_PUSHBUTTON</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><a href="#__codelineno-3-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">        </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// 尺寸由UpdateButtonLayoutForDpi设置</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><a href="#__codelineno-3-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">        </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">HMENU</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><a href="#__codelineno-3-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hWndChild</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><a href="#__codelineno-3-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><a href="#__codelineno-3-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">        </span><span class="n">UpdateButtonLayoutForDpi</span><span class="p">(</span><span class="n">hWndChild</span><span class="p">);</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><a href="#__codelineno-3-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><a href="#__codelineno-3-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">}</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><a href="#__codelineno-3-12"><span class="linenos" data-linenos="12 "></span></a><span class="k">break</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="43-处理dpi变化消息">4.3 处理DPI变化消息<a class="headerlink" href="#43-处理dpi变化消息" title="链接到此章节">&para;</a></h3>
+<p>当我们声明为Per-Monitor DPI Aware后，当窗口被拖到不同DPI的显示器上时，会收到<code>WM_DPICHANGED</code>消息。我们需要处理这个消息，重新布局界面：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">case</span><span class="w"> </span><span class="no">WM_DPICHANGED</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="c1">// 找到需要调整大小的控件并更新布局</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">HWND</span><span class="w"> </span><span class="n">hWndButton</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindWindowEx</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hWndButton</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><a href="#__codelineno-4-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><a href="#__codelineno-4-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">        </span><span class="n">UpdateButtonLayoutForDpi</span><span class="p">(</span><span class="n">hWndButton</span><span class="p">);</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><a href="#__codelineno-4-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><a href="#__codelineno-4-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="p">}</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a><a href="#__codelineno-4-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">break</span><span class="p">;</span>
+</span></code></pre></div>
+<p>⚠️ 注意：这里有个重要的坑 —— <code>WM_DPICHANGED</code>消息的<code>lParam</code>参数包含一个建议的新窗口矩形。Windows强烈建议你用这个矩形来调整窗口大小，因为这样能确保：</p>
+<ol>
+<li>鼠标指针在拖动窗口时保持在相对位置</li>
+<li>避免触发递归的DPI变化循环</li>
+</ol>
+<p>更完整的处理应该是这样的：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">case</span><span class="w"> </span><span class="no">WM_DPICHANGED</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><a href="#__codelineno-5-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><a href="#__codelineno-5-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="c1">// 获取建议的窗口矩形</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><a href="#__codelineno-5-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">LPRECT</span><span class="w"> </span><span class="n">lpRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">LPRECT</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><a href="#__codelineno-5-5"><span class="linenos" data-linenos=" 5 "></span></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><a href="#__codelineno-5-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="c1">// 调整窗口大小</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><a href="#__codelineno-5-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="n">SetWindowPos</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><a href="#__codelineno-5-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">                 </span><span class="n">lpRect</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">lpRect</span><span class="o">-&gt;</span><span class="n">top</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><a href="#__codelineno-5-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">                 </span><span class="n">lpRect</span><span class="o">-&gt;</span><span class="n">right</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lpRect</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><a href="#__codelineno-5-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">                 </span><span class="n">lpRect</span><span class="o">-&gt;</span><span class="n">bottom</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lpRect</span><span class="o">-&gt;</span><span class="n">top</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><a href="#__codelineno-5-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">                 </span><span class="n">SWP_NOZORDER</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">SWP_NOACTIVATE</span><span class="p">);</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><a href="#__codelineno-5-12"><span class="linenos" data-linenos="12 "></span></a>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><a href="#__codelineno-5-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="c1">// 更新子窗口布局</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><a href="#__codelineno-5-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">    </span><span class="n">UpdateAllChildLayouts</span><span class="p">(</span><span class="n">hWnd</span><span class="p">);</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><a href="#__codelineno-5-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">}</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><a href="#__codelineno-5-16"><span class="linenos" data-linenos="16 "></span></a><span class="k">break</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="44-替换不支持dpi上下文的api">4.4 替换不支持DPI上下文的API<a class="headerlink" href="#44-替换不支持dpi上下文的api" title="链接到此章节">&para;</a></h3>
+<p>很多老版本的Win32 API没有DPI或HWND上下文参数，它们返回的值可能是"虚拟化"的（即被系统按照某种DPI Awareness模式转换过）。Windows提供了带<code>ForDpi</code>后缀的新版API：</p>
+<table>
+<thead>
+<tr>
+<th>老API</th>
+<th>新API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GetSystemMetrics</td>
+<td>GetSystemMetricsForDpi</td>
+</tr>
+<tr>
+<td>AdjustWindowRectEx</td>
+<td>AdjustWindowRectExForDpi</td>
+</tr>
+<tr>
+<td>SystemParametersInfo</td>
+<td>SystemParametersInfoForDpi</td>
+</tr>
+<tr>
+<td>GetDpiForMonitor</td>
+<td>GetDpiForWindow</td>
+</tr>
+</tbody>
+</table>
+<p>你需要在代码里搜索这些老API的调用，并根据具体情况替换。如果老API是在某个HWND相关的上下文中调用的，通常可以改用<code>GetDpiForWindow</code>获取DPI后再调用新API。</p>
+<h3 id="45-处理位图资源">4.5 处理位图资源<a class="headerlink" href="#45-处理位图资源" title="链接到此章节">&para;</a></h3>
+<p>当DPI变化时，你需要重新加载位图资源。如果你只提供了单分辨率的图片，可能需要手动缩放。更好的做法是提供多分辨率的资源，然后根据当前DPI选择合适的版本。</p>
+<p>对于图标，可以使用<code>LoadImage</code>代替<code>LoadIcon</code>，因为它支持指定尺寸：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">HICON</span><span class="w"> </span><span class="n">hIcon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HICON</span><span class="p">)</span><span class="n">LoadImage</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos="2 "></span></a><span class="w">    </span><span class="n">hInstance</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">    </span><span class="n">MAKEINTRESOURCE</span><span class="p">(</span><span class="n">IDI_MYICON</span><span class="p">),</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><a href="#__codelineno-6-4"><span class="linenos" data-linenos="4 "></span></a><span class="w">    </span><span class="n">IMAGE_ICON</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><a href="#__codelineno-6-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">    </span><span class="n">GetSystemMetricsForDpi</span><span class="p">(</span><span class="n">SM_CXICON</span><span class="p">,</span><span class="w"> </span><span class="n">GetDpiForWindow</span><span class="p">(</span><span class="n">hWnd</span><span class="p">)),</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><a href="#__codelineno-6-6"><span class="linenos" data-linenos="6 "></span></a><span class="w">    </span><span class="n">GetSystemMetricsForDpi</span><span class="p">(</span><span class="n">SM_CYICON</span><span class="p">,</span><span class="w"> </span><span class="n">GetDpiForWindow</span><span class="p">(</span><span class="n">hWnd</span><span class="p">)),</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><a href="#__codelineno-6-7"><span class="linenos" data-linenos="7 "></span></a><span class="w">    </span><span class="n">LR_DEFAULTCOLOR</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><a href="#__codelineno-6-8"><span class="linenos" data-linenos="8 "></span></a><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="46-测试清单">4.6 测试清单<a class="headerlink" href="#46-测试清单" title="链接到此章节">&para;</a></h3>
+<p>改造完成后，你需要测试以下场景：</p>
+<ol>
+<li>在不同DPI的显示器上启动程序</li>
+<li>把窗口在不同DPI的显示器之间拖动</li>
+<li>程序运行时更改显示器的缩放设置</li>
+<li>更改主显示器，注销后重新登录测试</li>
+<li>远程桌面连接到不同DPI的机器</li>
+</ol>
+<p>如果所有场景下界面都能保持清晰且尺寸合理，恭喜你，你的程序已经正确支持DPI缩放了。</p>
+<h2 id="第五步--qt实战从入门到正确">第五步 —— Qt实战：从入门到正确<a class="headerlink" href="#第五步--qt实战从入门到正确" title="链接到此章节">&para;</a></h2>
+<p>Qt的DPI处理比Win32简单很多，但仍有一些需要注意的地方。</p>
+<h3 id="51-确认qt的dpi配置">5.1 确认Qt的DPI配置<a class="headerlink" href="#51-确认qt的dpi配置" title="链接到此章节">&para;</a></h3>
+<p>Qt 6默认就是Per-Monitor DPI Aware V2，你通常不需要额外配置。但如果你想确认或修改这个行为，可以在<code>qt.conf</code>里设置：</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><a href="#__codelineno-7-1"><span class="linenos" data-linenos="1 "></span></a><span class="k">[Platforms]</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><a href="#__codelineno-7-2"><span class="linenos" data-linenos="2 "></span></a><span class="na">WindowsArguments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">dpiawareness=0,1,2</span>
+</span></code></pre></div>
+<p>这里的数字对应不同的DPI Awareness级别：0是Unaware，1是System，2是Per-Monitor。默认是2。</p>
+<h3 id="52-使用设备无关坐标系统">5.2 使用设备无关坐标系统<a class="headerlink" href="#52-使用设备无关坐标系统" title="链接到此章节">&para;</a></h3>
+<p>在Qt中，你用到的绝大部分坐标和尺寸都是设备无关的。比如：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><a href="#__codelineno-8-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 创建一个200x200的窗口</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><a href="#__codelineno-8-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">QWidget</span><span class="w"> </span><span class="o">*</span><span class="n">window</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">QWidget</span><span class="p">;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><a href="#__codelineno-8-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">window</span><span class="o">-&gt;</span><span class="n">resize</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
+</span></code></pre></div>
+<p>无论在什么DPI的屏幕上，这个窗口的"视觉大小"都是差不多的，只是实际占用的物理像素不同。这就是Qt的坐标系统在起作用。</p>
+<h3 id="53-处理图像资源">5.3 处理图像资源<a class="headerlink" href="#53-处理图像资源" title="链接到此章节">&para;</a></h3>
+<p>Qt使用<code>@2x</code>的命名约定来标记高分辨率版本：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><a href="#__codelineno-9-1"><span class="linenos" data-linenos="1 "></span></a>logo.png       // 1x版本
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><a href="#__codelineno-9-2"><span class="linenos" data-linenos="2 "></span></a>logo@2x.png    // 2x版本
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><a href="#__codelineno-9-3"><span class="linenos" data-linenos="3 "></span></a>logo@3x.png    // 3x版本（如果需要的话）
+</span></code></pre></div>
+<p>加载时使用QIcon：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><a href="#__codelineno-10-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">QIcon</span><span class="w"> </span><span class="n">icon</span><span class="p">;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><a href="#__codelineno-10-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">icon</span><span class="p">.</span><span class="n">addFile</span><span class="p">(</span><span class="s">&quot;:/images/logo.png&quot;</span><span class="p">);</span><span class="w">       </span><span class="c1">// 自动加载所有匹配的@Nx版本</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><a href="#__codelineno-10-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">icon</span><span class="p">.</span><span class="n">addFile</span><span class="p">(</span><span class="s">&quot;:/images/logo@2x.png&quot;</span><span class="p">);</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><a href="#__codelineno-10-4"><span class="linenos" data-linenos="4 "></span></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><a href="#__codelineno-10-5"><span class="linenos" data-linenos="5 "></span></a><span class="c1">// 之后使用时Qt会自动选择合适的版本</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><a href="#__codelineno-10-6"><span class="linenos" data-linenos="6 "></span></a><span class="n">button</span><span class="o">-&gt;</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">);</span>
+</span></code></pre></div>
+<p>这里有个小提示：如果你使用Qt资源系统，需要把所有分辨率的文件都添加到资源文件里。Qt会根据文件名自动选择。</p>
+<h3 id="54-处理低级绘图">5.4 处理低级绘图<a class="headerlink" href="#54-处理低级绘图" title="链接到此章节">&para;</a></h3>
+<p>如果你使用OpenGL或其他低级绘图API，需要手动处理设备像素比：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><a href="#__codelineno-11-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 获取当前窗口的设备像素比</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><a href="#__codelineno-11-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">qreal</span><span class="w"> </span><span class="n">dpr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">window</span><span class="o">-&gt;</span><span class="n">devicePixelRatio</span><span class="p">();</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><a href="#__codelineno-11-3"><span class="linenos" data-linenos="3 "></span></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><a href="#__codelineno-11-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1">// 调整视口大小</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><a href="#__codelineno-11-5"><span class="linenos" data-linenos="5 "></span></a><span class="n">glViewport</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dpr</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dpr</span><span class="p">);</span>
+</span></code></pre></div>
+<p>对于QPainter绘制的图像，也需要注意：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><a href="#__codelineno-12-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">QPainter</span><span class="w"> </span><span class="nf">painter</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><a href="#__codelineno-12-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">QImage</span><span class="w"> </span><span class="n">image</span><span class="p">(</span><span class="s">&quot;:/image.png&quot;</span><span class="p">);</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><a href="#__codelineno-12-3"><span class="linenos" data-linenos="3 "></span></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><a href="#__codelineno-12-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1">// 如果图像是设备像素（比如从文件加载的），需要正确设置设备像素比</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a><a href="#__codelineno-12-5"><span class="linenos" data-linenos="5 "></span></a><span class="n">image</span><span class="p">.</span><span class="n">setDevicePixelRatio</span><span class="p">(</span><span class="n">devicePixelRatio</span><span class="p">());</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a><a href="#__codelineno-12-6"><span class="linenos" data-linenos="6 "></span></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a><a href="#__codelineno-12-7"><span class="linenos" data-linenos="7 "></span></a><span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">targetRect</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="55-测试环境变量">5.5 测试环境变量<a class="headerlink" href="#55-测试环境变量" title="链接到此章节">&para;</a></h3>
+<p>Qt提供了一些环境变量来帮助测试DPI支持，不用真的去买多个显示器：</p>
+<ul>
+<li><code>QT_SCALE_FACTOR</code>：设置全局缩放因子，比如<code>QT_SCALE_FACTOR=2 ./myapp</code>会让所有几何尺寸翻倍</li>
+<li><code>QT_ENABLE_HIGHDPI_SCALING=0</code>：禁用高DPI缩放，回退到Qt 5的默认行为（仅用于测试）</li>
+<li><code>QT_AUTO_SCREEN_SCALE_FACTOR</code>：Qt 5遗留的环境变量，Qt 6不需要</li>
+</ul>
+<p>测试时可以这样：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><a href="#__codelineno-13-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1"># 模拟2x缩放</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><a href="#__codelineno-13-2"><span class="linenos" data-linenos="2 "></span></a><span class="nv">QT_SCALE_FACTOR</span><span class="o">=</span><span class="m">2</span><span class="w"> </span>./myapp
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><a href="#__codelineno-13-3"><span class="linenos" data-linenos="3 "></span></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><a href="#__codelineno-13-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1"># 模拟1.5x缩放</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><a href="#__codelineno-13-5"><span class="linenos" data-linenos="5 "></span></a><span class="nv">QT_SCALE_FACTOR</span><span class="o">=</span><span class="m">1</span>.5<span class="w"> </span>./myapp
+</span></code></pre></div>
+<h2 id="第六步--踩坑预警与进阶话题">第六步 —— 踩坑预警与进阶话题<a class="headerlink" href="#第六步--踩坑预警与进阶话题" title="链接到此章节">&para;</a></h2>
+<p>这里整理一些笔者在折腾过程中遇到的坑点和进阶问题。</p>
+<h3 id="dpi虚拟化的陷阱">DPI虚拟化的陷阱<a class="headerlink" href="#dpi虚拟化的陷阱" title="链接到此章节">&para;</a></h3>
+<p>当一个DPI Unaware或System DPI Aware的窗口被Windows拉伸时，某些API的返回值会被"虚拟化" —— 即返回的是转换后的值，而不是真实值。这可能导致混淆。</p>
+<p>比如，一个DPI Unaware的线程在4K屏幕上查询屏幕尺寸时，Windows会返回一个"虚拟"的尺寸（好像屏幕只有96 DPI一样）。这本身没问题，但如果你混用不同DPI Awareness的代码，可能会踩坑。</p>
+<p>解决办法：确保调用API时的线程DPI上下文是你期望的。如果需要临时改变上下文，使用<code>SetThreadDpiAwarenessContext</code>，记得恢复：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><a href="#__codelineno-14-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">DPI_AWARENESS_CONTEXT</span><span class="w"> </span><span class="n">oldContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SetThreadDpiAwarenessContext</span><span class="p">(</span><span class="n">DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2</span><span class="p">);</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a><a href="#__codelineno-14-2"><span class="linenos" data-linenos="2 "></span></a><span class="c1">// ... 调用需要特定上下文的API ...</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a><a href="#__codelineno-14-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">SetThreadDpiAwarenessContext</span><span class="p">(</span><span class="n">oldContext</span><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="混合模式dpi缩放">混合模式DPI缩放<a class="headerlink" href="#混合模式dpi缩放" title="链接到此章节">&para;</a></h3>
+<p>当你没法一次性更新所有窗口时，可以让部分窗口保持旧的DPI模式，只更新重要的窗口。从Windows 10 1607开始，DPI Awareness可以按顶级窗口设置：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><a href="#__codelineno-15-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 创建一个使用System DPI的窗口</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a><a href="#__codelineno-15-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">SetThreadDpiAwarenessContext</span><span class="p">(</span><span class="n">DPI_AWARENESS_CONTEXT_SYSTEM_AWARE</span><span class="p">);</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a><a href="#__codelineno-15-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">HWND</span><span class="w"> </span><span class="n">hSecondaryWindow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateWindow</span><span class="p">(...);</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4"></a><a href="#__codelineno-15-4"><span class="linenos" data-linenos="4 "></span></a><span class="n">SetThreadDpiAwarenessContext</span><span class="p">(</span><span class="n">DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2</span><span class="p">);</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5"></a><a href="#__codelineno-15-5"><span class="linenos" data-linenos="5 "></span></a>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6"></a><a href="#__codelineno-15-6"><span class="linenos" data-linenos="6 "></span></a><span class="c1">// 主窗口使用Per-Monitor V2</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7"></a><a href="#__codelineno-15-7"><span class="linenos" data-linenos="7 "></span></a><span class="n">HWND</span><span class="w"> </span><span class="n">hMainWindow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateWindow</span><span class="p">(...);</span>
+</span></code></pre></div>
+<p>这个功能要慎用，因为它会增加程序复杂度。只应该在过渡期使用，最终目标还是让所有窗口都正确处理DPI。</p>
+<h3 id="虚拟桌面的孤岛问题">虚拟桌面的"孤岛"问题<a class="headerlink" href="#虚拟桌面的孤岛问题" title="链接到此章节">&para;</a></h3>
+<p>在Windows上，如果你有多个不同DPI的显示器，Qt报告的屏幕几何可能会出现"空隙"。这是因为Windows的屏幕布局是用物理像素定位的，而Qt会把屏幕尺寸缩小（按DPR缩放），但位置不变。</p>
+<p>这会导致某些位置"不属于任何屏幕"。解决办法是不要假设屏幕边缘外就是相邻屏幕，而是用<code>QGuiApplication::screens()</code>获取屏幕列表来推理布局。</p>
+<h3 id="非整数缩放的问题">非整数缩放的问题<a class="headerlink" href="#非整数缩放的问题" title="链接到此章节">&para;</a></h3>
+<p>Windows允许以125%、150%这样的比例缩放，这会产生非整数的DPR（1.25、1.5）。有些UI框架在这种情况下可能出现渲染问题。</p>
+<p>Qt提供了<code>QGuiApplication::setHighDpiScaleFactorRoundingPolicy()</code>来控制缩放因子的舍入策略，可以限制为只使用整数或0.25增量的值。</p>
+<h3 id="qt的dpi配置优先级x11">Qt的DPI配置优先级（X11）<a class="headerlink" href="#qt的dpi配置优先级x11" title="链接到此章节">&para;</a></h3>
+<p>在X11平台上，DPI配置比较复杂。Qt按以下优先级读取配置：</p>
+<ol>
+<li>Xft/DPI（来自X设置，全局逻辑DPI）</li>
+<li>Xft.dpi（来自X资源，全局逻辑DPI）</li>
+<li>RandR物理DPI（仅Qt 5，从屏幕物理尺寸计算）</li>
+<li>96 DPI（回退值）</li>
+</ol>
+<p>可以设置<code>QT_USE_PHYSICAL_DPI=1</code>强制使用物理DPI，但通常逻辑DPI是更好的选择。</p>
+<h2 id="测试工具推荐">测试工具推荐<a class="headerlink" href="#测试工具推荐" title="链接到此章节">&para;</a></h2>
+<h3 id="dprgadget">DprGadget<a class="headerlink" href="#dprgadget" title="链接到此章节">&para;</a></h3>
+<p>Qt提供了一个测试工具叫DprGadget，可以用来检查DPI相关的值：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a><a href="#__codelineno-16-1"><span class="linenos" data-linenos="1 "></span></a>qtbase/tests/manual/highdpi/dprgadget
+</span></code></pre></div>
+<p>它会显示：
+- 窗口的设备像素比
+- 屏幕的逻辑DPI
+- 屏幕的设备像素比</p>
+<p>当你拖动窗口或改变DPI时，这些值应该会自动更新，窗口大小应该保持不变。如果不是这样，可能是Qt的bug。</p>
+<h3 id="windows内置工具">Windows内置工具<a class="headerlink" href="#windows内置工具" title="链接到此章节">&para;</a></h3>
+<p>Windows的设置页面可以方便地调整缩放比例来测试：</p>
+<ol>
+<li>打开"设置 &gt; 系统 &gt; 显示"</li>
+<li>修改"缩放与布局"</li>
+<li>观察程序是否正确响应</li>
+</ol>
+<h2 id="收尾">收尾<a class="headerlink" href="#收尾" title="链接到此章节">&para;</a></h2>
+<p>到这里我们就把Windows和Qt两个平台的DPI处理都梳理完了。说实话，DPI这个话题确实有点枯燥，但它对于现代GUI应用来说是绕不过去的一道坎。</p>
+<p>如果你正在维护一个老项目，希望这篇文章能给你一个清晰的升级路线。如果你是从零开始的新项目，那就更简单了 —— 选一个现代框架（比如Qt 6），默认配置通常就能覆盖大部分场景。</p>
+<p>最后提醒一点：DPI支持最好在项目早期就考虑好，越到后面改造成本越高。不要像笔者这样，等在4K屏幕上看到模糊界面时才想起来要处理这个事情。</p>
+<p>完结撒花，你的GUI应用终于可以在各种屏幕上都清晰显示了！</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年3月5日 08:49:11 CST">2026年3月5日 08:49:11</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="创建日期">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年3月5日 08:49:11 CST">2026年3月5日 08:49:11</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../2_ProgrammingGUI_NativeWindows_2/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 通用GUI编程技术——Win32 原生编程实战（二）——从0开始搞定用户输入">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                通用GUI编程技术——Win32 原生编程实战（二）——从0开始搞定用户输入
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../4_ProgrammingGUI_NativeWindows_Controls/" class="md-footer__link md-footer__link--next" aria-label="下一页: 通用GUI编程技术——Win32 原生编程实战（三）——从按钮到列表框">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                通用GUI编程技术——Win32 原生编程实战（三）——从按钮到列表框
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Charliechen - 保留所有权利
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Awesome-Embedded-Learning-Studio" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:725610365@qq.com" target="_blank" rel="noopener" title="发送邮件" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M536.4-26.3c9.8-3.5 20.6-1 28 6.3s9.8 18.2 6.3 28l-178 496.9c-5 13.9-18.1 23.1-32.8 23.1-14.2 0-27-8.6-32.3-21.7l-64.2-158c-4.5-11-2.5-23.6 5.2-32.6l94.5-112.4c5.1-6.1 4.7-15-.9-20.6s-14.6-6-20.6-.9l-112.4 94.3c-9.1 7.6-21.6 9.6-32.6 5.2L38.1 216.8c-13.1-5.3-21.7-18.1-21.7-32.3 0-14.7 9.2-27.8 23.1-32.8z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
