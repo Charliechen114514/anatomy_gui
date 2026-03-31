@@ -2,106 +2,110 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/bonus/EnableThemeDialogTexture_TabControl/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/0_ProgrammingGUI_Basic/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/10_ProgrammingGUI_NativeWindows_ModelessDialog/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/11_ProgrammingGUI_NativeWindows_DialogProc/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/12_ProgrammingGUI_NativeWindows_ResourceFiles/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/13_ProgrammingGUI_NativeWindows_MenuResource/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/14_ProgrammingGUI_NativeWindows_IconCursorBitmap/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/15_ProgrammingGUI_NativeWindows_StringTable/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/16_ProgrammingGUI_NativeWindows_DialogTemplate/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
+    </url>
+    <url>
+         <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/17_5_ProgrammingGUI_NativeWindows_ToolbarStatusBar/</loc>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/17_ProgrammingGUI_NativeWindows_VSResourceEditor/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/18_ProgrammingGUI_NativeWindows_GDI_HDC/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/19_ProgrammingGUI_NativeWindows_GDI_Objects/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/1_ProgrammingGUI_NativeWindows/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/20_ProgrammingGUI_NativeWindows_GDI_Shapes/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/21_ProgrammingGUI_NativeWindows_GDI_Text/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/22_ProgrammingGUI_NativeWindows_GDI_Bitmap/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/23_ProgrammingGUI_NativeWindows_GDI_DoubleBuffer/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/2_ProgrammingGUI_NativeWindows_2/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/3_ProgrammingGUI_WhatAboutDPI/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/4_ProgrammingGUI_NativeWindows_Controls/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/5_ProgrammingGUI_NativeWindows_WM_NOTIFY/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/6_ProgrammingGUI_NativeWindows_ListView/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/7_ProgrammingGUI_NativeWindows_TreeView/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/8_ProgrammingGUI_NativeWindows_MoreControls/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
     <url>
          <loc>https://charliechen114514.github.io/anatomy_gui/native_win32/9_ProgrammingGUI_NativeWindows_ModalDialog/</loc>
-         <lastmod>2026-03-28</lastmod>
+         <lastmod>2026-03-31</lastmod>
     </url>
 </urlset>
