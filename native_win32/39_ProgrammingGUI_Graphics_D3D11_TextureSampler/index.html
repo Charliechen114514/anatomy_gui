@@ -1,0 +1,2704 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="anatomy_gui的现代GUI全栈教程">
+      
+      
+        <meta name="author" content="Charliechen">
+      
+      
+        <link rel="canonical" href="https://charliechen114514.github.io/anatomy_gui/native_win32/39_ProgrammingGUI_Graphics_D3D11_TextureSampler/">
+      
+      
+        <link rel="prev" href="../38_ProgrammingGUI_Graphics_D3D11_VertexInput/">
+      
+      
+        <link rel="next" href="../3_ProgrammingGUI_WhatAboutDPI/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../Awesome-Embedded.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>通用GUI编程技术——图形渲染实战（三十九）——纹理与采样器：从WIC加载到GPU渲染 - anatomy_gui的文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#通用gui编程技术图形渲染实战三十九纹理与采样器从wic加载到gpu渲染" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="anatomy_gui的文档" class="md-header__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            anatomy_gui的文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              通用GUI编程技术——图形渲染实战（三十九）——纹理与采样器：从WIC加载到GPU渲染
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换至暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="切换至亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="anatomy_gui的文档" class="md-nav__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    anatomy_gui的文档
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GUI 通用编程教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bonus
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bonus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bonus/EnableThemeDialogTexture_TabControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（番外）——TabControl 的深色背景与 EnableThemeDialogTexture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native win32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Native win32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_ProgrammingGUI_Basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程指南——从0开始 Win32 编程实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_ProgrammingGUI_NativeWindows_ModelessDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（九）——非模态对话框详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_ProgrammingGUI_NativeWindows_DialogProc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十）——对话框过程与窗口过程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_ProgrammingGUI_NativeWindows_ResourceFiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十一）——资源文件完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_ProgrammingGUI_NativeWindows_MenuResource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十二）——菜单资源实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_ProgrammingGUI_NativeWindows_IconCursorBitmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十三）——图标、光标、位图资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_ProgrammingGUI_NativeWindows_StringTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十四）——字符串表与国际化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_ProgrammingGUI_NativeWindows_DialogTemplate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十五）——对话框模板深入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_5_ProgrammingGUI_NativeWindows_ToolbarStatusBar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十七）——工具栏与状态栏
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_ProgrammingGUI_NativeWindows_VSResourceEditor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十六）——Visual Studio 资源编辑器使用指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_ProgrammingGUI_NativeWindows_GDI_HDC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十八）——GDI 设备上下文（HDC）完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_ProgrammingGUI_NativeWindows_GDI_Objects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十九）——GDI 绘图对象：画笔、画刷、字体与区域
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_ProgrammingGUI_NativeWindows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Win32 原生编程实战——从 Hello World 到完整窗口程序
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_ProgrammingGUI_NativeWindows_GDI_Shapes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十）——GDI 图形绘制：线条、矩形与多边形完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_ProgrammingGUI_NativeWindows_GDI_Text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十一）——GDI 文字渲染：TextOut、DrawText 与文字度量
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_ProgrammingGUI_NativeWindows_GDI_Bitmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十二）——GDI 位图操作：BitBlt、StretchBlt 与图像处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23_ProgrammingGUI_NativeWindows_GDI_DoubleBuffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十三）——GDI 双缓冲技术：消除闪烁完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24_ProgrammingGUI_Graphics_GDI_Region/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十四）——GDI Region与裁切：不规则窗口与可视化控制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25_ProgrammingGUI_Graphics_GDI_AlphaBlend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十五）——Alpha混合与透明效果：分层窗口实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26_ProgrammingGUI_Graphics_GdiPlus_Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十六）——GDI+与GDI架构差异：抗锯齿与渐变
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27_ProgrammingGUI_Graphics_GdiPlus_Transform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十七）——坐标变换与矩阵：三级坐标系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28_ProgrammingGUI_Graphics_GdiPlus_ImageCodec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十八）——图像格式与编解码：PNG/JPEG全掌握
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29_ProgrammingGUI_Graphics_Direct2D_Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十九）——Direct2D架构与资源体系：GPU加速2D渲染入门
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_ProgrammingGUI_NativeWindows_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二）——从0开始搞定用户输入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30_ProgrammingGUI_Graphics_Direct2D_Geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十）——Direct2D几何体系统：从路径到命中测试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../31_ProgrammingGUI_Graphics_Direct2D_EffectsLayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十一）——Direct2D效果与图层：高斯模糊到毛玻璃
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../32_ProgrammingGUI_Graphics_DirectWrite_Typography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十二）——DirectWrite高质量文字排版：从基础到富文本
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../33_ProgrammingGUI_Graphics_Direct2D_GDIInterop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十三）——Direct2D与Win32/GDI互操作：渐进迁移实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../34_ProgrammingGUI_Graphics_HLSL_Basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十四）——HLSL语言基础：GPU编程的第一步
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../35_ProgrammingGUI_Graphics_HLSL_CompileDebug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十五）——HLSL编译与调试：从fxc到RenderDoc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../36_ProgrammingGUI_Graphics_HLSL_CBuffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十六）——Constant Buffer与数据传递：CPU-GPU通信通道
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../37_ProgrammingGUI_Graphics_D3D11_InitSwapChain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十七）——D3D11初始化与SwapChain：从零搭建GPU渲染框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../38_ProgrammingGUI_Graphics_D3D11_VertexInput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十八）——顶点缓冲与输入布局：GPU的第一个三角形
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十九）——纹理与采样器：从WIC加载到GPU渲染
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十九）——纹理与采样器：从WIC加载到GPU渲染
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#环境说明" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        环境说明
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#修改顶点结构体添加纹理坐标" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修改顶点结构体：添加纹理坐标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#用-wic-加载图片到-d3d11-纹理" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用 WIC 加载图片到 D3D11 纹理
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#采样器状态sampler-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        采样器状态（Sampler State）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="采样器状态（Sampler State）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#过滤模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        过滤模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#寻址模式" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        寻址模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mipmap不可忽视的细节" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mipmap：不可忽视的细节
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shader-代码" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shader 代码
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#常见问题与调试" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题与调试
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="常见问题与调试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#问题1纹理缩小出现摩尔纹" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        问题1：纹理缩小出现摩尔纹
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#问题2颜色偏蓝或偏红" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        问题2：颜色偏蓝或偏红
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#问题3纹理完全不显示黑色" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        问题3：纹理完全不显示（黑色）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#总结" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#练习" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_ProgrammingGUI_WhatAboutDPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编程GUI到底什么是DPI —— Windows和Qt双平台实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../40_ProgrammingGUI_Graphics_D3D11_Depth3D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十）——深度缓冲与3D变换：从平面到立体
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../41_ProgrammingGUI_Graphics_D3D11_Lighting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十一）——光照模型基础：Phong光照与法线变换
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../42_ProgrammingGUI_Graphics_D3D11_BlendAlpha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十二）——混合与透明渲染：从Alpha混合到粒子系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../43_ProgrammingGUI_Graphics_D3D12_Philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十三）——D3D12设计哲学：显式控制与性能解锁
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../44_ProgrammingGUI_Graphics_D3D12_CmdQueue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十四）——D3D12命令列表、队列与围栏：GPU同步核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../45_ProgrammingGUI_Graphics_D3D12_ResourceHeap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十五）——D3D12资源与堆管理：从上传到驻留
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../46_ProgrammingGUI_Graphics_D3D12_DescRootSig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十六）——描述符堆与根签名：D3D12资源绑定模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../47_ProgrammingGUI_Graphics_D3D12_D3D11Interop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十七）——D3D12与D3D11互操作及选型建议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../48_ProgrammingGUI_Graphics_CustomCtrl_OwnerDraw/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十八）——Owner-Draw控件：让标准控件焕然一新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../49_ProgrammingGUI_Graphics_CustomCtrl_FullCustom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十九）——完全自绘控件架构：状态机与动画
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_ProgrammingGUI_NativeWindows_Controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（三）——从按钮到列表框
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../50_ProgrammingGUI_Graphics_CustomCtrl_HitTest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十）——命中测试与鼠标事件路由：精确交互
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../51_ProgrammingGUI_Graphics_OpenGL_Win32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十一）——Win32嵌入OpenGL：从WGL到Core Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../52_ProgrammingGUI_Graphics_OpenGL_QtGLWidget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十二）——Qt QOpenGLWidget封装：跨平台GPU渲染
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_ProgrammingGUI_NativeWindows_WM_NOTIFY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（四）——WM_NOTIFY 消息机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_ProgrammingGUI_NativeWindows_ListView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（五）——ListView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_ProgrammingGUI_NativeWindows_TreeView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（六）——TreeView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_ProgrammingGUI_NativeWindows_MoreControls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（七）——更多高级控件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_ProgrammingGUI_NativeWindows_ModalDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（八）——模态对话框实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    GUI 通用编程教程
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../0_ProgrammingGUI_Basic/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Native win32
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="通用gui编程技术图形渲染实战三十九纹理与采样器从wic加载到gpu渲染">通用GUI编程技术——图形渲染实战（三十九）——纹理与采样器：从WIC加载到GPU渲染<a class="headerlink" href="#通用gui编程技术图形渲染实战三十九纹理与采样器从wic加载到gpu渲染" title="链接到此章节">&para;</a></h1>
+<blockquote>
+<p>上一篇文章中，我们用顶点缓冲和输入布局画出了 GPU 的第一个三角形——三个顶点，三种颜色，GPU 自动插值出漂亮的渐变效果。但顶点颜色终究是"程序员画笔"级别的着色方式，想做照片级的真实感渲染，你需要的是纹理映射（Texture Mapping）。</p>
+<p>纹理本质上就是一张图片——或者更准确地说，是一块可以被 GPU 采样的二维数据数组。GPU 通过纹理坐标（UV 坐标，范围 0 到 1）从纹理中取出对应位置的颜色值，然后涂到三角形的每个像素上。今天我们要讲的是：怎么创建纹理、怎么加载图片到纹理、怎么配置采样器，以及一个经常被忽略的 Mipmap 问题。</p>
+</blockquote>
+<h2 id="环境说明">环境说明<a class="headerlink" href="#环境说明" title="链接到此章节">&para;</a></h2>
+<ul>
+<li><strong>操作系统</strong>: Windows 10/11</li>
+<li><strong>编译器</strong>: MSVC (Visual Studio 2022)</li>
+<li><strong>图形库</strong>: Direct3D 11 + WIC（链接 <code>d3d11.lib</code>、<code>d3dcompiler.lib</code>、<code>windowscodecs.lib</code>、<code>ole32.lib</code>）</li>
+<li><strong>前置知识</strong>: 文章 37-38（D3D11 初始化 + 顶点缓冲）</li>
+</ul>
+<h2 id="修改顶点结构体添加纹理坐标">修改顶点结构体：添加纹理坐标<a class="headerlink" href="#修改顶点结构体添加纹理坐标" title="链接到此章节">&para;</a></h2>
+<p>要把纹理贴到三角形上，顶点数据需要增加 UV 坐标：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">position</span><span class="p">;</span><span class="w">  </span><span class="c1">// 位置</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">XMFLOAT2</span><span class="w"> </span><span class="n">texCoord</span><span class="p">;</span><span class="w">  </span><span class="c1">// 纹理坐标 (u, v)，范围 [0, 1]</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="p">};</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos=" 6 "></span></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="c1">// 全屏四边形的四个顶点（用 TriangleStrip）</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">Vertex</span><span class="w"> </span><span class="n">quadVertices</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="p">{</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><a href="#__codelineno-0-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">XMFLOAT3</span><span class="p">(</span><span class="mf">-1.0f</span><span class="p">,</span><span class="w">  </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">),</span><span class="w"> </span><span class="n">XMFLOAT2</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">)</span><span class="w"> </span><span class="p">},</span><span class="w">  </span><span class="c1">// 左上</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><a href="#__codelineno-0-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">XMFLOAT3</span><span class="p">(</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w">  </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">),</span><span class="w"> </span><span class="n">XMFLOAT2</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">)</span><span class="w"> </span><span class="p">},</span><span class="w">  </span><span class="c1">// 右上</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><a href="#__codelineno-0-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">XMFLOAT3</span><span class="p">(</span><span class="mf">-1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">),</span><span class="w"> </span><span class="n">XMFLOAT2</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">)</span><span class="w"> </span><span class="p">},</span><span class="w">  </span><span class="c1">// 左下</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><a href="#__codelineno-0-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">XMFLOAT3</span><span class="p">(</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">),</span><span class="w"> </span><span class="n">XMFLOAT2</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">)</span><span class="w"> </span><span class="p">},</span><span class="w">  </span><span class="c1">// 右下</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><a href="#__codelineno-0-14"><span class="linenos" data-linenos="14 "></span></a><span class="p">};</span>
+</span></code></pre></div>
+<p>UV 坐标 (0,0) 对应纹理的左上角，(1,1) 对应右下角。GPU 在光栅化时会自动对 UV 坐标做插值——三角形中间的像素拿到的 UV 值是三个顶点 UV 的加权平均，然后用这个 UV 值去纹理中采样，就得到了该像素的颜色。</p>
+<p>输入布局需要相应更新：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">D3D11_INPUT_ELEMENT_DESC</span><span class="w"> </span><span class="n">layout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;POSITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32B32_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos="4 "></span></a><span class="w">      </span><span class="n">D3D11_INPUT_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;TEXCOORD&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32_FLOAT</span><span class="p">,</span><span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos="6 "></span></a><span class="w">      </span><span class="n">D3D11_APPEND_ALIGNED_ELEMENT</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos="7 "></span></a><span class="w">      </span><span class="n">D3D11_INPUT_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><a href="#__codelineno-1-8"><span class="linenos" data-linenos="8 "></span></a><span class="p">};</span>
+</span></code></pre></div>
+<p>注意语义名称从 <code>"COLOR"</code> 改成了 <code>"TEXCOORD"</code>，数据格式从 <code>R32G32B32A32_FLOAT</code> 改成了 <code>R32G32_FLOAT</code>（两个 float 分量）。</p>
+<h2 id="用-wic-加载图片到-d3d11-纹理">用 WIC 加载图片到 D3D11 纹理<a class="headerlink" href="#用-wic-加载图片到-d3d11-纹理" title="链接到此章节">&para;</a></h2>
+<p>D3D11 没有内置的图片加载函数，但 Windows 提供了 WIC（Windows Imaging Component）——一套强大的图像编解码框架。下面是一个完整的"从文件加载 PNG/JPEG 并创建 D3D11 纹理 + SRV"的工具函数：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;wincodec.h&gt;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="cp">#pragma comment(lib, &quot;windowscodecs.lib&quot;)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="cp">#pragma comment(lib, &quot;ole32.lib&quot;)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos=" 4 "></span></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">HRESULT</span><span class="w"> </span><span class="nf">LoadTextureFromFile</span><span class="p">(</span><span class="n">ID3D11Device</span><span class="o">*</span><span class="w"> </span><span class="n">pDevice</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">WCHAR</span><span class="o">*</span><span class="w"> </span><span class="n">filePath</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="n">ID3D11Texture2D</span><span class="o">**</span><span class="w"> </span><span class="n">ppTexture</span><span class="p">,</span><span class="w"> </span><span class="n">ID3D11ShaderResourceView</span><span class="o">**</span><span class="w"> </span><span class="n">ppSRV</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">{</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><a href="#__codelineno-2-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="c1">// 初始化 WIC 工厂</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><a href="#__codelineno-2-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="n">IWICImagingFactory</span><span class="o">*</span><span class="w"> </span><span class="n">pFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><a href="#__codelineno-2-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="n">CoCreateInstance</span><span class="p">(</span><span class="n">CLSID_WICImagingFactory</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">CLSCTX_INPROC_SERVER</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><a href="#__codelineno-2-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">        </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pFactory</span><span class="p">));</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><a href="#__codelineno-2-12"><span class="linenos" data-linenos="12 "></span></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><a href="#__codelineno-2-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="c1">// 创建解码器</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><a href="#__codelineno-2-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">    </span><span class="n">IWICBitmapDecoder</span><span class="o">*</span><span class="w"> </span><span class="n">pDecoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a><a href="#__codelineno-2-15"><span class="linenos" data-linenos="15 "></span></a><span class="w">    </span><span class="n">HRESULT</span><span class="w"> </span><span class="n">hr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFactory</span><span class="o">-&gt;</span><span class="n">CreateDecoderFromFilename</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><a href="#__codelineno-2-16"><span class="linenos" data-linenos="16 "></span></a><span class="w">        </span><span class="n">GENERIC_READ</span><span class="p">,</span><span class="w"> </span><span class="n">WICDecodeMetadataCacheOnLoad</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pDecoder</span><span class="p">);</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a><a href="#__codelineno-2-17"><span class="linenos" data-linenos="17 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">hr</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">pFactory</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">hr</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18"></a><a href="#__codelineno-2-18"><span class="linenos" data-linenos="18 "></span></a>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19"></a><a href="#__codelineno-2-19"><span class="linenos" data-linenos="19 "></span></a><span class="w">    </span><span class="c1">// 获取第一帧</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20"></a><a href="#__codelineno-2-20"><span class="linenos" data-linenos="20 "></span></a><span class="w">    </span><span class="n">IWICBitmapFrameDecode</span><span class="o">*</span><span class="w"> </span><span class="n">pFrame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21"></a><a href="#__codelineno-2-21"><span class="linenos" data-linenos="21 "></span></a><span class="w">    </span><span class="n">pDecoder</span><span class="o">-&gt;</span><span class="n">GetFrame</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pFrame</span><span class="p">);</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22"></a><a href="#__codelineno-2-22"><span class="linenos" data-linenos="22 "></span></a>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23"></a><a href="#__codelineno-2-23"><span class="linenos" data-linenos="23 "></span></a><span class="w">    </span><span class="c1">// 获取图片尺寸</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24"></a><a href="#__codelineno-2-24"><span class="linenos" data-linenos="24 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">;</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25"></a><a href="#__codelineno-2-25"><span class="linenos" data-linenos="25 "></span></a><span class="w">    </span><span class="n">pFrame</span><span class="o">-&gt;</span><span class="n">GetSize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">height</span><span class="p">);</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26"></a><a href="#__codelineno-2-26"><span class="linenos" data-linenos="26 "></span></a>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27"></a><a href="#__codelineno-2-27"><span class="linenos" data-linenos="27 "></span></a><span class="w">    </span><span class="c1">// 转换像素格式为 32bpp BGRA（D3D11 最常用的格式）</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28"></a><a href="#__codelineno-2-28"><span class="linenos" data-linenos="28 "></span></a><span class="w">    </span><span class="n">IWICFormatConverter</span><span class="o">*</span><span class="w"> </span><span class="n">pConverter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29"></a><a href="#__codelineno-2-29"><span class="linenos" data-linenos="29 "></span></a><span class="w">    </span><span class="n">pFactory</span><span class="o">-&gt;</span><span class="n">CreateFormatConverter</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pConverter</span><span class="p">);</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30"></a><a href="#__codelineno-2-30"><span class="linenos" data-linenos="30 "></span></a><span class="w">    </span><span class="n">pConverter</span><span class="o">-&gt;</span><span class="n">Initialize</span><span class="p">(</span><span class="n">pFrame</span><span class="p">,</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31"></a><a href="#__codelineno-2-31"><span class="linenos" data-linenos="31 "></span></a><span class="w">        </span><span class="n">GUID_WICPixelFormat32bppBGRA</span><span class="p">,</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32"></a><a href="#__codelineno-2-32"><span class="linenos" data-linenos="32 "></span></a><span class="w">        </span><span class="n">WICBitmapDitherTypeNone</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33"></a><a href="#__codelineno-2-33"><span class="linenos" data-linenos="33 "></span></a><span class="w">        </span><span class="n">WICBitmapPaletteTypeCustom</span><span class="p">);</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34"></a><a href="#__codelineno-2-34"><span class="linenos" data-linenos="34 "></span></a>
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35"></a><a href="#__codelineno-2-35"><span class="linenos" data-linenos="35 "></span></a><span class="w">    </span><span class="c1">// 计算图像数据大小并分配内存</span>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36"></a><a href="#__codelineno-2-36"><span class="linenos" data-linenos="36 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">rowPitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">          </span><span class="c1">// 每行字节数（4 字节/像素）</span>
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37"></a><a href="#__codelineno-2-37"><span class="linenos" data-linenos="37 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">imageSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rowPitch</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">height</span><span class="p">;</span>
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38"></a><a href="#__codelineno-2-38"><span class="linenos" data-linenos="38 "></span></a><span class="w">    </span><span class="n">BYTE</span><span class="o">*</span><span class="w"> </span><span class="n">pPixels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BYTE</span><span class="p">[</span><span class="n">imageSize</span><span class="p">];</span>
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39"></a><a href="#__codelineno-2-39"><span class="linenos" data-linenos="39 "></span></a>
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40"></a><a href="#__codelineno-2-40"><span class="linenos" data-linenos="40 "></span></a><span class="w">    </span><span class="c1">// 拷贝像素数据</span>
+</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41"></a><a href="#__codelineno-2-41"><span class="linenos" data-linenos="41 "></span></a><span class="w">    </span><span class="n">pConverter</span><span class="o">-&gt;</span><span class="n">CopyPixels</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">rowPitch</span><span class="p">,</span><span class="w"> </span><span class="n">imageSize</span><span class="p">,</span><span class="w"> </span><span class="n">pPixels</span><span class="p">);</span>
+</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42"></a><a href="#__codelineno-2-42"><span class="linenos" data-linenos="42 "></span></a>
+</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43"></a><a href="#__codelineno-2-43"><span class="linenos" data-linenos="43 "></span></a><span class="w">    </span><span class="c1">// 创建 D3D11 纹理</span>
+</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44"></a><a href="#__codelineno-2-44"><span class="linenos" data-linenos="44 "></span></a><span class="w">    </span><span class="n">D3D11_TEXTURE2D_DESC</span><span class="w"> </span><span class="n">texDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45"></a><a href="#__codelineno-2-45"><span class="linenos" data-linenos="45 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">Width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="p">;</span>
+</span><span id="__span-2-46"><a id="__codelineno-2-46" name="__codelineno-2-46"></a><a href="#__codelineno-2-46"><span class="linenos" data-linenos="46 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">Height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">height</span><span class="p">;</span>
+</span><span id="__span-2-47"><a id="__codelineno-2-47" name="__codelineno-2-47"></a><a href="#__codelineno-2-47"><span class="linenos" data-linenos="47 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">MipLevels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                 </span><span class="c1">// 暂时不用 Mipmap</span>
+</span><span id="__span-2-48"><a id="__codelineno-2-48" name="__codelineno-2-48"></a><a href="#__codelineno-2-48"><span class="linenos" data-linenos="48 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">ArraySize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-2-49"><a id="__codelineno-2-49" name="__codelineno-2-49"></a><a href="#__codelineno-2-49"><span class="linenos" data-linenos="49 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">Format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_B8G8R8A8_UNORM</span><span class="p">;</span>
+</span><span id="__span-2-50"><a id="__codelineno-2-50" name="__codelineno-2-50"></a><a href="#__codelineno-2-50"><span class="linenos" data-linenos="50 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-2-51"><a id="__codelineno-2-51" name="__codelineno-2-51"></a><a href="#__codelineno-2-51"><span class="linenos" data-linenos="51 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">Usage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_USAGE_DEFAULT</span><span class="p">;</span><span class="w">    </span><span class="c1">// GPU 只读</span>
+</span><span id="__span-2-52"><a id="__codelineno-2-52" name="__codelineno-2-52"></a><a href="#__codelineno-2-52"><span class="linenos" data-linenos="52 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">BindFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_BIND_SHADER_RESOURCE</span><span class="p">;</span>
+</span><span id="__span-2-53"><a id="__codelineno-2-53" name="__codelineno-2-53"></a><a href="#__codelineno-2-53"><span class="linenos" data-linenos="53 "></span></a><span class="w">    </span><span class="n">texDesc</span><span class="p">.</span><span class="n">MiscFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-2-54"><a id="__codelineno-2-54" name="__codelineno-2-54"></a><a href="#__codelineno-2-54"><span class="linenos" data-linenos="54 "></span></a>
+</span><span id="__span-2-55"><a id="__codelineno-2-55" name="__codelineno-2-55"></a><a href="#__codelineno-2-55"><span class="linenos" data-linenos="55 "></span></a><span class="w">    </span><span class="n">D3D11_SUBRESOURCE_DATA</span><span class="w"> </span><span class="n">initData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-2-56"><a id="__codelineno-2-56" name="__codelineno-2-56"></a><a href="#__codelineno-2-56"><span class="linenos" data-linenos="56 "></span></a><span class="w">    </span><span class="n">initData</span><span class="p">.</span><span class="n">pSysMem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pPixels</span><span class="p">;</span>
+</span><span id="__span-2-57"><a id="__codelineno-2-57" name="__codelineno-2-57"></a><a href="#__codelineno-2-57"><span class="linenos" data-linenos="57 "></span></a><span class="w">    </span><span class="n">initData</span><span class="p">.</span><span class="n">SysMemPitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rowPitch</span><span class="p">;</span>
+</span><span id="__span-2-58"><a id="__codelineno-2-58" name="__codelineno-2-58"></a><a href="#__codelineno-2-58"><span class="linenos" data-linenos="58 "></span></a>
+</span><span id="__span-2-59"><a id="__codelineno-2-59" name="__codelineno-2-59"></a><a href="#__codelineno-2-59"><span class="linenos" data-linenos="59 "></span></a><span class="w">    </span><span class="n">hr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateTexture2D</span><span class="p">(</span><span class="o">&amp;</span><span class="n">texDesc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">initData</span><span class="p">,</span><span class="w"> </span><span class="n">ppTexture</span><span class="p">);</span>
+</span><span id="__span-2-60"><a id="__codelineno-2-60" name="__codelineno-2-60"></a><a href="#__codelineno-2-60"><span class="linenos" data-linenos="60 "></span></a>
+</span><span id="__span-2-61"><a id="__codelineno-2-61" name="__codelineno-2-61"></a><a href="#__codelineno-2-61"><span class="linenos" data-linenos="61 "></span></a><span class="w">    </span><span class="c1">// 创建着色器资源视图（SRV）</span>
+</span><span id="__span-2-62"><a id="__codelineno-2-62" name="__codelineno-2-62"></a><a href="#__codelineno-2-62"><span class="linenos" data-linenos="62 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">hr</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-63"><a id="__codelineno-2-63" name="__codelineno-2-63"></a><a href="#__codelineno-2-63"><span class="linenos" data-linenos="63 "></span></a><span class="w">        </span><span class="n">D3D11_SHADER_RESOURCE_VIEW_DESC</span><span class="w"> </span><span class="n">srvDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-2-64"><a id="__codelineno-2-64" name="__codelineno-2-64"></a><a href="#__codelineno-2-64"><span class="linenos" data-linenos="64 "></span></a><span class="w">        </span><span class="n">srvDesc</span><span class="p">.</span><span class="n">Format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_B8G8R8A8_UNORM</span><span class="p">;</span>
+</span><span id="__span-2-65"><a id="__codelineno-2-65" name="__codelineno-2-65"></a><a href="#__codelineno-2-65"><span class="linenos" data-linenos="65 "></span></a><span class="w">        </span><span class="n">srvDesc</span><span class="p">.</span><span class="n">ViewDimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_SRV_DIMENSION_TEXTURE2D</span><span class="p">;</span>
+</span><span id="__span-2-66"><a id="__codelineno-2-66" name="__codelineno-2-66"></a><a href="#__codelineno-2-66"><span class="linenos" data-linenos="66 "></span></a><span class="w">        </span><span class="n">srvDesc</span><span class="p">.</span><span class="n">Texture2D</span><span class="p">.</span><span class="n">MipLevels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-2-67"><a id="__codelineno-2-67" name="__codelineno-2-67"></a><a href="#__codelineno-2-67"><span class="linenos" data-linenos="67 "></span></a><span class="w">        </span><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateShaderResourceView</span><span class="p">(</span><span class="o">*</span><span class="n">ppTexture</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">srvDesc</span><span class="p">,</span><span class="w"> </span><span class="n">ppSRV</span><span class="p">);</span>
+</span><span id="__span-2-68"><a id="__codelineno-2-68" name="__codelineno-2-68"></a><a href="#__codelineno-2-68"><span class="linenos" data-linenos="68 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-69"><a id="__codelineno-2-69" name="__codelineno-2-69"></a><a href="#__codelineno-2-69"><span class="linenos" data-linenos="69 "></span></a>
+</span><span id="__span-2-70"><a id="__codelineno-2-70" name="__codelineno-2-70"></a><a href="#__codelineno-2-70"><span class="linenos" data-linenos="70 "></span></a><span class="w">    </span><span class="c1">// 清理</span>
+</span><span id="__span-2-71"><a id="__codelineno-2-71" name="__codelineno-2-71"></a><a href="#__codelineno-2-71"><span class="linenos" data-linenos="71 "></span></a><span class="w">    </span><span class="k">delete</span><span class="p">[]</span><span class="w"> </span><span class="n">pPixels</span><span class="p">;</span>
+</span><span id="__span-2-72"><a id="__codelineno-2-72" name="__codelineno-2-72"></a><a href="#__codelineno-2-72"><span class="linenos" data-linenos="72 "></span></a><span class="w">    </span><span class="n">pConverter</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+</span><span id="__span-2-73"><a id="__codelineno-2-73" name="__codelineno-2-73"></a><a href="#__codelineno-2-73"><span class="linenos" data-linenos="73 "></span></a><span class="w">    </span><span class="n">pFrame</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+</span><span id="__span-2-74"><a id="__codelineno-2-74" name="__codelineno-2-74"></a><a href="#__codelineno-2-74"><span class="linenos" data-linenos="74 "></span></a><span class="w">    </span><span class="n">pDecoder</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+</span><span id="__span-2-75"><a id="__codelineno-2-75" name="__codelineno-2-75"></a><a href="#__codelineno-2-75"><span class="linenos" data-linenos="75 "></span></a><span class="w">    </span><span class="n">pFactory</span><span class="o">-&gt;</span><span class="n">Release</span><span class="p">();</span>
+</span><span id="__span-2-76"><a id="__codelineno-2-76" name="__codelineno-2-76"></a><a href="#__codelineno-2-76"><span class="linenos" data-linenos="76 "></span></a>
+</span><span id="__span-2-77"><a id="__codelineno-2-77" name="__codelineno-2-77"></a><a href="#__codelineno-2-77"><span class="linenos" data-linenos="77 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hr</span><span class="p">;</span>
+</span><span id="__span-2-78"><a id="__codelineno-2-78" name="__codelineno-2-78"></a><a href="#__codelineno-2-78"><span class="linenos" data-linenos="78 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p>这个函数的流程是：用 WIC 打开图片文件 → 解码为 32 位 BGRA 像素 → 拷贝到内存数组 → 用这个数组作为初始数据创建 D3D11 纹理 → 创建 SRV。</p>
+<p>⚠️ 注意像素格式的对应关系。WIC 用 <code>GUID_WICPixelFormat32bppBGRA</code>，D3D11 用 <code>DXGI_FORMAT_B8G8R8A8_UNORM</code>——它们表达的是同一种像素布局（Blue-Green-Red-Alpha 各 8 位），只是命名约定不同。如果你从 JPEG 加载，WIC 解码出的原始格式可能是 24bpp RGB，这时 <code>FormatConverter</code> 会帮你转换为 32bpp BGRA。但如果你跳过了格式转换步骤直接用原始数据，D3D11 纹理的 <code>Format</code> 就要对应修改，否则画面颜色会错乱。</p>
+<h2 id="采样器状态sampler-state">采样器状态（Sampler State）<a class="headerlink" href="#采样器状态sampler-state" title="链接到此章节">&para;</a></h2>
+<p>GPU 从纹理中取颜色值的过程叫"采样"。采样器控制采样行为的方方面面：当 UV 超出 0-1 范围时怎么办？纹理被缩小时怎么过滤？被放大时怎么过滤？</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="n">ID3D11SamplerState</span><span class="o">*</span><span class="w"> </span><span class="n">g_pSampler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><a href="#__codelineno-3-2"><span class="linenos" data-linenos=" 2 "></span></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><a href="#__codelineno-3-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="kt">void</span><span class="w"> </span><span class="nf">CreateSampler</span><span class="p">(</span><span class="n">ID3D11Device</span><span class="o">*</span><span class="w"> </span><span class="n">pDevice</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><a href="#__codelineno-3-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="p">{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><a href="#__codelineno-3-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="n">D3D11_SAMPLER_DESC</span><span class="w"> </span><span class="n">sampDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><a href="#__codelineno-3-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="n">sampDesc</span><span class="p">.</span><span class="n">Filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_FILTER_MIN_MAG_MIP_LINEAR</span><span class="p">;</span><span class="w">   </span><span class="c1">// 三线性过滤</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><a href="#__codelineno-3-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="n">sampDesc</span><span class="p">.</span><span class="n">AddressU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_TEXTURE_ADDRESS_WRAP</span><span class="p">;</span><span class="w">      </span><span class="c1">// U 方向：重复</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><a href="#__codelineno-3-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="n">sampDesc</span><span class="p">.</span><span class="n">AddressV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_TEXTURE_ADDRESS_WRAP</span><span class="p">;</span><span class="w">      </span><span class="c1">// V 方向：重复</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><a href="#__codelineno-3-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="n">sampDesc</span><span class="p">.</span><span class="n">AddressW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_TEXTURE_ADDRESS_WRAP</span><span class="p">;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><a href="#__codelineno-3-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="n">sampDesc</span><span class="p">.</span><span class="n">ComparisonFunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_COMPARISON_NEVER</span><span class="p">;</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><a href="#__codelineno-3-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="n">sampDesc</span><span class="p">.</span><span class="n">MinLOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><a href="#__codelineno-3-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="n">sampDesc</span><span class="p">.</span><span class="n">MaxLOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_FLOAT32_MAX</span><span class="p">;</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><a href="#__codelineno-3-13"><span class="linenos" data-linenos="13 "></span></a>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><a href="#__codelineno-3-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">    </span><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateSamplerState</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sampDesc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">g_pSampler</span><span class="p">);</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><a href="#__codelineno-3-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="过滤模式">过滤模式<a class="headerlink" href="#过滤模式" title="链接到此章节">&para;</a></h3>
+<p><code>Filter</code> 字段控制 GPU 如何处理"一个像素对应纹理中多个纹素"或"多个像素对应一个纹素"的情况：</p>
+<p><code>D3D11_FILTER_MIN_MAG_MIP_POINT</code> 是最近点采样——直接取最近的纹素，速度快但画面会有马赛克感。<code>D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT</code> 是双线性过滤——对周围的 4 个纹素做加权平均，放大时效果明显改善。<code>D3D11_FILTER_MIN_MAG_MIP_LINEAR</code> 是三线性过滤——在双线性基础上对两个 Mipmap 层级再做插值，缩小时效果最佳。<code>D3D11_FILTER_ANISOTROPIC</code> 是各向异性过滤——对倾斜表面（如地面）的纹理质量最好，但性能开销也最大。</p>
+<h3 id="寻址模式">寻址模式<a class="headerlink" href="#寻址模式" title="链接到此章节">&para;</a></h3>
+<p><code>AddressU/V/W</code> 控制 UV 超出 [0,1] 范围时的行为：</p>
+<p><code>D3D11_TEXTURE_ADDRESS_WRAP</code> 是平铺重复——UV 值 1.5 等价于 0.5，适合地面砖块这类需要无缝重复的纹理。<code>D3D11_TEXTURE_ADDRESS_CLAMP</code> 是钳制到边缘——UV 超出 1 就用 1 的值，超出 0 就用 0 的值，适合单张不需要重复的图片。<code>D3D11_TEXTURE_ADDRESS_MIRROR</code> 是镜像重复——奇数倍区间做镜像翻转，接缝处更自然。<code>D3D11_TEXTURE_ADDRESS_BORDER</code> 是使用边框色——超出范围返回你指定的颜色。</p>
+<h2 id="mipmap不可忽视的细节">Mipmap：不可忽视的细节<a class="headerlink" href="#mipmap不可忽视的细节" title="链接到此章节">&para;</a></h2>
+<p>Mipmap 是纹理的"金字塔"——原始纹理是第 0 级，每升一级分辨率减半。GPU 在渲染远处的纹理时会自动选择更小的 Mipmap 级别，避免"摩尔纹"（Moiré Pattern）伪影。</p>
+<p>⚠️ 如果你创建纹理时 <code>MipLevels = 1</code>（只有一个层级），在纹理缩小到很小时会出现闪烁和锯齿状的纹理噪声。解决办法是用 <code>GenerateMips</code> 自动生成完整的 Mipmap 链：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 创建支持自动生成 Mipmap 的纹理</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">texDesc</span><span class="p">.</span><span class="n">MipLevels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="c1">// 0 = 自动计算完整 Mipmap 链</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">texDesc</span><span class="p">.</span><span class="n">MiscFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D11_RESOURCE_MISC_GENERATE_MIPS</span><span class="p">;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos="4 "></span></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos="5 "></span></a><span class="c1">// 创建纹理和 SRV 后...</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><a href="#__codelineno-4-6"><span class="linenos" data-linenos="6 "></span></a><span class="n">g_pContext</span><span class="o">-&gt;</span><span class="n">GenerateMips</span><span class="p">(</span><span class="n">g_pTextureSRV</span><span class="p">);</span><span class="w">  </span><span class="c1">// 自动生成所有 Mipmap 级别</span>
+</span></code></pre></div>
+<p><code>GenerateMips</code> 要求 SRV 是从一个能生成 Mipmap 的纹理创建的，而且纹理的 <code>BindFlags</code> 必须包含 <code>D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET</code>。</p>
+<h2 id="shader-代码">Shader 代码<a class="headerlink" href="#shader-代码" title="链接到此章节">&para;</a></h2>
+<p>配套的纹理采样 Shader 非常简洁：</p>
+<div class="language-hlsl highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="kt">Texture2D</span><span class="w">    </span><span class="n">g_Texture</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">t0</span><span class="p">);</span><span class="w">   </span><span class="c1">// 纹理寄存器 t0</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><a href="#__codelineno-5-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="kt">SamplerState</span><span class="w"> </span><span class="n">g_Sampler</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">s0</span><span class="p">);</span><span class="w">   </span><span class="c1">// 采样器寄存器 s0</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><a href="#__codelineno-5-3"><span class="linenos" data-linenos=" 3 "></span></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><a href="#__codelineno-5-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">struct</span><span class="w"> </span><span class="n">VSInput</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><a href="#__codelineno-5-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="kt">float3</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">POSITION</span><span class="p">;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><a href="#__codelineno-5-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="kt">float2</span><span class="w"> </span><span class="n">texCoord</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TEXCOORD0</span><span class="p">;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><a href="#__codelineno-5-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">};</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><a href="#__codelineno-5-8"><span class="linenos" data-linenos=" 8 "></span></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><a href="#__codelineno-5-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="k">struct</span><span class="w"> </span><span class="n">VSOutput</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><a href="#__codelineno-5-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_POSITION</span><span class="p">;</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><a href="#__codelineno-5-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="kt">float2</span><span class="w"> </span><span class="n">texCoord</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TEXCOORD0</span><span class="p">;</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><a href="#__codelineno-5-12"><span class="linenos" data-linenos="12 "></span></a><span class="p">};</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><a href="#__codelineno-5-13"><span class="linenos" data-linenos="13 "></span></a>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><a href="#__codelineno-5-14"><span class="linenos" data-linenos="14 "></span></a><span class="n">VSOutput</span><span class="w"> </span><span class="n">VS_Main</span><span class="p">(</span><span class="n">VSInput</span><span class="w"> </span><span class="n">input</span><span class="p">)</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><a href="#__codelineno-5-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">{</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><a href="#__codelineno-5-16"><span class="linenos" data-linenos="16 "></span></a><span class="w">    </span><span class="n">VSOutput</span><span class="w"> </span><span class="n">output</span><span class="p">;</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><a href="#__codelineno-5-17"><span class="linenos" data-linenos="17 "></span></a><span class="w">    </span><span class="n">output</span><span class="p">.</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">float4</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><a href="#__codelineno-5-18"><span class="linenos" data-linenos="18 "></span></a><span class="w">    </span><span class="n">output</span><span class="p">.</span><span class="n">texCoord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">texCoord</span><span class="p">;</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a><a href="#__codelineno-5-19"><span class="linenos" data-linenos="19 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">output</span><span class="p">;</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a><a href="#__codelineno-5-20"><span class="linenos" data-linenos="20 "></span></a><span class="p">}</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a><a href="#__codelineno-5-21"><span class="linenos" data-linenos="21 "></span></a>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><a href="#__codelineno-5-22"><span class="linenos" data-linenos="22 "></span></a><span class="kt">float4</span><span class="w"> </span><span class="n">PS_Main</span><span class="p">(</span><span class="n">VSOutput</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_TARGET</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><a href="#__codelineno-5-23"><span class="linenos" data-linenos="23 "></span></a><span class="p">{</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a><a href="#__codelineno-5-24"><span class="linenos" data-linenos="24 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">g_Texture</span><span class="p">.</span><span class="n">Sample</span><span class="p">(</span><span class="n">g_Sampler</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">texCoord</span><span class="p">);</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a><a href="#__codelineno-5-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>Texture2D::Sample</code> 是 HLSL 中最常用的纹理采样方法——它接受一个采样器状态和一个 UV 坐标，返回该位置的插值颜色。GPU 硬件会根据采样器的过滤模式自动选择合适的 Mipmap 级别和过滤方式。</p>
+<h2 id="常见问题与调试">常见问题与调试<a class="headerlink" href="#常见问题与调试" title="链接到此章节">&para;</a></h2>
+<h3 id="问题1纹理缩小出现摩尔纹">问题1：纹理缩小出现摩尔纹<a class="headerlink" href="#问题1纹理缩小出现摩尔纹" title="链接到此章节">&para;</a></h3>
+<p>你忘记生成 Mipmap 了。<code>MipLevels = 1</code> 的纹理在缩小时只有最近点采样可用，会产生闪烁的噪声伪影。添加 <code>GenerateMips</code> 调用或者离线预生成 Mipmap。</p>
+<h3 id="问题2颜色偏蓝或偏红">问题2：颜色偏蓝或偏红<a class="headerlink" href="#问题2颜色偏蓝或偏红" title="链接到此章节">&para;</a></h3>
+<p>WIC 解码出的像素格式和 D3D11 纹理格式不匹配。JPEG 解码后可能是 RGB 而非 BGRA，如果你不经过 <code>FormatConverter</code> 转换就直接创建 D3D11 纹理，红蓝通道会互换。始终用 <code>GUID_WICPixelFormat32bppBGRA</code> + <code>DXGI_FORMAT_B8G8R8A8_UNORM</code> 的组合。</p>
+<h3 id="问题3纹理完全不显示黑色">问题3：纹理完全不显示（黑色）<a class="headerlink" href="#问题3纹理完全不显示黑色" title="链接到此章节">&para;</a></h3>
+<p>检查你是否绑定了 SRV 和采样器：<code>PSSetShaderResources(0, 1, &amp;g_pTextureSRV)</code> 和 <code>PSSetSamplers(0, 1, &amp;g_pSampler)</code>。这两个调用缺一不可。</p>
+<h2 id="总结">总结<a class="headerlink" href="#总结" title="链接到此章节">&para;</a></h2>
+<p>纹理映射是从"几何体渲染"迈向"真实感图形"的关键一步。核心流程是：加载图片 → 创建 D3D11 纹理 → 创建 SRV → 创建采样器 → 在 PS 中采样。WIC 负责解码图片，D3D11 负责管理 GPU 端的纹理数据，采样器控制采样行为，Shader 负责把纹理颜色映射到像素上。</p>
+<p>下一步，我们要进入真正的 3D 世界了。目前为止我们画的都在二维平面上（z=0），但 D3D11 是一个 3D 图形 API。下一篇文章会讲解深度缓冲和 MVP 变换矩阵——前者让 GPU 知道哪个三角形在前面哪个在后面，后者让你的 3D 模型正确地投影到 2D 屏幕上。</p>
+<hr />
+<h2 id="练习">练习<a class="headerlink" href="#练习" title="链接到此章节">&para;</a></h2>
+<ol>
+<li>渲染一个带纹理的正方形，按键盘 &frac12;/3 切换 Point/Linear/Anisotropic 过滤模式，对比放大后的画质差异。</li>
+<li>将 <code>AddressU/V</code> 设为 <code>MIRROR</code>，用一张小纹理铺满整个屏幕，观察镜像平铺效果。</li>
+<li>修改 UV 坐标为超过 1.0 的值（如 3.0），配合 <code>WRAP</code> 和 <code>CLAMP</code> 模式分别测试，对比效果。</li>
+<li>故意不生成 Mipmap（<code>MipLevels = 1</code>），将纹理缩小到很小，观察摩尔纹现象，然后添加 <code>GenerateMips</code> 修复。</li>
+</ol>
+<hr />
+<p><strong>参考资料</strong>:
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createtexture2d">ID3D11Device::CreateTexture2D - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ns-d3d11-d3d11_sampler_desc">D3D11_SAMPLER_DESC structure - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/wic/-wic-about-windows-imaging-codec">WIC Imaging Component - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicecontext-generatemips">ID3D11DeviceContext::GenerateMips - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_filter">D3D11_FILTER enumeration - Microsoft Learn</a></p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年4月1日 17:39:57 CST">2026年4月1日 17:39:57</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="创建日期">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年4月1日 17:39:57 CST">2026年4月1日 17:39:57</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../38_ProgrammingGUI_Graphics_D3D11_VertexInput/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 通用GUI编程技术——图形渲染实战（三十八）——顶点缓冲与输入布局：GPU的第一个三角形">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                通用GUI编程技术——图形渲染实战（三十八）——顶点缓冲与输入布局：GPU的第一个三角形
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../3_ProgrammingGUI_WhatAboutDPI/" class="md-footer__link md-footer__link--next" aria-label="下一页: 编程GUI到底什么是DPI —— Windows和Qt双平台实战指南">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                编程GUI到底什么是DPI —— Windows和Qt双平台实战指南
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Charliechen - 保留所有权利
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Awesome-Embedded-Learning-Studio" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:725610365@qq.com" target="_blank" rel="noopener" title="发送邮件" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M536.4-26.3c9.8-3.5 20.6-1 28 6.3s9.8 18.2 6.3 28l-178 496.9c-5 13.9-18.1 23.1-32.8 23.1-14.2 0-27-8.6-32.3-21.7l-64.2-158c-4.5-11-2.5-23.6 5.2-32.6l94.5-112.4c5.1-6.1 4.7-15-.9-20.6s-14.6-6-20.6-.9l-112.4 94.3c-9.1 7.6-21.6 9.6-32.6 5.2L38.1 216.8c-13.1-5.3-21.7-18.1-21.7-32.3 0-14.7 9.2-27.8 23.1-32.8z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

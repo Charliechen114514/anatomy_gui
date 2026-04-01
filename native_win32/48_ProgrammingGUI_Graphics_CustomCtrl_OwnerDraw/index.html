@@ -1,0 +1,2875 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="anatomy_gui的现代GUI全栈教程">
+      
+      
+        <meta name="author" content="Charliechen">
+      
+      
+        <link rel="canonical" href="https://charliechen114514.github.io/anatomy_gui/native_win32/48_ProgrammingGUI_Graphics_CustomCtrl_OwnerDraw/">
+      
+      
+        <link rel="prev" href="../47_ProgrammingGUI_Graphics_D3D12_D3D11Interop/">
+      
+      
+        <link rel="next" href="../49_ProgrammingGUI_Graphics_CustomCtrl_FullCustom/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../Awesome-Embedded.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>通用GUI编程技术——图形渲染实战（四十八）——Owner-Draw控件：让标准控件焕然一新 - anatomy_gui的文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#通用gui编程技术图形渲染实战四十八owner-draw控件让标准控件焕然一新" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="anatomy_gui的文档" class="md-header__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            anatomy_gui的文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              通用GUI编程技术——图形渲染实战（四十八）——Owner-Draw控件：让标准控件焕然一新
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换至暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="切换至亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="anatomy_gui的文档" class="md-nav__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    anatomy_gui的文档
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GUI 通用编程教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bonus
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bonus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bonus/EnableThemeDialogTexture_TabControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（番外）——TabControl 的深色背景与 EnableThemeDialogTexture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native win32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Native win32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_ProgrammingGUI_Basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程指南——从0开始 Win32 编程实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_ProgrammingGUI_NativeWindows_ModelessDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（九）——非模态对话框详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_ProgrammingGUI_NativeWindows_DialogProc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十）——对话框过程与窗口过程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_ProgrammingGUI_NativeWindows_ResourceFiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十一）——资源文件完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_ProgrammingGUI_NativeWindows_MenuResource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十二）——菜单资源实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_ProgrammingGUI_NativeWindows_IconCursorBitmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十三）——图标、光标、位图资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_ProgrammingGUI_NativeWindows_StringTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十四）——字符串表与国际化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_ProgrammingGUI_NativeWindows_DialogTemplate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十五）——对话框模板深入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_5_ProgrammingGUI_NativeWindows_ToolbarStatusBar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十七）——工具栏与状态栏
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_ProgrammingGUI_NativeWindows_VSResourceEditor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十六）——Visual Studio 资源编辑器使用指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_ProgrammingGUI_NativeWindows_GDI_HDC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十八）——GDI 设备上下文（HDC）完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_ProgrammingGUI_NativeWindows_GDI_Objects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十九）——GDI 绘图对象：画笔、画刷、字体与区域
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_ProgrammingGUI_NativeWindows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Win32 原生编程实战——从 Hello World 到完整窗口程序
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_ProgrammingGUI_NativeWindows_GDI_Shapes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十）——GDI 图形绘制：线条、矩形与多边形完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_ProgrammingGUI_NativeWindows_GDI_Text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十一）——GDI 文字渲染：TextOut、DrawText 与文字度量
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_ProgrammingGUI_NativeWindows_GDI_Bitmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十二）——GDI 位图操作：BitBlt、StretchBlt 与图像处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23_ProgrammingGUI_NativeWindows_GDI_DoubleBuffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十三）——GDI 双缓冲技术：消除闪烁完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24_ProgrammingGUI_Graphics_GDI_Region/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十四）——GDI Region与裁切：不规则窗口与可视化控制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25_ProgrammingGUI_Graphics_GDI_AlphaBlend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十五）——Alpha混合与透明效果：分层窗口实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26_ProgrammingGUI_Graphics_GdiPlus_Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十六）——GDI+与GDI架构差异：抗锯齿与渐变
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27_ProgrammingGUI_Graphics_GdiPlus_Transform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十七）——坐标变换与矩阵：三级坐标系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28_ProgrammingGUI_Graphics_GdiPlus_ImageCodec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十八）——图像格式与编解码：PNG/JPEG全掌握
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29_ProgrammingGUI_Graphics_Direct2D_Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十九）——Direct2D架构与资源体系：GPU加速2D渲染入门
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_ProgrammingGUI_NativeWindows_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二）——从0开始搞定用户输入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30_ProgrammingGUI_Graphics_Direct2D_Geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十）——Direct2D几何体系统：从路径到命中测试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../31_ProgrammingGUI_Graphics_Direct2D_EffectsLayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十一）——Direct2D效果与图层：高斯模糊到毛玻璃
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../32_ProgrammingGUI_Graphics_DirectWrite_Typography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十二）——DirectWrite高质量文字排版：从基础到富文本
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../33_ProgrammingGUI_Graphics_Direct2D_GDIInterop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十三）——Direct2D与Win32/GDI互操作：渐进迁移实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../34_ProgrammingGUI_Graphics_HLSL_Basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十四）——HLSL语言基础：GPU编程的第一步
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../35_ProgrammingGUI_Graphics_HLSL_CompileDebug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十五）——HLSL编译与调试：从fxc到RenderDoc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../36_ProgrammingGUI_Graphics_HLSL_CBuffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十六）——Constant Buffer与数据传递：CPU-GPU通信通道
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../37_ProgrammingGUI_Graphics_D3D11_InitSwapChain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十七）——D3D11初始化与SwapChain：从零搭建GPU渲染框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../38_ProgrammingGUI_Graphics_D3D11_VertexInput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十八）——顶点缓冲与输入布局：GPU的第一个三角形
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../39_ProgrammingGUI_Graphics_D3D11_TextureSampler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十九）——纹理与采样器：从WIC加载到GPU渲染
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_ProgrammingGUI_WhatAboutDPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编程GUI到底什么是DPI —— Windows和Qt双平台实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../40_ProgrammingGUI_Graphics_D3D11_Depth3D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十）——深度缓冲与3D变换：从平面到立体
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../41_ProgrammingGUI_Graphics_D3D11_Lighting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十一）——光照模型基础：Phong光照与法线变换
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../42_ProgrammingGUI_Graphics_D3D11_BlendAlpha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十二）——混合与透明渲染：从Alpha混合到粒子系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../43_ProgrammingGUI_Graphics_D3D12_Philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十三）——D3D12设计哲学：显式控制与性能解锁
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../44_ProgrammingGUI_Graphics_D3D12_CmdQueue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十四）——D3D12命令列表、队列与围栏：GPU同步核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../45_ProgrammingGUI_Graphics_D3D12_ResourceHeap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十五）——D3D12资源与堆管理：从上传到驻留
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../46_ProgrammingGUI_Graphics_D3D12_DescRootSig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十六）——描述符堆与根签名：D3D12资源绑定模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../47_ProgrammingGUI_Graphics_D3D12_D3D11Interop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十七）——D3D12与D3D11互操作及选型建议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十八）——Owner-Draw控件：让标准控件焕然一新
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十八）——Owner-Draw控件：让标准控件焕然一新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#前言owner-draw-是什么" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前言：Owner-Draw 是什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#环境说明" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        环境说明
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#哪些控件支持-owner-draw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        哪些控件支持 Owner-Draw
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drawitemstruct-详解" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRAWITEMSTRUCT 详解
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第一步owner-draw-listbox-完整示例" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一步——Owner-Draw ListBox 完整示例
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="第一步——Owner-Draw ListBox 完整示例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#定义数据结构" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        定义数据结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#创建-listbox-并添加数据" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建 ListBox 并添加数据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#处理-wm_measureitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        处理 WM_MEASUREITEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#处理-wm_drawitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        处理 WM_DRAWITEM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#第二步owner-draw-combobox-示例" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二步——Owner-Draw ComboBox 示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-踩坑预警" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 踩坑预警
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="常见问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q-owner-draw-能不能用-direct2d-绘制" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q: Owner-Draw 能不能用 Direct2D 绘制？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q-wm_drawitem-和-wm_paint-有什么区别" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q: WM_DRAWITEM 和 WM_PAINT 有什么区别？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q-如何在-owner-draw-控件上实现悬停效果" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q: 如何在 Owner-Draw 控件上实现悬停效果？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#总结" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#练习" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../49_ProgrammingGUI_Graphics_CustomCtrl_FullCustom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十九）——完全自绘控件架构：状态机与动画
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_ProgrammingGUI_NativeWindows_Controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（三）——从按钮到列表框
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../50_ProgrammingGUI_Graphics_CustomCtrl_HitTest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十）——命中测试与鼠标事件路由：精确交互
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../51_ProgrammingGUI_Graphics_OpenGL_Win32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十一）——Win32嵌入OpenGL：从WGL到Core Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../52_ProgrammingGUI_Graphics_OpenGL_QtGLWidget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十二）——Qt QOpenGLWidget封装：跨平台GPU渲染
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_ProgrammingGUI_NativeWindows_WM_NOTIFY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（四）——WM_NOTIFY 消息机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_ProgrammingGUI_NativeWindows_ListView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（五）——ListView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_ProgrammingGUI_NativeWindows_TreeView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（六）——TreeView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_ProgrammingGUI_NativeWindows_MoreControls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（七）——更多高级控件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_ProgrammingGUI_NativeWindows_ModalDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（八）——模态对话框实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    GUI 通用编程教程
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../0_ProgrammingGUI_Basic/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Native win32
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="通用gui编程技术图形渲染实战四十八owner-draw控件让标准控件焕然一新">通用GUI编程技术——图形渲染实战（四十八）——Owner-Draw控件：让标准控件焕然一新<a class="headerlink" href="#通用gui编程技术图形渲染实战四十八owner-draw控件让标准控件焕然一新" title="链接到此章节">&para;</a></h1>
+<blockquote>
+<p>上一篇我们聊了 D3D12 与 D3D11 的互操作——通过 D3D11On12 桥接层在同一个渲染管线中混用两种 API。到此为止，我们的 GPU 加速渲染之旅已经覆盖了 GDI、GDI+、Direct2D、DirectWrite、D3D11、HLSL 和 D3D12，从软件光栅化一路走到了现代图形 API 的核心机制。</p>
+<p>现在我们把视线拉回到 Win32 控件的世界。Windows 提供了一套丰富的标准控件——Button、ListBox、ComboBox、Menu。它们开箱即用，外观由系统主题决定。但有时候你需要更多——比如一个 ListBox 的列表项显示图标和描述文字、一个 ComboBox 的下拉项显示颜色块、一个按钮用自定义渐变替代系统默认的平面填充。这就是 Owner-Draw 的用武之地。</p>
+</blockquote>
+<h2 id="前言owner-draw-是什么">前言：Owner-Draw 是什么<a class="headerlink" href="#前言owner-draw-是什么" title="链接到此章节">&para;</a></h2>
+<p>Owner-Draw 的核心理念很简单：控件的行为（消息处理、选中、焦点管理）仍然由系统负责，但外观绘制由你——控件的"所有者"（Owner，通常是父窗口）来接管。Windows 在需要绘制控件的时候，不再用默认的系统渲染逻辑，而是向父窗口发送一条 <code>WM_DRAWITEM</code> 消息，把绘制所需的全部信息打包在 <code>DRAWITEMSTRUCT</code> 结构体中交给你。你在消息处理函数中用 GDI 或其他图形 API 自行绘制控件的外观。</p>
+<p>这样做的好处是显而易见的：你不需要从头实现一个控件的完整行为（鼠标交互、键盘导航、无障碍接口），只需要关注"怎么画"这个层面。控件的数据管理、选中状态、焦点切换这些复杂逻辑仍然由系统维护，你的工作量大幅减少。</p>
+<h2 id="环境说明">环境说明<a class="headerlink" href="#环境说明" title="链接到此章节">&para;</a></h2>
+<ul>
+<li><strong>操作系统</strong>: Windows 10/11</li>
+<li><strong>编译器</strong>: MSVC (Visual Studio 2022)</li>
+<li><strong>图形API</strong>: GDI（本章使用 GDI 绘制，与系统控件绘制模型一致）</li>
+<li><strong>前置知识</strong>: 文章 4-8（标准控件使用），文章 18-21（GDI 基础）</li>
+</ul>
+<h2 id="哪些控件支持-owner-draw">哪些控件支持 Owner-Draw<a class="headerlink" href="#哪些控件支持-owner-draw" title="链接到此章节">&para;</a></h2>
+<p>并不是所有控件都支持 Owner-Draw。最常见的支持 Owner-Draw 的控件包括：</p>
+<ul>
+<li><strong>Button</strong>：设置 <code>BS_OWNERDRAW</code> 样式后，按钮的外观完全由你绘制。</li>
+<li><strong>ListBox</strong>：设置 <code>LBS_OWNERDRAWFIXED</code>（固定高度项）或 <code>LBS_OWNERDRAWVARIABLE</code>（可变高度项）样式后，每个列表项的外观由你绘制。</li>
+<li><strong>ComboBox</strong>：设置 <code>CBS_OWNERDRAWFIXED</code> 或 <code>CBS_OWNERDRAWVARIABLE</code> 样式，下拉列表项的外观由你绘制。</li>
+<li><strong>Menu</strong>：菜单项没有单独的样式标志，但可以通过 <code>SetMenuItemInfo</code> 设置 <code>MIIM_FTYPE</code> 中的 <code>MFT_OWNERDRAW</code> 标志来启用。</li>
+<li><strong>TabControl</strong>：设置 <code>TCS_OWNERDRAWFIXED</code> 样式，标签页的外观由你绘制。</li>
+</ul>
+<p>其中 ListBox 和 ComboBox 是最常用的 Owner-Draw 场景——系统默认的 ListBox 只能显示纯文本，但通过 Owner-Draw，你可以让每个列表项显示图标+文字+描述，甚至实现多列布局。</p>
+<h2 id="drawitemstruct-详解">DRAWITEMSTRUCT 详解<a class="headerlink" href="#drawitemstruct-详解" title="链接到此章节">&para;</a></h2>
+<p><code>DRAWITEMSTRUCT</code> 是 Owner-Draw 的核心数据结构。每当 Windows 需要绘制一个 Owner-Draw 控件的某个元素时，它会填充这个结构体并发送给父窗口。根据 <a href="https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-drawitemstruct">Microsoft Learn - DRAWITEMSTRUCT</a> 的文档，这个结构体的字段如下：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">tagDRAWITEMSTRUCT</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w">      </span><span class="n">CtlType</span><span class="p">;</span><span class="w">      </span><span class="c1">// 控件类型（ODT_LISTBOX, ODT_COMBOBOX 等）</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w">      </span><span class="n">CtlID</span><span class="p">;</span><span class="w">        </span><span class="c1">// 控件 ID</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w">      </span><span class="n">itemID</span><span class="p">;</span><span class="w">       </span><span class="c1">// 当前绘制的项索引（菜单为 0）</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w">      </span><span class="n">itemAction</span><span class="p">;</span><span class="w">   </span><span class="c1">// 绘制动作（ODA_DRAWENTIRE, ODA_SELECT, ODA_FOCUS）</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w">      </span><span class="n">itemState</span><span class="p">;</span><span class="w">    </span><span class="c1">// 项状态（ODS_SELECTED, ODS_FOCUS, ODS_DISABLED 等）</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="n">HWND</span><span class="w">      </span><span class="n">hwndItem</span><span class="p">;</span><span class="w">     </span><span class="c1">// 控件窗口句柄</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="n">HDC</span><span class="w">       </span><span class="n">hDC</span><span class="p">;</span><span class="w">          </span><span class="c1">// 用于绘制的设备上下文</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="n">RECT</span><span class="w">      </span><span class="n">rcItem</span><span class="p">;</span><span class="w">       </span><span class="c1">// 绘制区域的矩形</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><a href="#__codelineno-0-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="n">ULONG_PTR</span><span class="w"> </span><span class="n">itemData</span><span class="p">;</span><span class="w">     </span><span class="c1">// 项的关联数据（来自 ListBox/ComboBox 的 itemData）</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><a href="#__codelineno-0-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">}</span><span class="w"> </span><span class="n">DRAWITEMSTRUCT</span><span class="p">;</span>
+</span></code></pre></div>
+<p>我们来逐个理解关键字段。</p>
+<p><code>CtlType</code> 告诉你这个消息来自哪种类型的控件。常见值有 <code>ODT_LISTBOX</code>（列表框）、<code>ODT_COMBOBOX</code>（组合框）、<code>ODT_BUTTON</code>（按钮）和 <code>ODT_MENU</code>（菜单）。如果你有多个 Owner-Draw 控件，可以通过这个字段区分它们。</p>
+<p><code>itemID</code> 是当前需要绘制的项的索引。对于 ListBox 来说，这是列表项的序号（从 0 开始）。如果是空列表或者新项被添加时的特殊绘制，<code>itemID</code> 可能为 -1。</p>
+<p><code>itemAction</code> 描述了需要执行什么绘制动作。<code>ODA_DRAWENTIRE</code> 表示需要完整绘制整个项，<code>ODA_SELECT</code> 表示项的选中状态发生了变化需要更新显示，<code>ODA_FOCUS</code> 表示项的焦点状态发生了变化。在实际处理中，我们通常不管 <code>itemAction</code> 是什么，都完整绘制——因为判断"哪些部分需要更新"比"全部重绘"更复杂，而且现代 GDI 的性能完全扛得住。</p>
+<p><code>itemState</code> 是最重要的字段之一。它用位标志描述了项的当前状态：</p>
+<ul>
+<li><code>ODS_SELECTED</code>：项被选中（高亮显示）</li>
+<li><code>ODS_FOCUS</code>：项有输入焦点（通常显示虚线边框）</li>
+<li><code>ODS_DISABLED</code>：项被禁用</li>
+<li><code>ODS_CHECKED</code>：菜单项被勾选</li>
+<li><code>ODS_COMBOBOXEDIT</code>：ComboBox 的编辑框中的项</li>
+<li><code>ODS_DEFAULT</code>：默认按钮</li>
+</ul>
+<p>你可以通过位与操作检查这些状态：<code>if (dis-&gt;itemState &amp; ODS_SELECTED)</code> 表示项被选中。</p>
+<p><code>hDC</code> 是 Windows 为你准备好的设备上下文。你所有的 GDI 绘制操作都要用这个 DC——不要创建新的 DC，也不要用 <code>GetDC</code> 获取别的 DC。<code>rcItem</code> 是你需要绘制的矩形区域——超出这个区域的绘制会被裁剪，不会影响其他列表项。</p>
+<p><code>itemData</code> 是你在添加列表项时通过 <code>SetItemData</code> 关联的自定义数据。这是一个 <code>ULONG_PTR</code>（指针大小的整数），通常用来存储一个指向自定义数据结构的指针。</p>
+<h2 id="第一步owner-draw-listbox-完整示例">第一步——Owner-Draw ListBox 完整示例<a class="headerlink" href="#第一步owner-draw-listbox-完整示例" title="链接到此章节">&para;</a></h2>
+<p>现在我们来实现一个完整的 Owner-Draw ListBox 示例。每个列表项显示一个彩色方块和一段描述文字，选中项有高亮背景。</p>
+<h3 id="定义数据结构">定义数据结构<a class="headerlink" href="#定义数据结构" title="链接到此章节">&para;</a></h3>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 每个列表项的自定义数据</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="k">struct</span><span class="w"> </span><span class="nc">ListItemData</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">COLORREF</span><span class="w"> </span><span class="n">color</span><span class="p">;</span><span class="w">      </span><span class="c1">// 颜色方块的颜色</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="kt">wchar_t</span><span class="w">  </span><span class="n">name</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span><span class="w">   </span><span class="c1">// 名称</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="kt">wchar_t</span><span class="w">  </span><span class="n">desc</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span><span class="w">  </span><span class="c1">// 描述</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">};</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><a href="#__codelineno-1-8"><span class="linenos" data-linenos=" 8 "></span></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><a href="#__codelineno-1-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="c1">// 预设数据</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><a href="#__codelineno-1-10"><span class="linenos" data-linenos="10 "></span></a><span class="n">ListItemData</span><span class="w"> </span><span class="n">items</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><a href="#__codelineno-1-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">),</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;红色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;热情与活力&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><a href="#__codelineno-1-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">),</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;绿色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;自然与和平&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><a href="#__codelineno-1-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">),</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;蓝色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;冷静与信任&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><a href="#__codelineno-1-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">),</span><span class="w">  </span><span class="sa">L</span><span class="s">&quot;黄色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;温暖与乐观&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><a href="#__codelineno-1-15"><span class="linenos" data-linenos="15 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">),</span><span class="w">  </span><span class="sa">L</span><span class="s">&quot;紫色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;神秘与优雅&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><a href="#__codelineno-1-16"><span class="linenos" data-linenos="16 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">),</span><span class="w">  </span><span class="sa">L</span><span class="s">&quot;青色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;清新与创意&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><a href="#__codelineno-1-17"><span class="linenos" data-linenos="17 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span><span class="w"> </span><span class="mi">130</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">),</span><span class="w">  </span><span class="sa">L</span><span class="s">&quot;橙色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;活力与热情&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><a href="#__codelineno-1-18"><span class="linenos" data-linenos="18 "></span></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">,</span><span class="w"> </span><span class="mi">128</span><span class="p">),</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;灰色&quot;</span><span class="p">,</span><span class="w">   </span><span class="sa">L</span><span class="s">&quot;沉稳与内敛&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><a href="#__codelineno-1-19"><span class="linenos" data-linenos="19 "></span></a><span class="p">};</span>
+</span></code></pre></div>
+<h3 id="创建-listbox-并添加数据">创建 ListBox 并添加数据<a class="headerlink" href="#创建-listbox-并添加数据" title="链接到此章节">&para;</a></h3>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="cp">#define IDC_COLOR_LIST 1001</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos=" 2 "></span></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">HWND</span><span class="w"> </span><span class="nf">CreateColorListBox</span><span class="p">(</span><span class="n">HWND</span><span class="w"> </span><span class="n">hParent</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="p">{</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="c1">// 创建 Owner-Draw ListBox</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="c1">// 关键样式：LBS_OWNERDRAWFIXED</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="n">HWND</span><span class="w"> </span><span class="n">hList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateWindowExW</span><span class="p">(</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><a href="#__codelineno-2-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">        </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;LISTBOX&quot;</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><a href="#__codelineno-2-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">        </span><span class="n">WS_CHILD</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">WS_VISIBLE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">WS_BORDER</span><span class="w"> </span><span class="o">|</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><a href="#__codelineno-2-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">        </span><span class="n">LBS_OWNERDRAWFIXED</span><span class="w"> </span><span class="o">|</span><span class="w">    </span><span class="c1">// Owner-Draw 固定高度</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><a href="#__codelineno-2-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">        </span><span class="n">LBS_NOTIFY</span><span class="w"> </span><span class="o">|</span><span class="w">            </span><span class="c1">// 发送通知消息</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><a href="#__codelineno-2-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">        </span><span class="n">WS_VSCROLL</span><span class="p">,</span><span class="w">             </span><span class="c1">// 垂直滚动条</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><a href="#__codelineno-2-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">        </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><a href="#__codelineno-2-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">        </span><span class="n">hParent</span><span class="p">,</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a><a href="#__codelineno-2-15"><span class="linenos" data-linenos="15 "></span></a><span class="w">        </span><span class="p">(</span><span class="n">HMENU</span><span class="p">)</span><span class="n">IDC_COLOR_LIST</span><span class="p">,</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><a href="#__codelineno-2-16"><span class="linenos" data-linenos="16 "></span></a><span class="w">        </span><span class="p">(</span><span class="n">HINSTANCE</span><span class="p">)</span><span class="n">GetWindowLongPtr</span><span class="p">(</span><span class="n">hParent</span><span class="p">,</span><span class="w"> </span><span class="n">GWLP_HINSTANCE</span><span class="p">),</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a><a href="#__codelineno-2-17"><span class="linenos" data-linenos="17 "></span></a><span class="w">        </span><span class="nb">nullptr</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18"></a><a href="#__codelineno-2-18"><span class="linenos" data-linenos="18 "></span></a><span class="w">    </span><span class="p">);</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19"></a><a href="#__codelineno-2-19"><span class="linenos" data-linenos="19 "></span></a>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20"></a><a href="#__codelineno-2-20"><span class="linenos" data-linenos="20 "></span></a><span class="w">    </span><span class="c1">// 添加数据项</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21"></a><a href="#__codelineno-2-21"><span class="linenos" data-linenos="21 "></span></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">_countof</span><span class="p">(</span><span class="n">items</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22"></a><a href="#__codelineno-2-22"><span class="linenos" data-linenos="22 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23"></a><a href="#__codelineno-2-23"><span class="linenos" data-linenos="23 "></span></a><span class="w">        </span><span class="c1">// 添加字符串项（用于显示）</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24"></a><a href="#__codelineno-2-24"><span class="linenos" data-linenos="24 "></span></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">SendMessage</span><span class="p">(</span><span class="n">hList</span><span class="p">,</span><span class="w"> </span><span class="n">LB_ADDSTRING</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25"></a><a href="#__codelineno-2-25"><span class="linenos" data-linenos="25 "></span></a><span class="w">            </span><span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">name</span><span class="p">);</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26"></a><a href="#__codelineno-2-26"><span class="linenos" data-linenos="26 "></span></a>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27"></a><a href="#__codelineno-2-27"><span class="linenos" data-linenos="27 "></span></a><span class="w">        </span><span class="c1">// 关联自定义数据</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28"></a><a href="#__codelineno-2-28"><span class="linenos" data-linenos="28 "></span></a><span class="w">        </span><span class="n">SendMessage</span><span class="p">(</span><span class="n">hList</span><span class="p">,</span><span class="w"> </span><span class="n">LB_SETITEMDATA</span><span class="p">,</span><span class="w"> </span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">LPARAM</span><span class="p">)</span><span class="o">&amp;</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29"></a><a href="#__codelineno-2-29"><span class="linenos" data-linenos="29 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30"></a><a href="#__codelineno-2-30"><span class="linenos" data-linenos="30 "></span></a>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31"></a><a href="#__codelineno-2-31"><span class="linenos" data-linenos="31 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hList</span><span class="p">;</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32"></a><a href="#__codelineno-2-32"><span class="linenos" data-linenos="32 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>LBS_OWNERDRAWFIXED</code> 是启用 Owner-Draw 的关键样式。<code>FIXED</code> 意味着所有列表项的高度相同——你需要在父窗口的 <code>WM_MEASUREITEM</code> 消息中指定这个高度。<code>LBS_OWNERDRAWVARIABLE</code> 则允许每个列表项有不同的高度，适用于更复杂的场景。</p>
+<h3 id="处理-wm_measureitem">处理 WM_MEASUREITEM<a class="headerlink" href="#处理-wm_measureitem" title="链接到此章节">&para;</a></h3>
+<p>⚠️ 这是 Owner-Draw 初学者最容易踩的坑——忘记处理 <code>WM_MEASUREITEM</code>。如果你不处理这个消息，系统会使用默认的列表项高度（通常是一行文字的高度，大约 16 像素）。对于我们的场景，每个列表项需要显示颜色方块和两行文字，需要更大的高度。</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">case</span><span class="w"> </span><span class="no">WM_MEASUREITEM</span><span class="p">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><a href="#__codelineno-3-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><a href="#__codelineno-3-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="n">MEASUREITEMSTRUCT</span><span class="o">*</span><span class="w"> </span><span class="n">mis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">MEASUREITEMSTRUCT</span><span class="o">*</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><a href="#__codelineno-3-4"><span class="linenos" data-linenos=" 4 "></span></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><a href="#__codelineno-3-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mis</span><span class="o">-&gt;</span><span class="n">CtlType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ODT_LISTBOX</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mis</span><span class="o">-&gt;</span><span class="n">CtlID</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">IDC_COLOR_LIST</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><a href="#__codelineno-3-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><a href="#__codelineno-3-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">        </span><span class="n">mis</span><span class="o">-&gt;</span><span class="n">itemHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span><span class="w">  </span><span class="c1">// 每个列表项高度 50 像素</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><a href="#__codelineno-3-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><a href="#__codelineno-3-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><a href="#__codelineno-3-10"><span class="linenos" data-linenos="10 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>WM_MEASUREITEM</code> 在控件创建时发送一次。对于 <code>LBS_OWNERDRAWFIXED</code>，<code>itemHeight</code> 对所有列表项统一生效。如果你用了 <code>LBS_OWNERDRAWVARIABLE</code>，系统会为每个列表项分别发送 <code>WM_MEASUREITEM</code>，你可以根据 <code>itemID</code> 返回不同的高度。</p>
+<h3 id="处理-wm_drawitem">处理 WM_DRAWITEM<a class="headerlink" href="#处理-wm_drawitem" title="链接到此章节">&para;</a></h3>
+<p>核心绘制逻辑：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos="  1 "></span></a><span class="k">case</span><span class="w"> </span><span class="no">WM_DRAWITEM</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos="  2 "></span></a><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos="  3 "></span></a><span class="w">    </span><span class="n">DRAWITEMSTRUCT</span><span class="o">*</span><span class="w"> </span><span class="n">dis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">DRAWITEMSTRUCT</span><span class="o">*</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos="  4 "></span></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos="  5 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">CtlID</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">IDC_COLOR_LIST</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><a href="#__codelineno-4-6"><span class="linenos" data-linenos="  6 "></span></a><span class="w">        </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><a href="#__codelineno-4-7"><span class="linenos" data-linenos="  7 "></span></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><a href="#__codelineno-4-8"><span class="linenos" data-linenos="  8 "></span></a><span class="w">    </span><span class="c1">// 获取列表项的自定义数据</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><a href="#__codelineno-4-9"><span class="linenos" data-linenos="  9 "></span></a><span class="w">    </span><span class="n">ListItemData</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ListItemData</span><span class="o">*</span><span class="p">)</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemData</span><span class="p">;</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a><a href="#__codelineno-4-10"><span class="linenos" data-linenos=" 10 "></span></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a><a href="#__codelineno-4-11"><span class="linenos" data-linenos=" 11 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">data</span><span class="p">)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><a href="#__codelineno-4-12"><span class="linenos" data-linenos=" 12 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a><a href="#__codelineno-4-13"><span class="linenos" data-linenos=" 13 "></span></a><span class="w">        </span><span class="c1">// 空列表或无效项</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a><a href="#__codelineno-4-14"><span class="linenos" data-linenos=" 14 "></span></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a><a href="#__codelineno-4-15"><span class="linenos" data-linenos=" 15 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a><a href="#__codelineno-4-16"><span class="linenos" data-linenos=" 16 "></span></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a><a href="#__codelineno-4-17"><span class="linenos" data-linenos=" 17 "></span></a><span class="w">    </span><span class="c1">// 第一步：绘制背景</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a><a href="#__codelineno-4-18"><span class="linenos" data-linenos=" 18 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ODS_SELECTED</span><span class="p">)</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a><a href="#__codelineno-4-19"><span class="linenos" data-linenos=" 19 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a><a href="#__codelineno-4-20"><span class="linenos" data-linenos=" 20 "></span></a><span class="w">        </span><span class="c1">// 选中项：用系统高亮色填充</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a><a href="#__codelineno-4-21"><span class="linenos" data-linenos=" 21 "></span></a><span class="w">        </span><span class="n">FillRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">,</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a><a href="#__codelineno-4-22"><span class="linenos" data-linenos=" 22 "></span></a><span class="w">            </span><span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHT</span><span class="p">));</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a><a href="#__codelineno-4-23"><span class="linenos" data-linenos=" 23 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24"></a><a href="#__codelineno-4-24"><span class="linenos" data-linenos=" 24 "></span></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25"></a><a href="#__codelineno-4-25"><span class="linenos" data-linenos=" 25 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26"></a><a href="#__codelineno-4-26"><span class="linenos" data-linenos=" 26 "></span></a><span class="w">        </span><span class="c1">// 非选中项：用系统窗口背景色填充</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27"></a><a href="#__codelineno-4-27"><span class="linenos" data-linenos=" 27 "></span></a><span class="w">        </span><span class="n">FillRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">,</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28"></a><a href="#__codelineno-4-28"><span class="linenos" data-linenos=" 28 "></span></a><span class="w">            </span><span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_WINDOW</span><span class="p">));</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29"></a><a href="#__codelineno-4-29"><span class="linenos" data-linenos=" 29 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30"></a><a href="#__codelineno-4-30"><span class="linenos" data-linenos=" 30 "></span></a>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31"></a><a href="#__codelineno-4-31"><span class="linenos" data-linenos=" 31 "></span></a><span class="w">    </span><span class="c1">// 第二步：绘制颜色方块</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32"></a><a href="#__codelineno-4-32"><span class="linenos" data-linenos=" 32 "></span></a><span class="w">    </span><span class="n">RECT</span><span class="w"> </span><span class="n">colorRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">;</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33"></a><a href="#__codelineno-4-33"><span class="linenos" data-linenos=" 33 "></span></a><span class="w">    </span><span class="n">colorRect</span><span class="p">.</span><span class="n">left</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34"></a><a href="#__codelineno-4-34"><span class="linenos" data-linenos=" 34 "></span></a><span class="w">    </span><span class="n">colorRect</span><span class="p">.</span><span class="n">top</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35"></a><a href="#__codelineno-4-35"><span class="linenos" data-linenos=" 35 "></span></a><span class="w">    </span><span class="n">colorRect</span><span class="p">.</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colorRect</span><span class="p">.</span><span class="n">left</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">34</span><span class="p">;</span>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36"></a><a href="#__codelineno-4-36"><span class="linenos" data-linenos=" 36 "></span></a><span class="w">    </span><span class="n">colorRect</span><span class="p">.</span><span class="n">bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colorRect</span><span class="p">.</span><span class="n">top</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">34</span><span class="p">;</span>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37"></a><a href="#__codelineno-4-37"><span class="linenos" data-linenos=" 37 "></span></a>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38"></a><a href="#__codelineno-4-38"><span class="linenos" data-linenos=" 38 "></span></a><span class="w">    </span><span class="n">HBRUSH</span><span class="w"> </span><span class="n">hColorBrush</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateSolidBrush</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">);</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39"></a><a href="#__codelineno-4-39"><span class="linenos" data-linenos=" 39 "></span></a><span class="w">    </span><span class="n">FillRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">colorRect</span><span class="p">,</span><span class="w"> </span><span class="n">hColorBrush</span><span class="p">);</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40"></a><a href="#__codelineno-4-40"><span class="linenos" data-linenos=" 40 "></span></a><span class="w">    </span><span class="n">DeleteObject</span><span class="p">(</span><span class="n">hColorBrush</span><span class="p">);</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41"></a><a href="#__codelineno-4-41"><span class="linenos" data-linenos=" 41 "></span></a>
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42"></a><a href="#__codelineno-4-42"><span class="linenos" data-linenos=" 42 "></span></a><span class="w">    </span><span class="c1">// 绘制颜色方块的边框</span>
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43"></a><a href="#__codelineno-4-43"><span class="linenos" data-linenos=" 43 "></span></a><span class="w">    </span><span class="n">FrameRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">colorRect</span><span class="p">,</span>
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44"></a><a href="#__codelineno-4-44"><span class="linenos" data-linenos=" 44 "></span></a><span class="w">        </span><span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_WINDOWTEXT</span><span class="p">));</span>
+</span><span id="__span-4-45"><a id="__codelineno-4-45" name="__codelineno-4-45"></a><a href="#__codelineno-4-45"><span class="linenos" data-linenos=" 45 "></span></a>
+</span><span id="__span-4-46"><a id="__codelineno-4-46" name="__codelineno-4-46"></a><a href="#__codelineno-4-46"><span class="linenos" data-linenos=" 46 "></span></a><span class="w">    </span><span class="c1">// 第三步：绘制文字</span>
+</span><span id="__span-4-47"><a id="__codelineno-4-47" name="__codelineno-4-47"></a><a href="#__codelineno-4-47"><span class="linenos" data-linenos=" 47 "></span></a><span class="w">    </span><span class="c1">// 文字颜色根据选中状态切换</span>
+</span><span id="__span-4-48"><a id="__codelineno-4-48" name="__codelineno-4-48"></a><a href="#__codelineno-4-48"><span class="linenos" data-linenos=" 48 "></span></a><span class="w">    </span><span class="n">COLORREF</span><span class="w"> </span><span class="n">textColor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ODS_SELECTED</span><span class="p">)</span>
+</span><span id="__span-4-49"><a id="__codelineno-4-49" name="__codelineno-4-49"></a><a href="#__codelineno-4-49"><span class="linenos" data-linenos=" 49 "></span></a><span class="w">        </span><span class="o">?</span><span class="w"> </span><span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHTTEXT</span><span class="p">)</span>
+</span><span id="__span-4-50"><a id="__codelineno-4-50" name="__codelineno-4-50"></a><a href="#__codelineno-4-50"><span class="linenos" data-linenos=" 50 "></span></a><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOWTEXT</span><span class="p">);</span>
+</span><span id="__span-4-51"><a id="__codelineno-4-51" name="__codelineno-4-51"></a><a href="#__codelineno-4-51"><span class="linenos" data-linenos=" 51 "></span></a>
+</span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52"></a><a href="#__codelineno-4-52"><span class="linenos" data-linenos=" 52 "></span></a><span class="w">    </span><span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">textColor</span><span class="p">);</span>
+</span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53"></a><a href="#__codelineno-4-53"><span class="linenos" data-linenos=" 53 "></span></a><span class="w">    </span><span class="n">SetBkMode</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">TRANSPARENT</span><span class="p">);</span>
+</span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54"></a><a href="#__codelineno-4-54"><span class="linenos" data-linenos=" 54 "></span></a>
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55"></a><a href="#__codelineno-4-55"><span class="linenos" data-linenos=" 55 "></span></a><span class="w">    </span><span class="c1">// 名称（较大字体）</span>
+</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56"></a><a href="#__codelineno-4-56"><span class="linenos" data-linenos=" 56 "></span></a><span class="w">    </span><span class="n">HFONT</span><span class="w"> </span><span class="n">hNameFont</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateFontW</span><span class="p">(</span>
+</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57"></a><a href="#__codelineno-4-57"><span class="linenos" data-linenos=" 57 "></span></a><span class="w">        </span><span class="mi">18</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">FW_BOLD</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span>
+</span><span id="__span-4-58"><a id="__codelineno-4-58" name="__codelineno-4-58"></a><a href="#__codelineno-4-58"><span class="linenos" data-linenos=" 58 "></span></a><span class="w">        </span><span class="n">DEFAULT_CHARSET</span><span class="p">,</span><span class="w"> </span><span class="n">OUT_DEFAULT_PRECIS</span><span class="p">,</span>
+</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59"></a><a href="#__codelineno-4-59"><span class="linenos" data-linenos=" 59 "></span></a><span class="w">        </span><span class="n">CLIP_DEFAULT_PRECIS</span><span class="p">,</span><span class="w"> </span><span class="n">CLEARTYPE_QUALITY</span><span class="p">,</span>
+</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60"></a><a href="#__codelineno-4-60"><span class="linenos" data-linenos=" 60 "></span></a><span class="w">        </span><span class="n">DEFAULT_PITCH</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">FF_DONTCARE</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;Segoe UI&quot;</span><span class="p">);</span>
+</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61"></a><a href="#__codelineno-4-61"><span class="linenos" data-linenos=" 61 "></span></a>
+</span><span id="__span-4-62"><a id="__codelineno-4-62" name="__codelineno-4-62"></a><a href="#__codelineno-4-62"><span class="linenos" data-linenos=" 62 "></span></a><span class="w">    </span><span class="n">HFONT</span><span class="w"> </span><span class="n">hOldFont</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">HFONT</span><span class="p">)</span><span class="n">SelectObject</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">hNameFont</span><span class="p">);</span>
+</span><span id="__span-4-63"><a id="__codelineno-4-63" name="__codelineno-4-63"></a><a href="#__codelineno-4-63"><span class="linenos" data-linenos=" 63 "></span></a>
+</span><span id="__span-4-64"><a id="__codelineno-4-64" name="__codelineno-4-64"></a><a href="#__codelineno-4-64"><span class="linenos" data-linenos=" 64 "></span></a><span class="w">    </span><span class="n">RECT</span><span class="w"> </span><span class="n">textRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">;</span>
+</span><span id="__span-4-65"><a id="__codelineno-4-65" name="__codelineno-4-65"></a><a href="#__codelineno-4-65"><span class="linenos" data-linenos=" 65 "></span></a><span class="w">    </span><span class="n">textRect</span><span class="p">.</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colorRect</span><span class="p">.</span><span class="n">right</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span>
+</span><span id="__span-4-66"><a id="__codelineno-4-66" name="__codelineno-4-66"></a><a href="#__codelineno-4-66"><span class="linenos" data-linenos=" 66 "></span></a><span class="w">    </span><span class="n">textRect</span><span class="p">.</span><span class="n">top</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span>
+</span><span id="__span-4-67"><a id="__codelineno-4-67" name="__codelineno-4-67"></a><a href="#__codelineno-4-67"><span class="linenos" data-linenos=" 67 "></span></a>
+</span><span id="__span-4-68"><a id="__codelineno-4-68" name="__codelineno-4-68"></a><a href="#__codelineno-4-68"><span class="linenos" data-linenos=" 68 "></span></a><span class="w">    </span><span class="n">DrawText</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">textRect</span><span class="p">,</span>
+</span><span id="__span-4-69"><a id="__codelineno-4-69" name="__codelineno-4-69"></a><a href="#__codelineno-4-69"><span class="linenos" data-linenos=" 69 "></span></a><span class="w">        </span><span class="n">DT_LEFT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">DT_SINGLELINE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">DT_VCENTER</span><span class="p">);</span>
+</span><span id="__span-4-70"><a id="__codelineno-4-70" name="__codelineno-4-70"></a><a href="#__codelineno-4-70"><span class="linenos" data-linenos=" 70 "></span></a>
+</span><span id="__span-4-71"><a id="__codelineno-4-71" name="__codelineno-4-71"></a><a href="#__codelineno-4-71"><span class="linenos" data-linenos=" 71 "></span></a><span class="w">    </span><span class="c1">// 描述文字（较小字体）</span>
+</span><span id="__span-4-72"><a id="__codelineno-4-72" name="__codelineno-4-72"></a><a href="#__codelineno-4-72"><span class="linenos" data-linenos=" 72 "></span></a><span class="w">    </span><span class="n">HFONT</span><span class="w"> </span><span class="n">hDescFont</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateFontW</span><span class="p">(</span>
+</span><span id="__span-4-73"><a id="__codelineno-4-73" name="__codelineno-4-73"></a><a href="#__codelineno-4-73"><span class="linenos" data-linenos=" 73 "></span></a><span class="w">        </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">FW_NORMAL</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span>
+</span><span id="__span-4-74"><a id="__codelineno-4-74" name="__codelineno-4-74"></a><a href="#__codelineno-4-74"><span class="linenos" data-linenos=" 74 "></span></a><span class="w">        </span><span class="n">DEFAULT_CHARSET</span><span class="p">,</span><span class="w"> </span><span class="n">OUT_DEFAULT_PRECIS</span><span class="p">,</span>
+</span><span id="__span-4-75"><a id="__codelineno-4-75" name="__codelineno-4-75"></a><a href="#__codelineno-4-75"><span class="linenos" data-linenos=" 75 "></span></a><span class="w">        </span><span class="n">CLIP_DEFAULT_PRECIS</span><span class="p">,</span><span class="w"> </span><span class="n">CLEARTYPE_QUALITY</span><span class="p">,</span>
+</span><span id="__span-4-76"><a id="__codelineno-4-76" name="__codelineno-4-76"></a><a href="#__codelineno-4-76"><span class="linenos" data-linenos=" 76 "></span></a><span class="w">        </span><span class="n">DEFAULT_PITCH</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">FF_DONTCARE</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;Segoe UI&quot;</span><span class="p">);</span>
+</span><span id="__span-4-77"><a id="__codelineno-4-77" name="__codelineno-4-77"></a><a href="#__codelineno-4-77"><span class="linenos" data-linenos=" 77 "></span></a>
+</span><span id="__span-4-78"><a id="__codelineno-4-78" name="__codelineno-4-78"></a><a href="#__codelineno-4-78"><span class="linenos" data-linenos=" 78 "></span></a><span class="w">    </span><span class="n">SelectObject</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">hDescFont</span><span class="p">);</span>
+</span><span id="__span-4-79"><a id="__codelineno-4-79" name="__codelineno-4-79"></a><a href="#__codelineno-4-79"><span class="linenos" data-linenos=" 79 "></span></a>
+</span><span id="__span-4-80"><a id="__codelineno-4-80" name="__codelineno-4-80"></a><a href="#__codelineno-4-80"><span class="linenos" data-linenos=" 80 "></span></a><span class="w">    </span><span class="n">textRect</span><span class="p">.</span><span class="n">top</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">22</span><span class="p">;</span>
+</span><span id="__span-4-81"><a id="__codelineno-4-81" name="__codelineno-4-81"></a><a href="#__codelineno-4-81"><span class="linenos" data-linenos=" 81 "></span></a><span class="w">    </span><span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span>
+</span><span id="__span-4-82"><a id="__codelineno-4-82" name="__codelineno-4-82"></a><a href="#__codelineno-4-82"><span class="linenos" data-linenos=" 82 "></span></a><span class="w">        </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ODS_SELECTED</span><span class="p">)</span>
+</span><span id="__span-4-83"><a id="__codelineno-4-83" name="__codelineno-4-83"></a><a href="#__codelineno-4-83"><span class="linenos" data-linenos=" 83 "></span></a><span class="w">            </span><span class="o">?</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">220</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span>
+</span><span id="__span-4-84"><a id="__codelineno-4-84" name="__codelineno-4-84"></a><a href="#__codelineno-4-84"><span class="linenos" data-linenos=" 84 "></span></a><span class="w">            </span><span class="o">:</span><span class="w"> </span><span class="n">RGB</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">));</span>
+</span><span id="__span-4-85"><a id="__codelineno-4-85" name="__codelineno-4-85"></a><a href="#__codelineno-4-85"><span class="linenos" data-linenos=" 85 "></span></a>
+</span><span id="__span-4-86"><a id="__codelineno-4-86" name="__codelineno-4-86"></a><a href="#__codelineno-4-86"><span class="linenos" data-linenos=" 86 "></span></a><span class="w">    </span><span class="n">DrawText</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">desc</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">textRect</span><span class="p">,</span>
+</span><span id="__span-4-87"><a id="__codelineno-4-87" name="__codelineno-4-87"></a><a href="#__codelineno-4-87"><span class="linenos" data-linenos=" 87 "></span></a><span class="w">        </span><span class="n">DT_LEFT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">DT_SINGLELINE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">DT_VCENTER</span><span class="p">);</span>
+</span><span id="__span-4-88"><a id="__codelineno-4-88" name="__codelineno-4-88"></a><a href="#__codelineno-4-88"><span class="linenos" data-linenos=" 88 "></span></a>
+</span><span id="__span-4-89"><a id="__codelineno-4-89" name="__codelineno-4-89"></a><a href="#__codelineno-4-89"><span class="linenos" data-linenos=" 89 "></span></a><span class="w">    </span><span class="c1">// 清理字体</span>
+</span><span id="__span-4-90"><a id="__codelineno-4-90" name="__codelineno-4-90"></a><a href="#__codelineno-4-90"><span class="linenos" data-linenos=" 90 "></span></a><span class="w">    </span><span class="n">SelectObject</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">hOldFont</span><span class="p">);</span>
+</span><span id="__span-4-91"><a id="__codelineno-4-91" name="__codelineno-4-91"></a><a href="#__codelineno-4-91"><span class="linenos" data-linenos=" 91 "></span></a><span class="w">    </span><span class="n">DeleteObject</span><span class="p">(</span><span class="n">hNameFont</span><span class="p">);</span>
+</span><span id="__span-4-92"><a id="__codelineno-4-92" name="__codelineno-4-92"></a><a href="#__codelineno-4-92"><span class="linenos" data-linenos=" 92 "></span></a><span class="w">    </span><span class="n">DeleteObject</span><span class="p">(</span><span class="n">hDescFont</span><span class="p">);</span>
+</span><span id="__span-4-93"><a id="__codelineno-4-93" name="__codelineno-4-93"></a><a href="#__codelineno-4-93"><span class="linenos" data-linenos=" 93 "></span></a>
+</span><span id="__span-4-94"><a id="__codelineno-4-94" name="__codelineno-4-94"></a><a href="#__codelineno-4-94"><span class="linenos" data-linenos=" 94 "></span></a><span class="w">    </span><span class="c1">// 第四步：焦点指示器（虚线边框）</span>
+</span><span id="__span-4-95"><a id="__codelineno-4-95" name="__codelineno-4-95"></a><a href="#__codelineno-4-95"><span class="linenos" data-linenos=" 95 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ODS_FOCUS</span><span class="p">)</span>
+</span><span id="__span-4-96"><a id="__codelineno-4-96" name="__codelineno-4-96"></a><a href="#__codelineno-4-96"><span class="linenos" data-linenos=" 96 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-97"><a id="__codelineno-4-97" name="__codelineno-4-97"></a><a href="#__codelineno-4-97"><span class="linenos" data-linenos=" 97 "></span></a><span class="w">        </span><span class="n">DrawFocusRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">);</span>
+</span><span id="__span-4-98"><a id="__codelineno-4-98" name="__codelineno-4-98"></a><a href="#__codelineno-4-98"><span class="linenos" data-linenos=" 98 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-99"><a id="__codelineno-4-99" name="__codelineno-4-99"></a><a href="#__codelineno-4-99"><span class="linenos" data-linenos=" 99 "></span></a>
+</span><span id="__span-4-100"><a id="__codelineno-4-100" name="__codelineno-4-100"></a><a href="#__codelineno-4-100"><span class="linenos" data-linenos="100 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span>
+</span><span id="__span-4-101"><a id="__codelineno-4-101" name="__codelineno-4-101"></a><a href="#__codelineno-4-101"><span class="linenos" data-linenos="101 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p>我们来逐段理解这段绘制代码。</p>
+<p><strong>背景绘制</strong>是第一步——你必须先清除列表项的背景，否则会看到上一帧的残留内容。对于选中的项，用 <code>COLOR_HIGHLIGHT</code> 系统颜色（通常是深蓝色）填充；对于非选中的项，用 <code>COLOR_WINDOW</code> 系统颜色（通常是白色）填充。使用系统颜色而不是硬编码 RGB 值的好处是：你的控件会自动适应用户选择的主题和暗色模式。</p>
+<p><strong>颜色方块</strong>是一个简单的 <code>FillRect</code> + <code>FrameRect</code> 组合——先用 <code>CreateSolidBrush</code> 创建一个指定颜色的画刷填充矩形，然后用系统文字颜色画一个边框。记得 <code>DeleteObject</code> 释放画刷——GDI 对象泄漏是 Windows GUI 编程中非常常见的问题。</p>
+<p><strong>文字绘制</strong>分两行：名称用较大加粗的字体，描述用较小的灰色字体。<code>SetBkMode(TRANSPARENT)</code> 确保文字背景不会覆盖之前绘制的颜色方块。文字颜色根据选中状态切换——选中时用白色文字，非选中时用深色文字。</p>
+<p><strong>焦点指示器</strong>是 Windows 无障碍的标准要求。<code>DrawFocusRect</code> 会画一个虚线边框表示当前有焦点的列表项。这个函数使用 XOR 模式绘制——调用两次就能擦除之前的虚线框。它是 Windows 标准控件惯用的焦点提示方式。</p>
+<p>⚠️ 注意一个常见的遗漏：如果你只检查了 <code>ODS_SELECTED</code> 但忘了画焦点指示器（<code>ODS_FOCUS</code>），你的控件在只用键盘操作时会有问题——用户按 Tab 键切换焦点后，看不到哪个列表项有焦点。</p>
+<h2 id="第二步owner-draw-combobox-示例">第二步——Owner-Draw ComboBox 示例<a class="headerlink" href="#第二步owner-draw-combobox-示例" title="链接到此章节">&para;</a></h2>
+<p>ComboBox 的 Owner-Draw 和 ListBox 非常类似，但有一个额外的绘制区域——ComboBox 的编辑框部分（非下拉列表部分）也需要绘制。</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">case</span><span class="w"> </span><span class="no">WM_DRAWITEM</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><a href="#__codelineno-5-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><a href="#__codelineno-5-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="n">DRAWITEMSTRUCT</span><span class="o">*</span><span class="w"> </span><span class="n">dis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">DRAWITEMSTRUCT</span><span class="o">*</span><span class="p">)</span><span class="n">lParam</span><span class="p">;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><a href="#__codelineno-5-4"><span class="linenos" data-linenos=" 4 "></span></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><a href="#__codelineno-5-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">CtlID</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">IDC_COLOR_COMBO</span><span class="p">)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><a href="#__codelineno-5-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">        </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><a href="#__codelineno-5-7"><span class="linenos" data-linenos=" 7 "></span></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><a href="#__codelineno-5-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="n">ListItemData</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ListItemData</span><span class="o">*</span><span class="p">)</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemData</span><span class="p">;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><a href="#__codelineno-5-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><a href="#__codelineno-5-10"><span class="linenos" data-linenos="10 "></span></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><a href="#__codelineno-5-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="c1">// 检查是否是 ComboBox 编辑框区域</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><a href="#__codelineno-5-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">isEditArea</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ODS_COMBOBOXEDIT</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><a href="#__codelineno-5-13"><span class="linenos" data-linenos="13 "></span></a>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><a href="#__codelineno-5-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">    </span><span class="c1">// 绘制背景</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><a href="#__codelineno-5-15"><span class="linenos" data-linenos="15 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ODS_SELECTED</span><span class="p">)</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><a href="#__codelineno-5-16"><span class="linenos" data-linenos="16 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><a href="#__codelineno-5-17"><span class="linenos" data-linenos="17 "></span></a><span class="w">        </span><span class="n">FillRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">,</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><a href="#__codelineno-5-18"><span class="linenos" data-linenos="18 "></span></a><span class="w">            </span><span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHT</span><span class="p">));</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a><a href="#__codelineno-5-19"><span class="linenos" data-linenos="19 "></span></a><span class="w">        </span><span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_HIGHLIGHTTEXT</span><span class="p">));</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a><a href="#__codelineno-5-20"><span class="linenos" data-linenos="20 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a><a href="#__codelineno-5-21"><span class="linenos" data-linenos="21 "></span></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><a href="#__codelineno-5-22"><span class="linenos" data-linenos="22 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><a href="#__codelineno-5-23"><span class="linenos" data-linenos="23 "></span></a><span class="w">        </span><span class="n">FillRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">,</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a><a href="#__codelineno-5-24"><span class="linenos" data-linenos="24 "></span></a><span class="w">            </span><span class="n">GetSysColorBrush</span><span class="p">(</span><span class="n">COLOR_WINDOW</span><span class="p">));</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a><a href="#__codelineno-5-25"><span class="linenos" data-linenos="25 "></span></a><span class="w">        </span><span class="n">SetTextColor</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">GetSysColor</span><span class="p">(</span><span class="n">COLOR_WINDOWTEXT</span><span class="p">));</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26"></a><a href="#__codelineno-5-26"><span class="linenos" data-linenos="26 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27"></a><a href="#__codelineno-5-27"><span class="linenos" data-linenos="27 "></span></a>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28"></a><a href="#__codelineno-5-28"><span class="linenos" data-linenos="28 "></span></a><span class="w">    </span><span class="n">SetBkMode</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">TRANSPARENT</span><span class="p">);</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29"></a><a href="#__codelineno-5-29"><span class="linenos" data-linenos="29 "></span></a>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30"></a><a href="#__codelineno-5-30"><span class="linenos" data-linenos="30 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isEditArea</span><span class="p">)</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31"></a><a href="#__codelineno-5-31"><span class="linenos" data-linenos="31 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32"></a><a href="#__codelineno-5-32"><span class="linenos" data-linenos="32 "></span></a><span class="w">        </span><span class="c1">// 编辑框区域：只画颜色方块和名称</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33"></a><a href="#__codelineno-5-33"><span class="linenos" data-linenos="33 "></span></a><span class="w">        </span><span class="n">RECT</span><span class="w"> </span><span class="n">colorRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">;</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34"></a><a href="#__codelineno-5-34"><span class="linenos" data-linenos="34 "></span></a><span class="w">        </span><span class="n">colorRect</span><span class="p">.</span><span class="n">left</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35"></a><a href="#__codelineno-5-35"><span class="linenos" data-linenos="35 "></span></a><span class="w">        </span><span class="n">colorRect</span><span class="p">.</span><span class="n">top</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36"></a><a href="#__codelineno-5-36"><span class="linenos" data-linenos="36 "></span></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">bottom</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">.</span><span class="n">top</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37"></a><a href="#__codelineno-5-37"><span class="linenos" data-linenos="37 "></span></a><span class="w">        </span><span class="n">colorRect</span><span class="p">.</span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colorRect</span><span class="p">.</span><span class="n">left</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38"></a><a href="#__codelineno-5-38"><span class="linenos" data-linenos="38 "></span></a><span class="w">        </span><span class="n">colorRect</span><span class="p">.</span><span class="n">bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colorRect</span><span class="p">.</span><span class="n">top</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39"></a><a href="#__codelineno-5-39"><span class="linenos" data-linenos="39 "></span></a>
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40"></a><a href="#__codelineno-5-40"><span class="linenos" data-linenos="40 "></span></a><span class="w">        </span><span class="n">HBRUSH</span><span class="w"> </span><span class="n">hBrush</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateSolidBrush</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">);</span>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41"></a><a href="#__codelineno-5-41"><span class="linenos" data-linenos="41 "></span></a><span class="w">        </span><span class="n">FillRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">colorRect</span><span class="p">,</span><span class="w"> </span><span class="n">hBrush</span><span class="p">);</span>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42"></a><a href="#__codelineno-5-42"><span class="linenos" data-linenos="42 "></span></a><span class="w">        </span><span class="n">DeleteObject</span><span class="p">(</span><span class="n">hBrush</span><span class="p">);</span>
+</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43"></a><a href="#__codelineno-5-43"><span class="linenos" data-linenos="43 "></span></a>
+</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44"></a><a href="#__codelineno-5-44"><span class="linenos" data-linenos="44 "></span></a><span class="w">        </span><span class="n">RECT</span><span class="w"> </span><span class="n">textRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">;</span>
+</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45"></a><a href="#__codelineno-5-45"><span class="linenos" data-linenos="45 "></span></a><span class="w">        </span><span class="n">textRect</span><span class="p">.</span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colorRect</span><span class="p">.</span><span class="n">right</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+</span><span id="__span-5-46"><a id="__codelineno-5-46" name="__codelineno-5-46"></a><a href="#__codelineno-5-46"><span class="linenos" data-linenos="46 "></span></a><span class="w">        </span><span class="n">DrawText</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">textRect</span><span class="p">,</span>
+</span><span id="__span-5-47"><a id="__codelineno-5-47" name="__codelineno-5-47"></a><a href="#__codelineno-5-47"><span class="linenos" data-linenos="47 "></span></a><span class="w">            </span><span class="n">DT_LEFT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">DT_SINGLELINE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">DT_VCENTER</span><span class="p">);</span>
+</span><span id="__span-5-48"><a id="__codelineno-5-48" name="__codelineno-5-48"></a><a href="#__codelineno-5-48"><span class="linenos" data-linenos="48 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-49"><a id="__codelineno-5-49" name="__codelineno-5-49"></a><a href="#__codelineno-5-49"><span class="linenos" data-linenos="49 "></span></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-5-50"><a id="__codelineno-5-50" name="__codelineno-5-50"></a><a href="#__codelineno-5-50"><span class="linenos" data-linenos="50 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-51"><a id="__codelineno-5-51" name="__codelineno-5-51"></a><a href="#__codelineno-5-51"><span class="linenos" data-linenos="51 "></span></a><span class="w">        </span><span class="c1">// 下拉列表区域：画完整项（颜色方块 + 名称 + 描述）</span>
+</span><span id="__span-5-52"><a id="__codelineno-5-52" name="__codelineno-5-52"></a><a href="#__codelineno-5-52"><span class="linenos" data-linenos="52 "></span></a><span class="w">        </span><span class="c1">// ... 和 ListBox 的绘制逻辑相同 ...</span>
+</span><span id="__span-5-53"><a id="__codelineno-5-53" name="__codelineno-5-53"></a><a href="#__codelineno-5-53"><span class="linenos" data-linenos="53 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-54"><a id="__codelineno-5-54" name="__codelineno-5-54"></a><a href="#__codelineno-5-54"><span class="linenos" data-linenos="54 "></span></a>
+</span><span id="__span-5-55"><a id="__codelineno-5-55" name="__codelineno-5-55"></a><a href="#__codelineno-5-55"><span class="linenos" data-linenos="55 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">itemState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ODS_FOCUS</span><span class="p">)</span>
+</span><span id="__span-5-56"><a id="__codelineno-5-56" name="__codelineno-5-56"></a><a href="#__codelineno-5-56"><span class="linenos" data-linenos="56 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-57"><a id="__codelineno-5-57" name="__codelineno-5-57"></a><a href="#__codelineno-5-57"><span class="linenos" data-linenos="57 "></span></a><span class="w">        </span><span class="n">DrawFocusRect</span><span class="p">(</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">hDC</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dis</span><span class="o">-&gt;</span><span class="n">rcItem</span><span class="p">);</span>
+</span><span id="__span-5-58"><a id="__codelineno-5-58" name="__codelineno-5-58"></a><a href="#__codelineno-5-58"><span class="linenos" data-linenos="58 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-59"><a id="__codelineno-5-59" name="__codelineno-5-59"></a><a href="#__codelineno-5-59"><span class="linenos" data-linenos="59 "></span></a>
+</span><span id="__span-5-60"><a id="__codelineno-5-60" name="__codelineno-5-60"></a><a href="#__codelineno-5-60"><span class="linenos" data-linenos="60 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span>
+</span><span id="__span-5-61"><a id="__codelineno-5-61" name="__codelineno-5-61"></a><a href="#__codelineno-5-61"><span class="linenos" data-linenos="61 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>ODS_COMBOBOXEDIT</code> 标志帮助我们区分当前需要绘制的是 ComboBox 的编辑框区域还是下拉列表区域。编辑框区域通常空间有限，所以只画颜色方块和名称就够了；下拉列表区域空间更大，可以画完整的描述。</p>
+<h2 id="-踩坑预警">⚠️ 踩坑预警<a class="headerlink" href="#-踩坑预警" title="链接到此章节">&para;</a></h2>
+<p><strong>坑点一：未处理 WM_MEASUREITEM 导致列表项不可见</strong></p>
+<p>这是最经典的新手坑。<code>WM_MEASUREITEM</code> 在控件创建时发送，如果你当时还没有写好处理逻辑，或者消息被 <code>DefWindowProc</code> 默认处理了，列表项的高度就会是默认值。如果你之后在 <code>WM_DRAWITEM</code> 中绘制了超出默认高度的内容，超出部分会被裁剪——看起来就是"内容不完整"或者干脆"列表项是空的"。</p>
+<p>如果你发现列表项高度不正确，首先检查 <code>WM_MEASUREITEM</code> 是否被正确处理。你可以在处理函数中打个断点，确认 <code>mis-&gt;itemHeight</code> 被设置为了你期望的值。</p>
+<p><strong>坑点二：选中状态下忘记绘制高亮背景</strong></p>
+<p>如果你在 <code>WM_DRAWITEM</code> 中没有检查 <code>ODS_SELECTED</code> 状态来切换背景色和文字色，选中效果就完全不存在——用户点击列表项后什么反馈都没有。更糟糕的是，如果你把文字颜色硬编码为深色，选中项的背景还是系统默认的深蓝色，深色文字在深蓝背景上几乎看不见。</p>
+<p>确保你的绘制代码在 <code>ODS_SELECTED</code> 状态下切换背景色和文字色。</p>
+<p><strong>坑点三：GDI 对象泄漏</strong></p>
+<p><code>CreateSolidBrush</code>、<code>CreateFont</code>、<code>CreatePen</code> 这些 GDI 创建函数返回的对象必须在使用后通过 <code>DeleteObject</code> 释放。如果你在每次 <code>WM_DRAWITEM</code> 处理中都创建新字体但不释放，GDI 对象数量会持续增长，最终导致系统资源耗尽——症状是文字突然变成系统默认字体、颜色显示异常、甚至其他应用的窗口开始渲染错误。</p>
+<p>建议使用 RAII 封装或者在绘制函数末尾统一清理所有创建的 GDI 对象。</p>
+<p><strong>坑点四：设备上下文的状态未恢复</strong></p>
+<p><code>WM_DRAWITEM</code> 提供的 <code>hDC</code> 是系统共用的设备上下文——不是每次调用都给你一个新的。如果你在绘制过程中修改了字体、文字颜色、背景模式等 DC 状态但没有恢复，下一次绘制就会继承这些修改后的状态，导致渲染错误。养成习惯：在绘制函数开头保存旧状态，末尾恢复。</p>
+<h2 id="常见问题">常见问题<a class="headerlink" href="#常见问题" title="链接到此章节">&para;</a></h2>
+<h3 id="q-owner-draw-能不能用-direct2d-绘制">Q: Owner-Draw 能不能用 Direct2D 绘制？<a class="headerlink" href="#q-owner-draw-能不能用-direct2d-绘制" title="链接到此章节">&para;</a></h3>
+<p>可以。<code>DRAWITEMSTRUCT</code> 中的 <code>hDC</code> 是一个标准的 GDI 设备上下文。你可以通过 <code>CreateDCRenderTarget</code> 创建一个 D2D 的 DC 渲染目标，然后在这个渲染目标上用 D2D API 绘制。不过要注意性能——每次 <code>WM_DRAWITEM</code> 都创建渲染目标开销不小，建议缓存渲染目标对象。</p>
+<h3 id="q-wm_drawitem-和-wm_paint-有什么区别">Q: WM_DRAWITEM 和 WM_PAINT 有什么区别？<a class="headerlink" href="#q-wm_drawitem-和-wm_paint-有什么区别" title="链接到此章节">&para;</a></h3>
+<p><code>WM_PAINT</code> 是窗口级别的绘制消息，你需要自己计算需要绘制的内容。<code>WM_DRAWITEM</code> 是控件级别的，Windows 已经帮你确定了需要绘制的是哪个控件的哪个元素，并且准备好了正确的 DC 和裁剪区域。Owner-Draw 的绘制逻辑通常比 <code>WM_PAINT</code> 简单得多。</p>
+<h3 id="q-如何在-owner-draw-控件上实现悬停效果">Q: 如何在 Owner-Draw 控件上实现悬停效果？<a class="headerlink" href="#q-如何在-owner-draw-控件上实现悬停效果" title="链接到此章节">&para;</a></h3>
+<p>标准 Owner-Draw 没有内置的悬停（Hover）支持——<code>itemState</code> 中没有 <code>ODS_HOT</code> 这样的标志。如果你需要悬停效果，需要通过 <code>WM_MOUSEMOVE</code> 消息手动追踪鼠标位置，判断鼠标在哪个列表项上，然后用 <code>InvalidateRect</code> 触发该列表项的重绘。这在 ListBox 中可以通过 <code>LB_ITEMFROMPOINT</code> 消息来获取鼠标所在的列表项索引。</p>
+<h2 id="总结">总结<a class="headerlink" href="#总结" title="链接到此章节">&para;</a></h2>
+<p>这篇我们完整地拆解了 Owner-Draw 控件的工作机制。</p>
+<p>核心概念是 <code>WM_DRAWITEM</code> 和 <code>DRAWITEMSTRUCT</code>——Windows 在需要绘制 Owner-Draw 控件时，把绘制所需的全部信息（哪个控件、哪个列表项、什么状态、绘制区域、设备上下文）打包在 <code>DRAWITEMSTRUCT</code> 中发送给父窗口。你在消息处理函数中根据这些信息自行绘制控件的外观。</p>
+<p>我们实现了一个完整的 Owner-Draw ListBox 示例——每个列表项显示彩色方块和描述文字，选中项有系统风格的高亮效果，焦点指示器用虚线边框表示。关键技术包括 <code>LBS_OWNERDRAWFIXED</code> 样式的设置、<code>WM_MEASUREITEM</code> 中指定列表项高度、<code>WM_DRAWITEM</code> 中的分层绘制（背景→颜色方块→文字→焦点指示器），以及 GDI 对象的正确管理。</p>
+<p>Owner-Draw 让你在不重写控件行为的前提下获得完全的外观控制权。但如果你需要更进一步——不仅定制外观，还要定制交互行为（比如 Hover 动画、自定义的鼠标响应逻辑），那就需要跳出 Owner-Draw 的框架，构建完全自绘控件了。这是下一篇的主题。</p>
+<hr />
+<h2 id="练习">练习<a class="headerlink" href="#练习" title="链接到此章节">&para;</a></h2>
+<ol>
+<li>
+<p>实现 Owner-Draw ComboBox：创建一个下拉颜色选择器，每个下拉项显示颜色方块 + 颜色名称 + 颜色 HEX 值。选中某个颜色后，ComboBox 的编辑框区域显示对应的颜色方块。</p>
+</li>
+<li>
+<p>在 Owner-Draw ListBox 上实现悬停效果：追踪 <code>WM_MOUSEMOVE</code> 消息，判断鼠标在哪个列表项上，为悬停项绘制浅灰色背景（非选中状态下的悬停提示）。</p>
+</li>
+<li>
+<p>为 Owner-Draw ListBox 实现交替行背景色——奇数行白色背景，偶数行浅灰色背景（类似 Excel 的斑马条纹效果），提升大量列表项时的可读性。</p>
+</li>
+<li>
+<p>尝试在 Owner-Draw 的绘制中使用 Direct2D 替代 GDI：通过 <code>CreateDCRenderTarget</code> 从 <code>DRAWITEMSTRUCT</code> 的 <code>hDC</code> 创建 D2D 渲染目标，用 D2D API 绘制圆角矩形、渐变填充和高质量抗锯齿文字。对比 GDI 和 D2D 绘制的视觉差异。</p>
+</li>
+</ol>
+<hr />
+<p><strong>参考资料</strong>:
+- <a href="https://learn.microsoft.com/en-us/windows/win32/controls/wm-drawitem">WM_DRAWITEM message - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-drawitemstruct">DRAWITEMSTRUCT structure - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/controls/wm-measureitem">WM_MEASUREITEM message - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-measureitemstruct">MEASUREITEMSTRUCT structure - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/controls/owner-drawn-controls">Owner-Drawn Controls - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/controls/button-styles">Button Styles - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/controls/list-box-styles">ListBox Styles - Microsoft Learn</a></p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年4月1日 17:39:57 CST">2026年4月1日 17:39:57</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="创建日期">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年4月1日 17:39:57 CST">2026年4月1日 17:39:57</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../47_ProgrammingGUI_Graphics_D3D12_D3D11Interop/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 通用GUI编程技术——图形渲染实战（四十七）——D3D12与D3D11互操作及选型建议">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                通用GUI编程技术——图形渲染实战（四十七）——D3D12与D3D11互操作及选型建议
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../49_ProgrammingGUI_Graphics_CustomCtrl_FullCustom/" class="md-footer__link md-footer__link--next" aria-label="下一页: 通用GUI编程技术——图形渲染实战（四十九）——完全自绘控件架构：状态机与动画">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                通用GUI编程技术——图形渲染实战（四十九）——完全自绘控件架构：状态机与动画
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Charliechen - 保留所有权利
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Awesome-Embedded-Learning-Studio" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:725610365@qq.com" target="_blank" rel="noopener" title="发送邮件" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M536.4-26.3c9.8-3.5 20.6-1 28 6.3s9.8 18.2 6.3 28l-178 496.9c-5 13.9-18.1 23.1-32.8 23.1-14.2 0-27-8.6-32.3-21.7l-64.2-158c-4.5-11-2.5-23.6 5.2-32.6l94.5-112.4c5.1-6.1 4.7-15-.9-20.6s-14.6-6-20.6-.9l-112.4 94.3c-9.1 7.6-21.6 9.6-32.6 5.2L38.1 216.8c-13.1-5.3-21.7-18.1-21.7-32.3 0-14.7 9.2-27.8 23.1-32.8z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

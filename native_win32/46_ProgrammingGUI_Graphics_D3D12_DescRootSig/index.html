@@ -1,0 +1,3113 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="anatomy_gui的现代GUI全栈教程">
+      
+      
+        <meta name="author" content="Charliechen">
+      
+      
+        <link rel="canonical" href="https://charliechen114514.github.io/anatomy_gui/native_win32/46_ProgrammingGUI_Graphics_D3D12_DescRootSig/">
+      
+      
+        <link rel="prev" href="../45_ProgrammingGUI_Graphics_D3D12_ResourceHeap/">
+      
+      
+        <link rel="next" href="../47_ProgrammingGUI_Graphics_D3D12_D3D11Interop/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../Awesome-Embedded.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>通用GUI编程技术——图形渲染实战（四十六）——描述符堆与根签名：D3D12资源绑定模型 - anatomy_gui的文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#通用gui编程技术图形渲染实战四十六描述符堆与根签名d3d12资源绑定模型" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="anatomy_gui的文档" class="md-header__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            anatomy_gui的文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              通用GUI编程技术——图形渲染实战（四十六）——描述符堆与根签名：D3D12资源绑定模型
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换至暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="切换至亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="anatomy_gui的文档" class="md-nav__button md-logo" aria-label="anatomy_gui的文档" data-md-component="logo">
+      
+  <img src="../../Awesome-Embedded.png" alt="logo">
+
+    </a>
+    anatomy_gui的文档
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GUI 通用编程教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bonus
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bonus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bonus/EnableThemeDialogTexture_TabControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（番外）——TabControl 的深色背景与 EnableThemeDialogTexture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Native win32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Native win32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_ProgrammingGUI_Basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程指南——从0开始 Win32 编程实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_ProgrammingGUI_NativeWindows_ModelessDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（九）——非模态对话框详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_ProgrammingGUI_NativeWindows_DialogProc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十）——对话框过程与窗口过程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_ProgrammingGUI_NativeWindows_ResourceFiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十一）——资源文件完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_ProgrammingGUI_NativeWindows_MenuResource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十二）——菜单资源实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_ProgrammingGUI_NativeWindows_IconCursorBitmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十三）——图标、光标、位图资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_ProgrammingGUI_NativeWindows_StringTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十四）——字符串表与国际化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_ProgrammingGUI_NativeWindows_DialogTemplate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十五）——对话框模板深入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_5_ProgrammingGUI_NativeWindows_ToolbarStatusBar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十七）——工具栏与状态栏
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_ProgrammingGUI_NativeWindows_VSResourceEditor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十六）——Visual Studio 资源编辑器使用指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_ProgrammingGUI_NativeWindows_GDI_HDC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十八）——GDI 设备上下文（HDC）完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_ProgrammingGUI_NativeWindows_GDI_Objects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（十九）——GDI 绘图对象：画笔、画刷、字体与区域
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_ProgrammingGUI_NativeWindows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Win32 原生编程实战——从 Hello World 到完整窗口程序
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_ProgrammingGUI_NativeWindows_GDI_Shapes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十）——GDI 图形绘制：线条、矩形与多边形完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_ProgrammingGUI_NativeWindows_GDI_Text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十一）——GDI 文字渲染：TextOut、DrawText 与文字度量
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_ProgrammingGUI_NativeWindows_GDI_Bitmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十二）——GDI 位图操作：BitBlt、StretchBlt 与图像处理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23_ProgrammingGUI_NativeWindows_GDI_DoubleBuffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二十三）——GDI 双缓冲技术：消除闪烁完全指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24_ProgrammingGUI_Graphics_GDI_Region/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十四）——GDI Region与裁切：不规则窗口与可视化控制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25_ProgrammingGUI_Graphics_GDI_AlphaBlend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十五）——Alpha混合与透明效果：分层窗口实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26_ProgrammingGUI_Graphics_GdiPlus_Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十六）——GDI+与GDI架构差异：抗锯齿与渐变
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27_ProgrammingGUI_Graphics_GdiPlus_Transform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十七）——坐标变换与矩阵：三级坐标系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28_ProgrammingGUI_Graphics_GdiPlus_ImageCodec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十八）——图像格式与编解码：PNG/JPEG全掌握
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29_ProgrammingGUI_Graphics_Direct2D_Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（二十九）——Direct2D架构与资源体系：GPU加速2D渲染入门
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_ProgrammingGUI_NativeWindows_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（二）——从0开始搞定用户输入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30_ProgrammingGUI_Graphics_Direct2D_Geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十）——Direct2D几何体系统：从路径到命中测试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../31_ProgrammingGUI_Graphics_Direct2D_EffectsLayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十一）——Direct2D效果与图层：高斯模糊到毛玻璃
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../32_ProgrammingGUI_Graphics_DirectWrite_Typography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十二）——DirectWrite高质量文字排版：从基础到富文本
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../33_ProgrammingGUI_Graphics_Direct2D_GDIInterop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十三）——Direct2D与Win32/GDI互操作：渐进迁移实战
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../34_ProgrammingGUI_Graphics_HLSL_Basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十四）——HLSL语言基础：GPU编程的第一步
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../35_ProgrammingGUI_Graphics_HLSL_CompileDebug/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十五）——HLSL编译与调试：从fxc到RenderDoc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../36_ProgrammingGUI_Graphics_HLSL_CBuffer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十六）——Constant Buffer与数据传递：CPU-GPU通信通道
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../37_ProgrammingGUI_Graphics_D3D11_InitSwapChain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十七）——D3D11初始化与SwapChain：从零搭建GPU渲染框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../38_ProgrammingGUI_Graphics_D3D11_VertexInput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十八）——顶点缓冲与输入布局：GPU的第一个三角形
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../39_ProgrammingGUI_Graphics_D3D11_TextureSampler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（三十九）——纹理与采样器：从WIC加载到GPU渲染
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_ProgrammingGUI_WhatAboutDPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    编程GUI到底什么是DPI —— Windows和Qt双平台实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../40_ProgrammingGUI_Graphics_D3D11_Depth3D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十）——深度缓冲与3D变换：从平面到立体
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../41_ProgrammingGUI_Graphics_D3D11_Lighting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十一）——光照模型基础：Phong光照与法线变换
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../42_ProgrammingGUI_Graphics_D3D11_BlendAlpha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十二）——混合与透明渲染：从Alpha混合到粒子系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../43_ProgrammingGUI_Graphics_D3D12_Philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十三）——D3D12设计哲学：显式控制与性能解锁
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../44_ProgrammingGUI_Graphics_D3D12_CmdQueue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十四）——D3D12命令列表、队列与围栏：GPU同步核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../45_ProgrammingGUI_Graphics_D3D12_ResourceHeap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十五）——D3D12资源与堆管理：从上传到驻留
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十六）——描述符堆与根签名：D3D12资源绑定模型
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十六）——描述符堆与根签名：D3D12资源绑定模型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#环境说明" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        环境说明
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#从d3d11到d3d12资源绑定的范式转变" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从D3D11到D3D12：资源绑定的范式转变
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#描述符堆gpu可见的资源描述数组" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        描述符堆：GPU可见的资源描述数组
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="描述符堆：GPU可见的资源描述数组">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#描述符堆的类型" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        描述符堆的类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shader可见与非shader可见" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shader可见与非Shader可见
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#创建描述符堆" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建描述符堆
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#描述符句柄与偏移" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        描述符句柄与偏移
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#在堆中创建描述符" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        在堆中创建描述符
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#根签名定义shader资源布局" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        根签名：定义Shader资源布局
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="根签名：定义Shader资源布局">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#根签名的三种参数类型" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        根签名的三种参数类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#根签名的空间限制" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        根签名的空间限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#构建根签名描述结构" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        构建根签名描述结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#序列化与创建根签名" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        序列化与创建根签名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hlsl中嵌入根签名" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HLSL中嵌入根签名
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#在命令列表中绑定资源" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        在命令列表中绑定资源
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="在命令列表中绑定资源">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#设置根签名" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设置根签名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#设置描述符堆" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设置描述符堆
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#设置根描述符表" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设置根描述符表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#完整的渲染命令序列" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整的渲染命令序列
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#根签名版本10-vs-11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        根签名版本1.0 vs 1.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#多帧渲染的描述符管理" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多帧渲染的描述符管理
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-踩坑预警" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ 踩坑预警
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚠️ 踩坑预警">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#坑1描述符表范围越界" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        坑1：描述符表范围越界
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#坑2忘记setdescriptorheaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        坑2：忘记SetDescriptorHeaps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#坑3根签名和pipeline-state不匹配" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        坑3：根签名和Pipeline State不匹配
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#坑4cbv大小对齐" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        坑4：CBV大小对齐
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#总结" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#练习" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../47_ProgrammingGUI_Graphics_D3D12_D3D11Interop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十七）——D3D12与D3D11互操作及选型建议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../48_ProgrammingGUI_Graphics_CustomCtrl_OwnerDraw/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十八）——Owner-Draw控件：让标准控件焕然一新
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../49_ProgrammingGUI_Graphics_CustomCtrl_FullCustom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（四十九）——完全自绘控件架构：状态机与动画
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_ProgrammingGUI_NativeWindows_Controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（三）——从按钮到列表框
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../50_ProgrammingGUI_Graphics_CustomCtrl_HitTest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十）——命中测试与鼠标事件路由：精确交互
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../51_ProgrammingGUI_Graphics_OpenGL_Win32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十一）——Win32嵌入OpenGL：从WGL到Core Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../52_ProgrammingGUI_Graphics_OpenGL_QtGLWidget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——图形渲染实战（五十二）——Qt QOpenGLWidget封装：跨平台GPU渲染
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_ProgrammingGUI_NativeWindows_WM_NOTIFY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（四）——WM_NOTIFY 消息机制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_ProgrammingGUI_NativeWindows_ListView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（五）——ListView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_ProgrammingGUI_NativeWindows_TreeView/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（六）——TreeView 控件详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_ProgrammingGUI_NativeWindows_MoreControls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（七）——更多高级控件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_ProgrammingGUI_NativeWindows_ModalDialog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用GUI编程技术——Win32 原生编程实战（八）——模态对话框实战指南
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    GUI 通用编程教程
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../0_ProgrammingGUI_Basic/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Native win32
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="通用gui编程技术图形渲染实战四十六描述符堆与根签名d3d12资源绑定模型">通用GUI编程技术——图形渲染实战（四十六）——描述符堆与根签名：D3D12资源绑定模型<a class="headerlink" href="#通用gui编程技术图形渲染实战四十六描述符堆与根签名d3d12资源绑定模型" title="链接到此章节">&para;</a></h1>
+<blockquote>
+<p>在上一篇文章中，我们聊了D3D12的资源堆管理——如何创建Committed Resource、如何管理上传堆和默认堆、以及资源屏障的使用。但光把资源放进GPU可见的内存还不够，Shader需要知道去哪里找这些资源。D3D12不像D3D11那样帮你自动绑定资源到Shader寄存器，它把这个责任完全交给了开发者。这一篇我们就来拆解D3D12的资源绑定模型：描述符堆（Descriptor Heap）和根签名（Root Signature）。</p>
+</blockquote>
+<h2 id="环境说明">环境说明<a class="headerlink" href="#环境说明" title="链接到此章节">&para;</a></h2>
+<p>在开始之前，先说明一下我们写这篇文章时的开发和测试环境：</p>
+<ul>
+<li><strong>操作系统</strong>: Windows 11 Pro 10.0.26200</li>
+<li><strong>编译器</strong>: MSVC (Visual Studio 2022, v17.9+)</li>
+<li><strong>Windows SDK</strong>: 10.0.22621.0 或更高</li>
+<li><strong>图形API</strong>: Direct3D 12</li>
+<li><strong>调试层</strong>: 启用D3D12 Debug Layer（开发阶段强烈建议开启）</li>
+<li><strong>测试GPU</strong>: 支持Feature Level 12_0的独立显卡（NVIDIA/AMD均可）</li>
+</ul>
+<p>⚠️ 注意，D3D12的调试层在开发阶段非常关键。如果你还没在代码里启用它，建议加上：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 启用D3D12调试层（仅Debug模式）</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="cp">#if defined(_DEBUG)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Debug</span><span class="o">&gt;</span><span class="w"> </span><span class="n">debugController</span><span class="p">;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">D3D12GetDebugInterface</span><span class="p">(</span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">debugController</span><span class="p">))))</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">        </span><span class="n">debugController</span><span class="o">-&gt;</span><span class="n">EnableDebugLayer</span><span class="p">();</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="p">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><a href="#__codelineno-0-10"><span class="linenos" data-linenos="10 "></span></a><span class="cp">#endif</span>
+</span></code></pre></div>
+<p>调试层会在控制台输出大量的有用信息，包括描述符绑定错误、根签名不匹配等问题。没有这个工具，排查D3D12的绑定问题简直是在黑暗中摸索。</p>
+<h2 id="从d3d11到d3d12资源绑定的范式转变">从D3D11到D3D12：资源绑定的范式转变<a class="headerlink" href="#从d3d11到d3d12资源绑定的范式转变" title="链接到此章节">&para;</a></h2>
+<p>如果你之前有D3D11的开发经验，那应该对这套流程很熟悉：创建一个Shader Resource View（SRV），然后调用<code>ID3D11DeviceContext::PSSetShaderResources</code>把它绑定到像素着色器的某个slot上。一切都很简单，驱动会帮你处理所有底层细节。</p>
+<p>D3D12把这个模型彻底颠覆了。在D3D12中，你需要手动管理两样东西：描述符堆（Descriptor Heap）是一块GPU可见的内存区域，里面存放着描述符数组；根签名（Root Signature）则定义了Shader如何访问这些描述符。你可以把描述符堆理解为一个巨大的"名片盒"，每个描述符是一张"名片"，上面写着资源的具体信息（格式、维度、内存位置等）。而根签名则是一张"查找表"，告诉GPU去哪个名片盒的哪个位置找哪张名片。</p>
+<p>为什么微软要搞这么复杂？因为性能。D3D11的绑定模型虽然简单，但驱动在幕后做了大量的状态跟踪和验证工作，这些开销在高频率的绘制调用中会变得非常明显。D3D12把控制权交给开发者之后，驱动就不再需要做那些隐式工作了，代价就是我们需要自己理解和维护这套绑定机制。</p>
+<p>说实话，我们第一次接触这套体系的时候血压确实有点拉满——概念多、结构体嵌套深、错误信息有时候不太直观。但一旦你理解了核心逻辑，就会发现它其实是非常有条理的。我们一步步来。</p>
+<h2 id="描述符堆gpu可见的资源描述数组">描述符堆：GPU可见的资源描述数组<a class="headerlink" href="#描述符堆gpu可见的资源描述数组" title="链接到此章节">&para;</a></h2>
+<p>描述符（Descriptor）是D3D12中对资源视图的统称。在D3D11中你用的<code>ID3D11ShaderResourceView</code>、<code>ID3D11UnorderedAccessView</code>、<code>ID3D11RenderTargetView</code>等，在D3D12中统一变成了描述符。每个描述符是一个固定大小的数据块，记录了资源的类型、格式、内存位置等元信息。描述符的具体大小取决于GPU硬件，所以我们不能直接操作描述符的内存内容，只能通过API函数来创建和操作它们。</p>
+<p>描述符堆就是一块连续的内存区域，用来存放一批描述符。根据<a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/descriptor-heaps">Microsoft Learn的官方文档</a>，D3D12定义了几种不同类型的描述符堆，每种堆只能存放对应类型的描述符。</p>
+<h3 id="描述符堆的类型">描述符堆的类型<a class="headerlink" href="#描述符堆的类型" title="链接到此章节">&para;</a></h3>
+<p>D3D12的描述符堆类型由<code>D3D12_DESCRIPTOR_HEAP_TYPE</code>枚举定义：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="nc">D3D12_DESCRIPTOR_HEAP_TYPE</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// 常量缓冲区视图、着色器资源视图、无序访问视图</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER</span><span class="p">,</span><span class="w">            </span><span class="c1">// 采样器</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos="4 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_RTV</span><span class="p">,</span><span class="w">                </span><span class="c1">// 渲染目标视图</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_DSV</span><span class="p">,</span><span class="w">                </span><span class="c1">// 深度模板视图</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos="6 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos="7 "></span></a><span class="p">}</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE</span><span class="p">;</span>
+</span></code></pre></div>
+<p>这里最常用的就是<code>D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</code>，因为大部分Shader绑定的资源（纹理、常量缓冲区、UAV）都归到这一类。采样器有自己独立的堆类型，这是因为某些GPU硬件上采样器的数量和布局与普通资源描述符不同。RTV和DSV通常不需要Shader直接访问，它们有各自的堆类型。</p>
+<h3 id="shader可见与非shader可见">Shader可见与非Shader可见<a class="headerlink" href="#shader可见与非shader可见" title="链接到此章节">&para;</a></h3>
+<p>描述符堆有一个关键标志位<code>D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE</code>。只有设置了这个标志的堆才能被Shader直接访问。RTV和DSV堆不需要这个标志，因为它们只在管线绑定时使用，不直接暴露给Shader。</p>
+<p>这个区别很重要。Shader可见的描述符堆会占用GPU的一块专用地址空间，而且某些硬件上数量是有限的。所以不要无脑创建大量的Shader可见堆。通常一个CBV/SRV/UAV堆和一个Sampler堆就够用了，我们在堆中按偏移分配不同的区域给不同的绘制调用。</p>
+<h3 id="创建描述符堆">创建描述符堆<a class="headerlink" href="#创建描述符堆" title="链接到此章节">&para;</a></h3>
+<p>我们来看一下如何创建一个CBV/SRV/UAV类型的Shader可见描述符堆。根据<a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap">Microsoft Learn的文档</a>，<code>CreateDescriptorHeap</code>函数接受一个<code>D3D12_DESCRIPTOR_HEAP_DESC</code>结构体：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 描述符堆描述信息</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">D3D12_DESCRIPTOR_HEAP_DESC</span><span class="w"> </span><span class="n">heapDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">heapDesc</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="n">heapDesc</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">128</span><span class="p">;</span><span class="w">  </span><span class="c1">// 预分配128个描述符槽位</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">heapDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE</span><span class="p">;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">heapDesc</span><span class="p">.</span><span class="n">NodeMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// 单GPU设置为0</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos=" 7 "></span></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><a href="#__codelineno-2-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pHeap</span><span class="p">;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><a href="#__codelineno-2-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">HRESULT</span><span class="w"> </span><span class="n">hr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateDescriptorHeap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">heapDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pHeap</span><span class="p">));</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><a href="#__codelineno-2-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">hr</span><span class="p">))</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><a href="#__codelineno-2-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">{</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><a href="#__codelineno-2-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="c1">// 处理创建失败</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><a href="#__codelineno-2-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><a href="#__codelineno-2-14"><span class="linenos" data-linenos="14 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p>这里有几个要点值得展开说说。<code>NumDescriptors</code>是预分配的描述符数量，这个数量决定了堆的大小。你不需要精确计算到每个描述符，但要确保不会用超了——用超了的行为是未定义的，轻则画面错误，重则驱动崩溃。<code>NodeMask</code>在多GPU（LDA节点）场景下使用，单GPU设置为0即可。</p>
+<h3 id="描述符句柄与偏移">描述符句柄与偏移<a class="headerlink" href="#描述符句柄与偏移" title="链接到此章节">&para;</a></h3>
+<p>描述符堆创建好之后，我们需要通过句柄（Handle）来访问其中的描述符。D3D12定义了两种句柄类型：<code>D3D12_CPU_DESCRIPTOR_HANDLE</code>用于CPU端操作（比如创建描述符），<code>D3D12_GPU_DESCRIPTOR_HANDLE</code>用于GPU端操作（比如在命令列表中绑定描述符表）。</p>
+<p>获取堆的起始句柄：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">D3D12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">cpuHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">();</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><a href="#__codelineno-3-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">D3D12_GPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">gpuHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pHeap</span><span class="o">-&gt;</span><span class="n">GetGPUDescriptorHandleForHeapStart</span><span class="p">();</span>
+</span></code></pre></div>
+<p>这里有一个非常容易踩的坑：描述符的大小不是固定的，它取决于GPU硬件。所以你不能简单地把句柄的指针偏移<code>sizeof(某个结构体)</code>来访问下一个描述符。正确的做法是使用<code>GetDescriptorHandleIncrementSize</code>获取增量：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">UINT</span><span class="w"> </span><span class="n">descriptorSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">GetDescriptorHandleIncrementSize</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos="2 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</span><span class="p">);</span>
+</span></code></pre></div>
+<p>然后通过一个辅助函数来计算第N个描述符的句柄：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 内联辅助函数：获取堆中第index个描述符的CPU句柄</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><a href="#__codelineno-5-2"><span class="linenos" data-linenos="2 "></span></a><span class="kr">inline</span><span class="w"> </span><span class="n">D3D12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="nf">GetDescriptorHandle</span><span class="p">(</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><a href="#__codelineno-5-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">    </span><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">pHeap</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">descriptorSize</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><a href="#__codelineno-5-4"><span class="linenos" data-linenos="4 "></span></a><span class="p">{</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><a href="#__codelineno-5-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">    </span><span class="n">D3D12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">();</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><a href="#__codelineno-5-6"><span class="linenos" data-linenos="6 "></span></a><span class="w">    </span><span class="n">handle</span><span class="p">.</span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">descriptorSize</span><span class="p">;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><a href="#__codelineno-5-7"><span class="linenos" data-linenos="7 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">handle</span><span class="p">;</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><a href="#__codelineno-5-8"><span class="linenos" data-linenos="8 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p>⚠️ 注意，这个<code>descriptorSize</code>一定要在创建描述符时使用正确的堆类型来查询。CBV_SRV_UAV堆的增量大小和Sampler堆的增量大小可能不同。如果混用了，你会得到错误的偏移，GPU读到的就是垃圾数据。</p>
+<h3 id="在堆中创建描述符">在堆中创建描述符<a class="headerlink" href="#在堆中创建描述符" title="链接到此章节">&para;</a></h3>
+<p>有了句柄之后，我们就可以在堆的特定位置创建描述符了。以创建一个CBV（常量缓冲区视图）为例：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 假设我们有一个常量缓冲区资源 pConstantBuffer</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">D3D12_CONSTANT_BUFFER_VIEW_DESC</span><span class="w"> </span><span class="n">cbvDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">cbvDesc</span><span class="p">.</span><span class="n">BufferLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pConstantBuffer</span><span class="o">-&gt;</span><span class="n">GetGPUVirtualAddress</span><span class="p">();</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><a href="#__codelineno-6-4"><span class="linenos" data-linenos="4 "></span></a><span class="n">cbvDesc</span><span class="p">.</span><span class="n">SizeInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">constantBufferSize</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="mi">255</span><span class="p">;</span><span class="w">  </span><span class="c1">// 必须对齐到256字节</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><a href="#__codelineno-6-5"><span class="linenos" data-linenos="5 "></span></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><a href="#__codelineno-6-6"><span class="linenos" data-linenos="6 "></span></a><span class="c1">// 在堆的第0个位置创建CBV</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><a href="#__codelineno-6-7"><span class="linenos" data-linenos="7 "></span></a><span class="n">D3D12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">cbvHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetDescriptorHandle</span><span class="p">(</span><span class="n">pHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">descriptorSize</span><span class="p">);</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><a href="#__codelineno-6-8"><span class="linenos" data-linenos="8 "></span></a><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateConstantBufferView</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cbvDesc</span><span class="p">,</span><span class="w"> </span><span class="n">cbvHandle</span><span class="p">);</span>
+</span></code></pre></div>
+<p>常量缓冲区的大小必须对齐到256字节这个限制是D3D12硬性规定的，和D3D11不同。如果你的缓冲区实际数据只有64字节，你也得分配256字节。这一点在<a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/constant-buffer-view">Microsoft Learn的CBV文档</a>中有明确说明。</p>
+<p>SRV的创建类似，但描述信息不同：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><a href="#__codelineno-7-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 假设我们有一个2D纹理资源 pTexture</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><a href="#__codelineno-7-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">D3D12_SHADER_RESOURCE_VIEW_DESC</span><span class="w"> </span><span class="n">srvDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><a href="#__codelineno-7-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">srvDesc</span><span class="p">.</span><span class="n">Format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_R8G8B8A8_UNORM</span><span class="p">;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><a href="#__codelineno-7-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="n">srvDesc</span><span class="p">.</span><span class="n">ViewDimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_SRV_DIMENSION_TEXTURE2D</span><span class="p">;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><a href="#__codelineno-7-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">srvDesc</span><span class="p">.</span><span class="n">Shader4ComponentMapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING</span><span class="p">;</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><a href="#__codelineno-7-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">srvDesc</span><span class="p">.</span><span class="n">Texture2D</span><span class="p">.</span><span class="n">MipLevels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><a href="#__codelineno-7-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">srvDesc</span><span class="p">.</span><span class="n">Texture2D</span><span class="p">.</span><span class="n">MostDetailedMip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a><a href="#__codelineno-7-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">srvDesc</span><span class="p">.</span><span class="n">Texture2D</span><span class="p">.</span><span class="n">ResourceMinLODClamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a><a href="#__codelineno-7-9"><span class="linenos" data-linenos=" 9 "></span></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a><a href="#__codelineno-7-10"><span class="linenos" data-linenos="10 "></span></a><span class="c1">// 在堆的第1个位置创建SRV</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11"></a><a href="#__codelineno-7-11"><span class="linenos" data-linenos="11 "></span></a><span class="n">D3D12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">srvHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetDescriptorHandle</span><span class="p">(</span><span class="n">pHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">descriptorSize</span><span class="p">);</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12"></a><a href="#__codelineno-7-12"><span class="linenos" data-linenos="12 "></span></a><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateShaderResourceView</span><span class="p">(</span><span class="n">pTexture</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">srvDesc</span><span class="p">,</span><span class="w"> </span><span class="n">srvHandle</span><span class="p">);</span>
+</span></code></pre></div>
+<h2 id="根签名定义shader资源布局">根签名：定义Shader资源布局<a class="headerlink" href="#根签名定义shader资源布局" title="链接到此章节">&para;</a></h2>
+<p>现在描述符堆里有了数据，但GPU还不知道怎么去找这些描述符。这就是根签名要做的事情。根签名定义了Shader可以访问哪些资源以及如何访问它们。根据<a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/root-signatures">Microsoft Learn的根签名概述</a>，你可以把它类比为D3D11中的输入布局加上资源绑定slot的总和——不过功能更强大也更复杂。</p>
+<h3 id="根签名的三种参数类型">根签名的三种参数类型<a class="headerlink" href="#根签名的三种参数类型" title="链接到此章节">&para;</a></h3>
+<p>根签名中可以包含三种类型的参数，每种参数有不同的性能特征：</p>
+<p><strong>Root Constants（根常量）</strong>是最直接的。它直接在根签名中嵌入32位常量值，不需要任何描述符。根签名的空间有限（64个DWORD），但根常量访问速度最快，因为它们直接存储在根签名中，Shader可以像访问寄存器一样立即访问它们。适合传递一些小型参数，比如MVP矩阵的索引、材质ID等。</p>
+<p><strong>Root Descriptor（根描述符）</strong>直接在根签名中写入一个资源的GPU虚拟地址。访问速度也很快（只消耗2个DWORD），但只能用于CBV、SRV和UAV（不支持采样器），并且只支持Buffer类型的资源（不支持Texture）。这意味着你不能用根描述符来直接绑定纹理。</p>
+<p><strong>Descriptor Table（描述符表）</strong>指向描述符堆中的一个连续范围。它只消耗1个DWORD的根签名空间，但它的间接寻址意味着多一次内存读取。好处是它可以一次绑定一批描述符，而且支持所有类型的资源（包括纹理和采样器）。</p>
+<h3 id="根签名的空间限制">根签名的空间限制<a class="headerlink" href="#根签名的空间限制" title="链接到此章节">&para;</a></h3>
+<p>根签名有一个硬性限制：总共不超过64个DWORD的空间。每种参数类型占用的空间如下：</p>
+<ul>
+<li>Root Constants：每个32位常量占1个DWORD</li>
+<li>Root Descriptor：每个占2个DWORD（存储64位GPU虚拟地址）</li>
+<li>Descriptor Table：每个占1个DWORD（存储到描述符堆的偏移）</li>
+</ul>
+<p>这意味着如果你全部用Root Constants，最多可以放64个32位常量（相当于16个float4或者4个4x4矩阵）。如果全部用Descriptor Table，最多可以定义64个表。实际使用中我们会混合使用这三种类型，根据具体的性能需求来选择。</p>
+<h3 id="构建根签名描述结构">构建根签名描述结构<a class="headerlink" href="#构建根签名描述结构" title="链接到此章节">&para;</a></h3>
+<p>我们现在来构建一个实际可用的根签名，它包含一个CBV、一个SRV和一个静态采样器。这个根签名足够用来渲染一个带纹理的矩形——一个典型的2D GUI场景。</p>
+<p>首先定义Descriptor Table的范围：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><a href="#__codelineno-8-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 定义描述符范围：1个CBV</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><a href="#__codelineno-8-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">D3D12_DESCRIPTOR_RANGE</span><span class="w"> </span><span class="n">cbvRange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><a href="#__codelineno-8-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">cbvRange</span><span class="p">.</span><span class="n">RangeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_RANGE_TYPE_CBV</span><span class="p">;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><a href="#__codelineno-8-4"><span class="linenos" data-linenos="4 "></span></a><span class="n">cbvRange</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><a href="#__codelineno-8-5"><span class="linenos" data-linenos="5 "></span></a><span class="n">cbvRange</span><span class="p">.</span><span class="n">BaseShaderRegister</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// 对应HLSL中的 register(b0)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a><a href="#__codelineno-8-6"><span class="linenos" data-linenos="6 "></span></a><span class="n">cbvRange</span><span class="p">.</span><span class="n">RegisterSpace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><a href="#__codelineno-8-7"><span class="linenos" data-linenos="7 "></span></a><span class="n">cbvRange</span><span class="p">.</span><span class="n">OffsetInDescriptorsFromTableStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND</span><span class="p">;</span>
+</span></code></pre></div>
+<p><code>D3D12_DESCRIPTOR_RANGE</code>结构体定义了描述符表中的一段连续范围。<code>RangeType</code>指定了这段范围的类型（CBV、SRV、UAV或Sampler），<code>NumDescriptors</code>是这个范围中的描述符数量，<code>BaseShaderRegister</code>是这段范围在HLSL中对应的起始寄存器编号。<code>OffsetInDescriptorsFromTableStart</code>设为<code>D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND</code>表示紧跟上一个范围排列，这样我们不需要手动计算偏移。</p>
+<p>接下来定义SRV的范围：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><a href="#__codelineno-9-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 定义描述符范围：1个SRV</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><a href="#__codelineno-9-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">D3D12_DESCRIPTOR_RANGE</span><span class="w"> </span><span class="n">srvRange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><a href="#__codelineno-9-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">srvRange</span><span class="p">.</span><span class="n">RangeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_RANGE_TYPE_SRV</span><span class="p">;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><a href="#__codelineno-9-4"><span class="linenos" data-linenos="4 "></span></a><span class="n">srvRange</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><a href="#__codelineno-9-5"><span class="linenos" data-linenos="5 "></span></a><span class="n">srvRange</span><span class="p">.</span><span class="n">BaseShaderRegister</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// 对应HLSL中的 register(t0)</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><a href="#__codelineno-9-6"><span class="linenos" data-linenos="6 "></span></a><span class="n">srvRange</span><span class="p">.</span><span class="n">RegisterSpace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><a href="#__codelineno-9-7"><span class="linenos" data-linenos="7 "></span></a><span class="n">srvRange</span><span class="p">.</span><span class="n">OffsetInDescriptorsFromTableStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND</span><span class="p">;</span>
+</span></code></pre></div>
+<p>然后我们把这两个范围组合到根参数中：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><a href="#__codelineno-10-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 根参数[0]：描述符表，包含CBV + SRV</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><a href="#__codelineno-10-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">D3D12_ROOT_PARAMETER</span><span class="w"> </span><span class="n">rootParameters</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><a href="#__codelineno-10-3"><span class="linenos" data-linenos="3 "></span></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><a href="#__codelineno-10-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1">// 第一个根参数是一个描述符表，包含上面定义的两个范围</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><a href="#__codelineno-10-5"><span class="linenos" data-linenos="5 "></span></a><span class="n">D3D12_DESCRIPTOR_RANGE</span><span class="w"> </span><span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">cbvRange</span><span class="p">,</span><span class="w"> </span><span class="n">srvRange</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><a href="#__codelineno-10-6"><span class="linenos" data-linenos="6 "></span></a><span class="n">rootParameters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">ParameterType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE</span><span class="p">;</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a><a href="#__codelineno-10-7"><span class="linenos" data-linenos="7 "></span></a><span class="n">rootParameters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">DescriptorTable</span><span class="p">.</span><span class="n">NumDescriptorRanges</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8"></a><a href="#__codelineno-10-8"><span class="linenos" data-linenos="8 "></span></a><span class="n">rootParameters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">DescriptorTable</span><span class="p">.</span><span class="n">pDescriptorRanges</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ranges</span><span class="p">;</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9"></a><a href="#__codelineno-10-9"><span class="linenos" data-linenos="9 "></span></a><span class="n">rootParameters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">ShaderVisibility</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_SHADER_VISIBILITY_ALL</span><span class="p">;</span>
+</span></code></pre></div>
+<p>这里<code>ShaderVisibility</code>设为<code>D3D12_SHADER_VISIBILITY_ALL</code>表示所有Shader阶段都可以访问这个参数。如果你的CBV只在顶点着色器使用，可以设为<code>D3D12_SHADER_VISIBILITY_VERTEX</code>来优化。不过对于GUI渲染这种简单场景，ALL就够了。</p>
+<p>接下来我们再加一个采样器参数。采样器也可以放在描述符表中，但更方便的做法是使用静态采样器。静态采样器直接嵌入根签名中，不需要在描述符堆中分配空间，也不需要在运行时创建。对于不频繁修改的采样器状态（比如最常用的线性采样），静态采样器是最简洁的选择：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><a href="#__codelineno-11-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 静态采样器</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><a href="#__codelineno-11-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">D3D12_STATIC_SAMPLER_DESC</span><span class="w"> </span><span class="n">staticSampler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><a href="#__codelineno-11-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">Filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_FILTER_MIN_MAG_MIP_LINEAR</span><span class="p">;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><a href="#__codelineno-11-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">AddressU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_TEXTURE_ADDRESS_MODE_WRAP</span><span class="p">;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><a href="#__codelineno-11-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">AddressV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_TEXTURE_ADDRESS_MODE_WRAP</span><span class="p">;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a><a href="#__codelineno-11-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">AddressW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_TEXTURE_ADDRESS_MODE_WRAP</span><span class="p">;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7"></a><a href="#__codelineno-11-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">MipLODBias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a><a href="#__codelineno-11-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">MaxAnisotropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9"></a><a href="#__codelineno-11-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">ComparisonFunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_COMPARISON_FUNC_NEVER</span><span class="p">;</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10"></a><a href="#__codelineno-11-10"><span class="linenos" data-linenos="10 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">BorderColor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_STATIC_BORDER_COLOR_OPAQUE_WHITE</span><span class="p">;</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11"></a><a href="#__codelineno-11-11"><span class="linenos" data-linenos="11 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">MinLOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12"></a><a href="#__codelineno-11-12"><span class="linenos" data-linenos="12 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">MaxLOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_FLOAT32_MAX</span><span class="p">;</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13"></a><a href="#__codelineno-11-13"><span class="linenos" data-linenos="13 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">ShaderRegister</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">       </span><span class="c1">// 对应HLSL中的 register(s0)</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14"></a><a href="#__codelineno-11-14"><span class="linenos" data-linenos="14 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">RegisterSpace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15"></a><a href="#__codelineno-11-15"><span class="linenos" data-linenos="15 "></span></a><span class="n">staticSampler</span><span class="p">.</span><span class="n">ShaderVisibility</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_SHADER_VISIBILITY_PIXEL</span><span class="p">;</span>
+</span></code></pre></div>
+<p>最后，组装根签名描述：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><a href="#__codelineno-12-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 根签名描述</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><a href="#__codelineno-12-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">D3D12_ROOT_SIGNATURE_DESC</span><span class="w"> </span><span class="n">rootSigDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><a href="#__codelineno-12-3"><span class="linenos" data-linenos="3 "></span></a><span class="n">rootSigDesc</span><span class="p">.</span><span class="n">NumParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                       </span><span class="c1">// 1个根参数（描述符表）</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><a href="#__codelineno-12-4"><span class="linenos" data-linenos="4 "></span></a><span class="n">rootSigDesc</span><span class="p">.</span><span class="n">pParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rootParameters</span><span class="p">;</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a><a href="#__codelineno-12-5"><span class="linenos" data-linenos="5 "></span></a><span class="n">rootSigDesc</span><span class="p">.</span><span class="n">NumStaticSamplers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                    </span><span class="c1">// 1个静态采样器</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a><a href="#__codelineno-12-6"><span class="linenos" data-linenos="6 "></span></a><span class="n">rootSigDesc</span><span class="p">.</span><span class="n">pStaticSamplers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">staticSampler</span><span class="p">;</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a><a href="#__codelineno-12-7"><span class="linenos" data-linenos="7 "></span></a><span class="n">rootSigDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</span><span class="p">;</span>
+</span></code></pre></div>
+<p><code>Flags</code>中的<code>ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</code>是必须的，如果你使用了输入装配器（IA）来提供顶点数据的话。对于GUI渲染，我们通常需要这个标志。</p>
+<h3 id="序列化与创建根签名">序列化与创建根签名<a class="headerlink" href="#序列化与创建根签名" title="链接到此章节">&para;</a></h3>
+<p>根签名描述结构定义好之后，我们需要先把它序列化成二进制格式，然后才能创建<code>ID3D12RootSignature</code>对象。根据<a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-d3d12serializerootsignature">Microsoft Learn的文档</a>，序列化使用<code>D3D12SerializeRootSignature</code>函数：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><a href="#__codelineno-13-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 序列化根签名</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><a href="#__codelineno-13-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pSignatureBlob</span><span class="p">;</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><a href="#__codelineno-13-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pErrorBlob</span><span class="p">;</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><a href="#__codelineno-13-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="n">HRESULT</span><span class="w"> </span><span class="n">hr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12SerializeRootSignature</span><span class="p">(</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><a href="#__codelineno-13-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="o">&amp;</span><span class="n">rootSigDesc</span><span class="p">,</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a><a href="#__codelineno-13-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="n">D3D_ROOT_SIGNATURE_VERSION_1</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a><a href="#__codelineno-13-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="o">&amp;</span><span class="n">pSignatureBlob</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a><a href="#__codelineno-13-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="o">&amp;</span><span class="n">pErrorBlob</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><a href="#__codelineno-13-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="p">);</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a><a href="#__codelineno-13-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">hr</span><span class="p">))</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a><a href="#__codelineno-13-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">{</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a><a href="#__codelineno-13-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pErrorBlob</span><span class="p">)</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a><a href="#__codelineno-13-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><a href="#__codelineno-13-14"><span class="linenos" data-linenos="14 "></span></a><span class="w">        </span><span class="n">OutputDebugStringA</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">pErrorBlob</span><span class="o">-&gt;</span><span class="n">GetBufferPointer</span><span class="p">());</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a><a href="#__codelineno-13-15"><span class="linenos" data-linenos="15 "></span></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16"></a><a href="#__codelineno-13-16"><span class="linenos" data-linenos="16 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17"></a><a href="#__codelineno-13-17"><span class="linenos" data-linenos="17 "></span></a><span class="p">}</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18"></a><a href="#__codelineno-13-18"><span class="linenos" data-linenos="18 "></span></a>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19"></a><a href="#__codelineno-13-19"><span class="linenos" data-linenos="19 "></span></a><span class="c1">// 创建根签名对象</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20"></a><a href="#__codelineno-13-20"><span class="linenos" data-linenos="20 "></span></a><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12RootSignature</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pRootSignature</span><span class="p">;</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21"></a><a href="#__codelineno-13-21"><span class="linenos" data-linenos="21 "></span></a><span class="n">hr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDevice</span><span class="o">-&gt;</span><span class="n">CreateRootSignature</span><span class="p">(</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22"></a><a href="#__codelineno-13-22"><span class="linenos" data-linenos="22 "></span></a><span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="c1">// nodeMask</span>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23"></a><a href="#__codelineno-13-23"><span class="linenos" data-linenos="23 "></span></a><span class="w">    </span><span class="n">pSignatureBlob</span><span class="o">-&gt;</span><span class="n">GetBufferPointer</span><span class="p">(),</span>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24"></a><a href="#__codelineno-13-24"><span class="linenos" data-linenos="24 "></span></a><span class="w">    </span><span class="n">pSignatureBlob</span><span class="o">-&gt;</span><span class="n">GetBufferSize</span><span class="p">(),</span>
+</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25"></a><a href="#__codelineno-13-25"><span class="linenos" data-linenos="25 "></span></a><span class="w">    </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pRootSignature</span><span class="p">)</span>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26"></a><a href="#__codelineno-13-26"><span class="linenos" data-linenos="26 "></span></a><span class="p">);</span>
+</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27"></a><a href="#__codelineno-13-27"><span class="linenos" data-linenos="27 "></span></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">hr</span><span class="p">))</span>
+</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28"></a><a href="#__codelineno-13-28"><span class="linenos" data-linenos="28 "></span></a><span class="p">{</span>
+</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29"></a><a href="#__codelineno-13-29"><span class="linenos" data-linenos="29 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30"></a><a href="#__codelineno-13-30"><span class="linenos" data-linenos="30 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p>⚠️ 注意，如果根签名的描述结构有任何问题（比如范围重叠、寄存器冲突等），<code>D3D12SerializeRootSignature</code>会失败，并且错误信息会通过<code>pErrorBlob</code>返回。调试时一定要打印这个错误信息，它会告诉你具体哪里配置不对。很多人（包括我们）在这里栽过跟头，明明一个寄存器编号写错了，结果花了好几个小时排查。</p>
+<h3 id="hlsl中嵌入根签名">HLSL中嵌入根签名<a class="headerlink" href="#hlsl中嵌入根签名" title="链接到此章节">&para;</a></h3>
+<p>除了在C++中创建根签名，你还可以直接在HLSL Shader代码中通过<code>[RootSignature(...)]</code>属性来定义。这种方式的好处是根签名和Shader代码放在一起，不容易出错。但缺点是你需要维护两个版本的根签名定义（HLSL和C++）保持一致，实际项目中通常会选择其中一种方式统一使用。</p>
+<p>HLSL嵌入方式如下：</p>
+<div class="language-hlsl highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><a href="#__codelineno-14-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="cp">#define MyRootSignature \</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a><a href="#__codelineno-14-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="cp">    &quot;RootFlags(ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT), &quot; \</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a><a href="#__codelineno-14-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="cp">    &quot;DescriptorTable(CBV(b0), SRV(t0)), &quot; \</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4"></a><a href="#__codelineno-14-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="cp">    &quot;StaticSampler(s0)&quot;</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5"></a><a href="#__codelineno-14-5"><span class="linenos" data-linenos=" 5 "></span></a>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6"></a><a href="#__codelineno-14-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="k">cbuffer</span><span class="w"> </span><span class="n">Constants</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">b0</span><span class="p">)</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7"></a><a href="#__codelineno-14-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">{</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8"></a><a href="#__codelineno-14-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="kt">float4x4</span><span class="w"> </span><span class="n">g_mvp</span><span class="p">;</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9"></a><a href="#__codelineno-14-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">g_color</span><span class="p">;</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10"></a><a href="#__codelineno-14-10"><span class="linenos" data-linenos="10 "></span></a><span class="p">};</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11"></a><a href="#__codelineno-14-11"><span class="linenos" data-linenos="11 "></span></a>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12"></a><a href="#__codelineno-14-12"><span class="linenos" data-linenos="12 "></span></a><span class="kt">Texture2D</span><span class="w"> </span><span class="n">g_texture</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">t0</span><span class="p">);</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13"></a><a href="#__codelineno-14-13"><span class="linenos" data-linenos="13 "></span></a><span class="kt">SamplerState</span><span class="w"> </span><span class="n">g_sampler</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">s0</span><span class="p">);</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14"></a><a href="#__codelineno-14-14"><span class="linenos" data-linenos="14 "></span></a>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15"></a><a href="#__codelineno-14-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">[</span><span class="n">RootSignature</span><span class="p">(</span><span class="n">MyRootSignature</span><span class="p">)]</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16"></a><a href="#__codelineno-14-16"><span class="linenos" data-linenos="16 "></span></a><span class="kt">float4</span><span class="w"> </span><span class="n">PSMain</span><span class="p">(</span><span class="n">VS_OUTPUT</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_TARGET</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17"></a><a href="#__codelineno-14-17"><span class="linenos" data-linenos="17 "></span></a><span class="p">{</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18"></a><a href="#__codelineno-14-18"><span class="linenos" data-linenos="18 "></span></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">g_texture</span><span class="p">.</span><span class="n">Sample</span><span class="p">(</span><span class="n">g_sampler</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">uv</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">g_color</span><span class="p">;</span>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19"></a><a href="#__codelineno-14-19"><span class="linenos" data-linenos="19 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<p>这种字符串格式的根签名定义非常紧凑，可读性也不错。但要注意，如果你在C++端也创建了根签名并绑定到命令列表，两者必须兼容——也就是说HLSL中定义的根签名布局必须能覆盖C++端绑定的所有资源。</p>
+<h2 id="在命令列表中绑定资源">在命令列表中绑定资源<a class="headerlink" href="#在命令列表中绑定资源" title="链接到此章节">&para;</a></h2>
+<p>根签名和描述符堆都创建好之后，我们还需要在渲染时将它们绑定到命令列表上。这个过程分三步：设置根签名、设置描述符堆、设置根描述符表。</p>
+<h3 id="设置根签名">设置根签名<a class="headerlink" href="#设置根签名" title="链接到此章节">&para;</a></h3>
+<p>在记录命令之前，首先要告诉命令列表使用哪个根签名：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><a href="#__codelineno-15-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootSignature</span><span class="p">(</span><span class="n">pRootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+</span></code></pre></div>
+<p>这个调用必须在设置描述符表之前完成。如果你在设置根签名之前就调用了<code>SetGraphicsRootDescriptorTable</code>，调试层会报错。</p>
+<h3 id="设置描述符堆">设置描述符堆<a class="headerlink" href="#设置描述符堆" title="链接到此章节">&para;</a></h3>
+<p>接下来告诉命令列表当前活跃的描述符堆是哪些：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a><a href="#__codelineno-16-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">pHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a><a href="#__codelineno-16-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">SetDescriptorHeaps</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppHeaps</span><span class="p">),</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">);</span>
+</span></code></pre></div>
+<p>这里有个细节：<code>SetDescriptorHeaps</code>会替换之前设置的所有堆，而不是追加。所以如果你同时需要CBV_SRV_UAV堆和Sampler堆，需要一次性把它们都传进去：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a><a href="#__codelineno-17-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2"></a><a href="#__codelineno-17-2"><span class="linenos" data-linenos="2 "></span></a><span class="w">    </span><span class="n">pCbvSrvUavHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3"></a><a href="#__codelineno-17-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">    </span><span class="n">pSamplerHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w">   </span><span class="c1">// 如果你使用动态采样器堆而不是静态采样器</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4"></a><a href="#__codelineno-17-4"><span class="linenos" data-linenos="4 "></span></a><span class="p">};</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5"></a><a href="#__codelineno-17-5"><span class="linenos" data-linenos="5 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">SetDescriptorHeaps</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppHeaps</span><span class="p">),</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="设置根描述符表">设置根描述符表<a class="headerlink" href="#设置根描述符表" title="链接到此章节">&para;</a></h3>
+<p>最后，将描述符堆中的具体位置绑定到根签名的对应参数槽：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><a href="#__codelineno-18-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 根参数[0]是描述符表，绑定到堆的起始位置</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a><a href="#__codelineno-18-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">D3D12_GPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">tableHandle</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a><a href="#__codelineno-18-3"><span class="linenos" data-linenos="3 "></span></a><span class="w">    </span><span class="n">pCbvSrvUavHeap</span><span class="o">-&gt;</span><span class="n">GetGPUDescriptorHandleForHeapStart</span><span class="p">();</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a><a href="#__codelineno-18-4"><span class="linenos" data-linenos="4 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootDescriptorTable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">tableHandle</span><span class="p">);</span>
+</span></code></pre></div>
+<p><code>SetGraphicsRootDescriptorTable</code>的第一个参数是根参数的索引（0对应我们定义的第一个根参数），第二个参数是GPU描述符句柄，指向堆中描述符表的起始位置。GPU会根据根签名中定义的范围，从这个起始位置开始读取对应数量的描述符。</p>
+<p>在我们的例子中，根参数[0]的描述符表包含了两个范围（1个CBV + 1个SRV），所以GPU会从<code>tableHandle</code>开始连续读取2个描述符。第一个是CBV（对应<code>register(b0)</code>），第二个是SRV（对应<code>register(t0)</code>）。</p>
+<h3 id="完整的渲染命令序列">完整的渲染命令序列<a class="headerlink" href="#完整的渲染命令序列" title="链接到此章节">&para;</a></h3>
+<p>把上面所有步骤串起来，一个典型的渲染流程的命令记录如下：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a><a href="#__codelineno-19-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 重置命令列表</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a><a href="#__codelineno-19-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">(</span><span class="n">pCommandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">pPipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3"></a><a href="#__codelineno-19-3"><span class="linenos" data-linenos=" 3 "></span></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4"></a><a href="#__codelineno-19-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="c1">// 设置根签名（必须在设置描述符表之前）</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a><a href="#__codelineno-19-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootSignature</span><span class="p">(</span><span class="n">pRootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6"></a><a href="#__codelineno-19-6"><span class="linenos" data-linenos=" 6 "></span></a>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a><a href="#__codelineno-19-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="c1">// 设置描述符堆</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8"></a><a href="#__codelineno-19-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">pCbvSrvUavHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9"></a><a href="#__codelineno-19-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">SetDescriptorHeaps</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppHeaps</span><span class="p">),</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">);</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10"></a><a href="#__codelineno-19-10"><span class="linenos" data-linenos="10 "></span></a>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11"></a><a href="#__codelineno-19-11"><span class="linenos" data-linenos="11 "></span></a><span class="c1">// 绑定描述符表到根参数[0]</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12"></a><a href="#__codelineno-19-12"><span class="linenos" data-linenos="12 "></span></a><span class="n">CD3DX12_GPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="nf">tableHandle</span><span class="p">(</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13"></a><a href="#__codelineno-19-13"><span class="linenos" data-linenos="13 "></span></a><span class="w">    </span><span class="n">pCbvSrvUavHeap</span><span class="o">-&gt;</span><span class="n">GetGPUDescriptorHandleForHeapStart</span><span class="p">());</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14"></a><a href="#__codelineno-19-14"><span class="linenos" data-linenos="14 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootDescriptorTable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">tableHandle</span><span class="p">);</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15"></a><a href="#__codelineno-19-15"><span class="linenos" data-linenos="15 "></span></a>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16"></a><a href="#__codelineno-19-16"><span class="linenos" data-linenos="16 "></span></a><span class="c1">// 设置视口、裁剪矩形</span>
+</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17"></a><a href="#__codelineno-19-17"><span class="linenos" data-linenos="17 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">RSSetViewports</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">viewport</span><span class="p">);</span>
+</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18"></a><a href="#__codelineno-19-18"><span class="linenos" data-linenos="18 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">RSSetScissorRects</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">scissorRect</span><span class="p">);</span>
+</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19"></a><a href="#__codelineno-19-19"><span class="linenos" data-linenos="19 "></span></a>
+</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20"></a><a href="#__codelineno-19-20"><span class="linenos" data-linenos="20 "></span></a><span class="c1">// 设置渲染目标</span>
+</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21"></a><a href="#__codelineno-19-21"><span class="linenos" data-linenos="21 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">OMSetRenderTargets</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dsvHandle</span><span class="p">);</span>
+</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22"></a><a href="#__codelineno-19-22"><span class="linenos" data-linenos="22 "></span></a>
+</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23"></a><a href="#__codelineno-19-23"><span class="linenos" data-linenos="23 "></span></a><span class="c1">// 资源屏障：从Present切换到RenderTarget</span>
+</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24"></a><a href="#__codelineno-19-24"><span class="linenos" data-linenos="24 "></span></a><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="w"> </span><span class="n">barrier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span>
+</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25"></a><a href="#__codelineno-19-25"><span class="linenos" data-linenos="25 "></span></a><span class="w">    </span><span class="n">pRenderTarget</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span>
+</span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26"></a><a href="#__codelineno-19-26"><span class="linenos" data-linenos="26 "></span></a><span class="w">    </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">,</span>
+</span><span id="__span-19-27"><a id="__codelineno-19-27" name="__codelineno-19-27"></a><a href="#__codelineno-19-27"><span class="linenos" data-linenos="27 "></span></a><span class="w">    </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">);</span>
+</span><span id="__span-19-28"><a id="__codelineno-19-28" name="__codelineno-19-28"></a><a href="#__codelineno-19-28"><span class="linenos" data-linenos="28 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">barrier</span><span class="p">);</span>
+</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29"></a><a href="#__codelineno-19-29"><span class="linenos" data-linenos="29 "></span></a>
+</span><span id="__span-19-30"><a id="__codelineno-19-30" name="__codelineno-19-30"></a><a href="#__codelineno-19-30"><span class="linenos" data-linenos="30 "></span></a><span class="c1">// 清除渲染目标</span>
+</span><span id="__span-19-31"><a id="__codelineno-19-31" name="__codelineno-19-31"></a><a href="#__codelineno-19-31"><span class="linenos" data-linenos="31 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">ClearRenderTargetView</span><span class="p">(</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">clearColor</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">);</span>
+</span><span id="__span-19-32"><a id="__codelineno-19-32" name="__codelineno-19-32"></a><a href="#__codelineno-19-32"><span class="linenos" data-linenos="32 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">ClearDepthStencilView</span><span class="p">(</span><span class="n">dsvHandle</span><span class="p">,</span>
+</span><span id="__span-19-33"><a id="__codelineno-19-33" name="__codelineno-19-33"></a><a href="#__codelineno-19-33"><span class="linenos" data-linenos="33 "></span></a><span class="w">    </span><span class="n">D3D12_CLEAR_FLAG_DEPTH</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">);</span>
+</span><span id="__span-19-34"><a id="__codelineno-19-34" name="__codelineno-19-34"></a><a href="#__codelineno-19-34"><span class="linenos" data-linenos="34 "></span></a>
+</span><span id="__span-19-35"><a id="__codelineno-19-35" name="__codelineno-19-35"></a><a href="#__codelineno-19-35"><span class="linenos" data-linenos="35 "></span></a><span class="c1">// 设置顶点缓冲区、图元拓扑</span>
+</span><span id="__span-19-36"><a id="__codelineno-19-36" name="__codelineno-19-36"></a><a href="#__codelineno-19-36"><span class="linenos" data-linenos="36 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">IASetVertexBuffers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vbv</span><span class="p">);</span>
+</span><span id="__span-19-37"><a id="__codelineno-19-37" name="__codelineno-19-37"></a><a href="#__codelineno-19-37"><span class="linenos" data-linenos="37 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">IASetPrimitiveTopology</span><span class="p">(</span><span class="n">D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP</span><span class="p">);</span>
+</span><span id="__span-19-38"><a id="__codelineno-19-38" name="__codelineno-19-38"></a><a href="#__codelineno-19-38"><span class="linenos" data-linenos="38 "></span></a>
+</span><span id="__span-19-39"><a id="__codelineno-19-39" name="__codelineno-19-39"></a><a href="#__codelineno-19-39"><span class="linenos" data-linenos="39 "></span></a><span class="c1">// 绘制</span>
+</span><span id="__span-19-40"><a id="__codelineno-19-40" name="__codelineno-19-40"></a><a href="#__codelineno-19-40"><span class="linenos" data-linenos="40 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">DrawInstanced</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// 4个顶点的矩形</span>
+</span><span id="__span-19-41"><a id="__codelineno-19-41" name="__codelineno-19-41"></a><a href="#__codelineno-19-41"><span class="linenos" data-linenos="41 "></span></a>
+</span><span id="__span-19-42"><a id="__codelineno-19-42" name="__codelineno-19-42"></a><a href="#__codelineno-19-42"><span class="linenos" data-linenos="42 "></span></a><span class="c1">// 资源屏障：从RenderTarget切换到Present</span>
+</span><span id="__span-19-43"><a id="__codelineno-19-43" name="__codelineno-19-43"></a><a href="#__codelineno-19-43"><span class="linenos" data-linenos="43 "></span></a><span class="n">barrier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span>
+</span><span id="__span-19-44"><a id="__codelineno-19-44" name="__codelineno-19-44"></a><a href="#__codelineno-19-44"><span class="linenos" data-linenos="44 "></span></a><span class="w">    </span><span class="n">pRenderTarget</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span>
+</span><span id="__span-19-45"><a id="__codelineno-19-45" name="__codelineno-19-45"></a><a href="#__codelineno-19-45"><span class="linenos" data-linenos="45 "></span></a><span class="w">    </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">,</span>
+</span><span id="__span-19-46"><a id="__codelineno-19-46" name="__codelineno-19-46"></a><a href="#__codelineno-19-46"><span class="linenos" data-linenos="46 "></span></a><span class="w">    </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">);</span>
+</span><span id="__span-19-47"><a id="__codelineno-19-47" name="__codelineno-19-47"></a><a href="#__codelineno-19-47"><span class="linenos" data-linenos="47 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">barrier</span><span class="p">);</span>
+</span><span id="__span-19-48"><a id="__codelineno-19-48" name="__codelineno-19-48"></a><a href="#__codelineno-19-48"><span class="linenos" data-linenos="48 "></span></a>
+</span><span id="__span-19-49"><a id="__codelineno-19-49" name="__codelineno-19-49"></a><a href="#__codelineno-19-49"><span class="linenos" data-linenos="49 "></span></a><span class="c1">// 关闭命令列表</span>
+</span><span id="__span-19-50"><a id="__codelineno-19-50" name="__codelineno-19-50"></a><a href="#__codelineno-19-50"><span class="linenos" data-linenos="50 "></span></a><span class="n">pCommandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
+</span></code></pre></div>
+<p>这段代码展示了一个完整的D3D12渲染命令序列。你可以看到，资源绑定的三步（设置根签名、设置描述符堆、设置根描述符表）都集中在命令列表的前半部分。一旦这些状态设置好了，后续的Draw调用就会使用这些绑定的资源。</p>
+<h2 id="根签名版本10-vs-11">根签名版本1.0 vs 1.1<a class="headerlink" href="#根签名版本10-vs-11" title="链接到此章节">&para;</a></h2>
+<p>在D3D12的开发过程中，微软对根签名进行了扩展。根签名1.1在1.0的基础上引入了描述符和数据的静态性标志（Static Sampler之外的改进），允许开发者向驱动提供更多关于描述符使用方式的提示信息，从而让驱动做更激进的优化。</p>
+<p>根据<a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/root-signature-version-1-1">Microsoft Learn的文档</a>，1.1版本的核心变化在<code>D3D12_ROOT_DESCRIPTOR_TABLE</code>和<code>D3D12_ROOT_DESCRIPTOR</code>中新增了<code>D3D12_ROOT_DESCRIPTOR_FLAGS</code>字段：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><a href="#__codelineno-20-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="c1">// 根签名1.1的描述符范围</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a><a href="#__codelineno-20-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">D3D12_DESCRIPTOR_RANGE1</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a><a href="#__codelineno-20-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_RANGE_TYPE</span><span class="w"> </span><span class="n">RangeType</span><span class="p">;</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4"></a><a href="#__codelineno-20-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">NumDescriptors</span><span class="p">;</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5"></a><a href="#__codelineno-20-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">BaseShaderRegister</span><span class="p">;</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6"></a><a href="#__codelineno-20-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">RegisterSpace</span><span class="p">;</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7"></a><a href="#__codelineno-20-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">OffsetInDescriptorsFromTableStart</span><span class="p">;</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8"></a><a href="#__codelineno-20-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="n">D3D12_DESCRIPTOR_RANGE_FLAGS</span><span class="w"> </span><span class="n">Flags</span><span class="p">;</span><span class="w">  </span><span class="c1">// 新增的标志</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9"></a><a href="#__codelineno-20-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">TableDescriptorCount</span><span class="p">;</span><span class="w">           </span><span class="c1">// 对于非均匀索引的表大小</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10"></a><a href="#__codelineno-20-10"><span class="linenos" data-linenos="10 "></span></a><span class="p">}</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_RANGE1</span><span class="p">;</span>
+</span></code></pre></div>
+<p><code>Flags</code>字段可以设置为以下值的组合：</p>
+<ul>
+<li><code>D3D12_DESCRIPTOR_RANGE_FLAG_NONE</code>：无特殊标志</li>
+<li><code>D3D12_DESCRIPTOR_RANGE_FLAG_DESCRIPTORS_VOLATILE</code>：描述符可能会在命令列表执行期间被修改（兼容1.0行为）</li>
+<li><code>D3D12_DESCRIPTOR_RANGE_FLAG_DATA_VOLATILE</code>：描述符指向的数据可能会变化</li>
+<li><code>D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC_WHILE_SET_AT_EXECUTE</code>：数据在执行时保持静态</li>
+<li><code>D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC</code>：数据完全静态</li>
+</ul>
+<p>⚠️ 注意版本兼容性。如果你使用<code>D3D_ROOT_SIGNATURE_VERSION_1_1</code>来序列化根签名，你需要确保目标系统支持1.1版本。Windows 10 Creators Update（15063）及以后的版本支持根签名1.1。如果你需要兼容更旧的系统，就使用1.0版本。在实际项目中，因为Win10 15063发布于2017年，现在基本不用担心兼容性问题了。但如果你使用了<code>D3D12SerializeVersionedRootSignature</code>而不是<code>D3D12SerializeRootSignature</code>，它会自动处理版本协商。</p>
+<p>对于1.1版本的根签名，序列化时使用的是<code>D3D12SerializeVersionedRootSignature</code>而不是<code>D3D12SerializeRootSignature</code>。前者可以处理任意版本的根签名，后者只能处理1.0版本。</p>
+<h2 id="多帧渲染的描述符管理">多帧渲染的描述符管理<a class="headerlink" href="#多帧渲染的描述符管理" title="链接到此章节">&para;</a></h2>
+<p>在实际应用中，我们通常会有多帧同时在GPU中执行（通常2到3帧）。这意味着我们需要为每一帧维护独立的描述符区域，避免一帧还在使用描述符时另一帧覆盖了它。</p>
+<p>一个常见的策略是把描述符堆分成多个区域，每帧使用其中一个。假设我们有3帧在飞行（in-flight），堆大小为128个描述符：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a><a href="#__codelineno-21-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">FrameCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2"></a><a href="#__codelineno-21-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">DescriptorsPerFrame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="p">;</span><span class="w">  </span><span class="c1">// 每帧40个描述符</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3"></a><a href="#__codelineno-21-3"><span class="linenos" data-linenos=" 3 "></span></a>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4"></a><a href="#__codelineno-21-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="c1">// 第frameIndex帧的描述符起始位置</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5"></a><a href="#__codelineno-21-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">UINT</span><span class="w"> </span><span class="n">frameOffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frameIndex</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DescriptorsPerFrame</span><span class="p">;</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6"></a><a href="#__codelineno-21-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">D3D12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">frameCpuHandle</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7"></a><a href="#__codelineno-21-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="n">pHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">();</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8"></a><a href="#__codelineno-21-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="n">frameCpuHandle</span><span class="p">.</span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">frameOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">descriptorSize</span><span class="p">;</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9"></a><a href="#__codelineno-21-9"><span class="linenos" data-linenos=" 9 "></span></a>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10"></a><a href="#__codelineno-21-10"><span class="linenos" data-linenos="10 "></span></a><span class="n">D3D12_GPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">frameGpuHandle</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11"></a><a href="#__codelineno-21-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="n">pHeap</span><span class="o">-&gt;</span><span class="n">GetGPUDescriptorHandleForHeapStart</span><span class="p">();</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12"></a><a href="#__codelineno-21-12"><span class="linenos" data-linenos="12 "></span></a><span class="n">frameGpuHandle</span><span class="p">.</span><span class="n">ptr</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">frameOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">descriptorSize</span><span class="p">;</span>
+</span></code></pre></div>
+<p>这种按帧分区的方式简单有效。每帧在自己的区域内创建描述符，绑定时使用对应的GPU句柄。只要帧数不超过预分配的区域大小，就不会出现冲突。</p>
+<p>另一个更灵活的方案是使用线性分配器（Linear Allocator），每帧维护一个当前偏移指针，每分配一个描述符就递增指针。帧开始时重置指针。这种方式不需要预先固定每帧的描述符数量，更加灵活。</p>
+<h2 id="-踩坑预警">⚠️ 踩坑预警<a class="headerlink" href="#-踩坑预警" title="链接到此章节">&para;</a></h2>
+<p>这一节集中说一下在描述符堆和根签名使用过程中最常见的几个坑。</p>
+<h3 id="坑1描述符表范围越界">坑1：描述符表范围越界<a class="headerlink" href="#坑1描述符表范围越界" title="链接到此章节">&para;</a></h3>
+<p>这是最危险的坑。如果你在根签名中定义了一个描述符表包含2个描述符，但在描述符堆中只在对应位置创建了1个描述符，GPU读取第二个描述符时就会读到未初始化的内存。这种行为是未定义的——可能什么都不显示，可能显示随机图案，也可能在某些硬件上直接导致设备丢失（Device Removed）。</p>
+<p>防范方法很简单：确保堆中每个需要的位置都有有效的描述符。我建议在创建堆之后，先用一个循环把所有描述符位置都初始化为一个"空"描述符（比如一个1x1的黑色纹理的SRV），然后再用实际资源覆盖需要的位置。这样即使有遗漏，也不会导致GPU读到完全随机的数据。</p>
+<h3 id="坑2忘记setdescriptorheaps">坑2：忘记SetDescriptorHeaps<a class="headerlink" href="#坑2忘记setdescriptorheaps" title="链接到此章节">&para;</a></h3>
+<p><code>SetDescriptorHeaps</code>这个调用很容易被遗忘。如果你绑定了描述符表但没有先设置描述符堆，调试层会报一个错误。但如果你禁用了调试层（比如在Release构建中），这个错误是静默的——画面直接就是错误的，你可能要花很长时间才能定位到原因。</p>
+<p>我的建议是，把根签名设置、描述符堆设置和描述符表绑定封装成一个辅助函数，每次渲染前统一调用：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1"></a><a href="#__codelineno-22-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="kt">void</span><span class="w"> </span><span class="nf">BindRootSignatureAndResources</span><span class="p">(</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2"></a><a href="#__codelineno-22-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="w">    </span><span class="n">ID3D12GraphicsCommandList</span><span class="o">*</span><span class="w"> </span><span class="n">pCmdList</span><span class="p">,</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3"></a><a href="#__codelineno-22-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="w">    </span><span class="n">ID3D12RootSignature</span><span class="o">*</span><span class="w"> </span><span class="n">pRootSig</span><span class="p">,</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4"></a><a href="#__codelineno-22-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">pHeap</span><span class="p">,</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5"></a><a href="#__codelineno-22-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="n">D3D12_GPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">tableHandle</span><span class="p">)</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6"></a><a href="#__codelineno-22-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="p">{</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7"></a><a href="#__codelineno-22-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="n">pCmdList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootSignature</span><span class="p">(</span><span class="n">pRootSig</span><span class="p">);</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8"></a><a href="#__codelineno-22-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="w">    </span><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">pHeap</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9"></a><a href="#__codelineno-22-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="n">pCmdList</span><span class="o">-&gt;</span><span class="n">SetDescriptorHeaps</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppHeaps</span><span class="p">),</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">);</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10"></a><a href="#__codelineno-22-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="n">pCmdList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootDescriptorTable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">tableHandle</span><span class="p">);</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11"></a><a href="#__codelineno-22-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="坑3根签名和pipeline-state不匹配">坑3：根签名和Pipeline State不匹配<a class="headerlink" href="#坑3根签名和pipeline-state不匹配" title="链接到此章节">&para;</a></h3>
+<p>Pipeline State Object（PSO）在创建时需要指定根签名（或者PSO使用的根签名布局必须与命令列表上绑定的根签名兼容）。如果你创建PSO时用了根签名A，但在渲染时绑定了根签名B，GPU的行为是未定义的。</p>
+<p>确保PSO创建时指定的根签名和实际绑定的根签名一致。最安全的做法是在PSO的描述结构中显式指定根签名：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1"></a><a href="#__codelineno-23-1"><span class="linenos" data-linenos="1 "></span></a><span class="n">D3D12_GRAPHICS_PIPELINE_STATE_DESC</span><span class="w"> </span><span class="n">psoDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2"></a><a href="#__codelineno-23-2"><span class="linenos" data-linenos="2 "></span></a><span class="n">psoDesc</span><span class="p">.</span><span class="n">pRootSignature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pRootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">();</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3"></a><a href="#__codelineno-23-3"><span class="linenos" data-linenos="3 "></span></a><span class="c1">// ... 其他字段</span>
+</span></code></pre></div>
+<h3 id="坑4cbv大小对齐">坑4：CBV大小对齐<a class="headerlink" href="#坑4cbv大小对齐" title="链接到此章节">&para;</a></h3>
+<p>前面提到了CBV的大小必须对齐到256字节。但容易忽略的是，<code>D3D12_CONSTANT_BUFFER_VIEW_DESC</code>的<code>SizeInBytes</code>字段也必须是256的倍数。如果你的常量缓冲区结构体大小不是256的倍数，需要向上取整：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1"></a><a href="#__codelineno-24-1"><span class="linenos" data-linenos="1 "></span></a><span class="c1">// 正确的CBV大小计算</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2"></a><a href="#__codelineno-24-2"><span class="linenos" data-linenos="2 "></span></a><span class="k">constexpr</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">cbvSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">MyConstants</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="mi">255</span><span class="p">;</span>
+</span></code></pre></div>
+<p>如果你的结构体恰好是256字节，那没问题。但如果只有100字节，你实际上需要分配256字节。这不是浪费，而是硬件的要求。</p>
+<h2 id="常见问题">常见问题<a class="headerlink" href="#常见问题" title="链接到此章节">&para;</a></h2>
+<p><strong>Q: 一个描述符堆能同时绑定CBV_SRV_UAV和Sampler吗？</strong></p>
+<p>不能。每种堆类型只能存放对应类型的描述符。如果你需要同时使用CBV/SRV和Sampler，你需要创建两个独立的堆（一个<code>CBV_SRV_UAV</code>类型，一个<code>SAMPLER</code>类型），然后通过<code>SetDescriptorHeaps</code>同时绑定这两个堆。当然，如果你使用静态采样器，就不需要创建Sampler堆了。</p>
+<p><strong>Q: 根签名的参数索引和HLSL中的register编号是什么关系？</strong></p>
+<p>根参数的索引（传给<code>SetGraphicsRootDescriptorTable</code>、<code>SetGraphicsRoot32BitConstants</code>等的第一个参数）是你在<code>D3D12_ROOT_PARAMETER</code>数组中的顺序。HLSL中的<code>register(b0)</code>、<code>register(t0)</code>、<code>register(s0)</code>则由<code>BaseShaderRegister</code>字段决定。两者的编号是独立的——根参数索引0不一定对应register 0。这取决于你如何排列根参数数组。</p>
+<p><strong>Q: 我应该用Root Constants还是Descriptor Table来传常量缓冲区？</strong></p>
+<p>对于小型常量（比如几个float），用Root Constants更高效，因为它避免了额外的内存间接寻址。但对于大块数据（比如MVP矩阵），Descriptor Table更合适，因为根签名空间有限（64个DWORD）。一般经验是：如果数据不超过16个DWORD（64字节），考虑Root Constants；否则用Descriptor Table引用CBV。</p>
+<p><strong>Q: 描述符堆满了怎么办？</strong></p>
+<p>你需要创建一个新的堆。但要注意，每个命令列表在任一时刻只能绑定一个每种类型的Shader可见堆。所以更好的做法是在项目初期就规划好堆的大小，预留足够的空间。DirectXTK12库提供了一个<code>DescriptorHeap</code>辅助类来管理描述符的动态分配和回收，值得参考。</p>
+<h2 id="总结">总结<a class="headerlink" href="#总结" title="链接到此章节">&para;</a></h2>
+<p>到这里，我们已经完整地走过了D3D12资源绑定模型的核心部分。从描述符堆的概念和创建，到根签名的三种参数类型，再到具体的绑定流程和多帧管理，我们覆盖了D3D12资源绑定中最关键的知识点。</p>
+<p>回头看这个体系，你会发现D3D12的设计哲学非常一致：把控制权交给开发者，让你精确地控制GPU的每一个行为。描述符堆让你自己管理资源描述的GPU内存布局，根签名让你精确地定义Shader如何访问这些资源。虽然学习曲线陡峭，但一旦掌握，你就拥有了最大程度的性能优化空间。</p>
+<p>在下一篇文章中，我们要聊一个更实际的话题——D3D12与D3D11的互操作。在很多实际项目中，你可能需要在D3D12渲染管线中混合使用D2D来绘制UI，或者逐步把一个D3D11项目迁移到D3D12。微软提供了D3D11On12互操作层来支持这种场景，我们下一篇就来拆解它。</p>
+<h2 id="练习">练习<a class="headerlink" href="#练习" title="链接到此章节">&para;</a></h2>
+<ol>
+<li>
+<p><strong>基础：创建描述符堆并绑定CBV</strong>。创建一个D3D12项目，初始化设备和命令队列，创建一个包含256个描述符的CBV_SRV_UAV堆，并在其中创建一个常量缓冲区视图。验证描述符句柄的偏移是否正确。</p>
+</li>
+<li>
+<p><strong>进阶：构建完整的根签名</strong>。定义一个根签名，包含一个Descriptor Table（1个CBV + 1个SRV）和一个静态采样器。用<code>D3D12SerializeRootSignature</code>序列化后创建根签名对象。写一个简单的像素着色器来验证资源绑定是否正确——比如用常量缓冲区中的颜色值乘以纹理采样值。</p>
+</li>
+<li>
+<p><strong>挑战：多帧描述符管理</strong>。实现一个3帧并行的描述符管理方案。为每帧在描述符堆中划分独立的区域，确保帧之间的描述符互不干扰。运行你的程序，观察多帧同时执行时资源绑定是否稳定。</p>
+</li>
+<li>
+<p><strong>调研：根签名1.1的优化效果</strong>。阅读<a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/root-signature-version-1-1">Microsoft Learn上关于根签名版本1.1的文档</a>，了解<code>DESCRIPTORS_VOLATILE</code>和<code>DATA_STATIC</code>标志的含义。思考：在什么场景下，从1.0迁移到1.1能带来可测量的性能提升？</p>
+</li>
+</ol>
+<hr />
+<p><strong>参考资料</strong>:
+- <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/descriptor-heaps">Descriptor Heaps - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/creating-descriptor-heaps">Creating Descriptor Heaps - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap">ID3D12Device::CreateDescriptorHeap - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12descriptorheap">ID3D12DescriptorHeap - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/root-signatures">Root Signatures Overview - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/creating-a-root-signature">Creating a Root Signature - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-d3d12serializerootsignature">D3D12SerializeRootSignature - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/root-signature-version-1-1">Root Signature Version 1.1 - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_root_signature_desc">D3D12_ROOT_SIGNATURE_DESC - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_root_parameter">D3D12_ROOT_PARAMETER - Microsoft Learn</a>
+- <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/constant-buffer-view">Constant Buffer View - Microsoft Learn</a></p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年4月1日 17:39:57 CST">2026年4月1日 17:39:57</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="创建日期">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年4月1日 17:39:57 CST">2026年4月1日 17:39:57</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../45_ProgrammingGUI_Graphics_D3D12_ResourceHeap/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 通用GUI编程技术——图形渲染实战（四十五）——D3D12资源与堆管理：从上传到驻留">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                通用GUI编程技术——图形渲染实战（四十五）——D3D12资源与堆管理：从上传到驻留
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../47_ProgrammingGUI_Graphics_D3D12_D3D11Interop/" class="md-footer__link md-footer__link--next" aria-label="下一页: 通用GUI编程技术——图形渲染实战（四十七）——D3D12与D3D11互操作及选型建议">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                通用GUI编程技术——图形渲染实战（四十七）——D3D12与D3D11互操作及选型建议
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Charliechen - 保留所有权利
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Awesome-Embedded-Learning-Studio" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:725610365@qq.com" target="_blank" rel="noopener" title="发送邮件" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M536.4-26.3c9.8-3.5 20.6-1 28 6.3s9.8 18.2 6.3 28l-178 496.9c-5 13.9-18.1 23.1-32.8 23.1-14.2 0-27-8.6-32.3-21.7l-64.2-158c-4.5-11-2.5-23.6 5.2-32.6l94.5-112.4c5.1-6.1 4.7-15-.9-20.6s-14.6-6-20.6-.9l-112.4 94.3c-9.1 7.6-21.6 9.6-32.6 5.2L38.1 216.8c-13.1-5.3-21.7-18.1-21.7-32.3 0-14.7 9.2-27.8 23.1-32.8z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
