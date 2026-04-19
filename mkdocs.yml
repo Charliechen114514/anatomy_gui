@@ -155,8 +155,7 @@ markdown_extensions:
 
 plugins:
   # 标签分类插件 - 内容标签索引
-  - tags:
-      tags_file: tags.md
+  - tags
 
   # 搜索插件 - 提供全站搜索功能
   - search:

@@ -105,7 +105,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
      */
     case WM_KEYDOWN:
     {
-        sprintf_s(debugMsg, sizeof(debugMsg), "[WindowProc] WM_KEYDOWN - 虚拟键码: 0x%X\n", wParam);
+        sprintf_s(debugMsg, sizeof(debugMsg), "[WindowProc] WM_KEYDOWN - 虚拟键码: 0x%llX\n", (unsigned long long)wParam);
         OutputDebugStringA(debugMsg);
 
         // ESC 键退出
