@@ -14,6 +14,7 @@ docs_dir: "tutorial"
 
 theme:
   name: material  # 使用 Material 主题
+  custom_dir: overrides  # 自定义模板覆盖（如 404 页面）
   language: zh  # 界面语言设置为简体中文
   
   # 自定义网站图标和Logo
@@ -153,6 +154,10 @@ markdown_extensions:
 # 插件为网站添加额外功能
 
 plugins:
+  # 标签分类插件 - 内容标签索引
+  - tags:
+      tags_file: tags.md
+
   # 搜索插件 - 提供全站搜索功能
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'  # 中文分词支持
@@ -163,10 +168,10 @@ plugins:
         - stemmer
         - stopWordFilter
         - trimmer
-  
+
   # Awesome Pages 插件 - 灵活的页面组织方式
   - awesome-pages
-  
+
   # Git 修订日期插件 - 自动显示文章的创建和更新时间
   - git-revision-date-localized:
       enable_creation_date: true  # 显示创建日期
@@ -174,6 +179,10 @@ plugins:
       type: datetime  # 日期格式: datetime(日期+时间) / date(仅日期) / iso_date / iso_datetime
       timezone: Asia/Shanghai  # 时区设置
       locale: zh  # 本地化语言
+
+  # 压缩插件 - 减小 HTML/CSS 输出体积
+  - minify:
+      minify_html: true
 
 
 # ==================== 额外配置 ====================
@@ -183,7 +192,7 @@ extra:
   # 社交媒体图标
   social:
     - icon: fontawesome/brands/github  # GitHub图标
-      link: https://github.com/Awesome-Embedded-Learning-Studio  # 你的GitHub主页
+      link: https://github.com/Charliechen114514/anatomy_gui
       name: GitHub
     - icon: fontawesome/solid/paper-plane  # 邮件图标
       link: mailto:725610365@qq.com

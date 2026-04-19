@@ -14,9 +14,9 @@
 
 ```
 第〇篇  前言与准备          世界观建立
-第一篇  Win32 原生编程      地基（进行中 ██████░ 65%）
+第一篇  Win32 原生编程      地基（进行中 ███████░ 75%）
 第二篇  GUI 核心概念        跨框架通识
-第三篇  图形渲染            GDI → Direct2D → GPU
+第三篇  图形渲染            GDI → Direct2D → GPU（进行中 █████████░ 95%）
 第四篇  跨平台框架          Qt / wxWidgets / GTK
 第五篇  现代 Windows 技术   WinUI 3 / WebView2
 第六篇  Web 混合方案        Electron / CEF
@@ -75,6 +75,87 @@
 | 15 | 字符串表与国际化 | 已完成 | [15_ProgrammingGUI_NativeWindows_StringTable.md](native_win32/15_ProgrammingGUI_NativeWindows_StringTable.md) |
 | 16 | 对话框模板 | 已完成 | [16_ProgrammingGUI_NativeWindows_DialogTemplate.md](native_win32/16_ProgrammingGUI_NativeWindows_DialogTemplate.md) |
 | 17 | VS 资源编辑器 | 已完成 | [17_ProgrammingGUI_NativeWindows_VSResourceEditor.md](native_win32/17_ProgrammingGUI_NativeWindows_VSResourceEditor.md) |
+
+### 工具栏与状态栏
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 17.5 | 工具栏与状态栏 | 已完成 | [17_5_ProgrammingGUI_NativeWindows_ToolbarStatusBar.md](native_win32/17_5_ProgrammingGUI_NativeWindows_ToolbarStatusBar.md) |
+
+### GDI 图形篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 18 | GDI 设备上下文（HDC）完全指南 | 已完成 | [18_ProgrammingGUI_NativeWindows_GDI_HDC.md](native_win32/18_ProgrammingGUI_NativeWindows_GDI_HDC.md) |
+| 19 | GDI 绘图对象：画笔、画刷、字体 | 已完成 | [19_ProgrammingGUI_NativeWindows_GDI_Objects.md](native_win32/19_ProgrammingGUI_NativeWindows_GDI_Objects.md) |
+| 20 | GDI 图形绘制：线条、矩形与多边形 | 已完成 | [20_ProgrammingGUI_NativeWindows_GDI_Shapes.md](native_win32/20_ProgrammingGUI_NativeWindows_GDI_Shapes.md) |
+| 21 | GDI 文字渲染 | 已完成 | [21_ProgrammingGUI_NativeWindows_GDI_Text.md](native_win32/21_ProgrammingGUI_NativeWindows_GDI_Text.md) |
+| 22 | GDI 位图操作 | 已完成 | [22_ProgrammingGUI_NativeWindows_GDI_Bitmap.md](native_win32/22_ProgrammingGUI_NativeWindows_GDI_Bitmap.md) |
+| 23 | GDI 双缓冲技术 | 已完成 | [23_ProgrammingGUI_NativeWindows_GDI_DoubleBuffer.md](native_win32/23_ProgrammingGUI_NativeWindows_GDI_DoubleBuffer.md) |
+| 24 | GDI Region 与裁切 | 已完成 | [24_ProgrammingGUI_Graphics_GDI_Region.md](native_win32/24_ProgrammingGUI_Graphics_GDI_Region.md) |
+| 25 | Alpha 混合与透明效果 | 已完成 | [25_ProgrammingGUI_Graphics_GDI_AlphaBlend.md](native_win32/25_ProgrammingGUI_Graphics_GDI_AlphaBlend.md) |
+
+### GDI+ 篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 26 | GDI+ 架构与抗锯齿渐变 | 已完成 | [26_ProgrammingGUI_Graphics_GdiPlus_Architecture.md](native_win32/26_ProgrammingGUI_Graphics_GdiPlus_Architecture.md) |
+| 27 | 坐标变换与矩阵 | 已完成 | [27_ProgrammingGUI_Graphics_GdiPlus_Transform.md](native_win32/27_ProgrammingGUI_Graphics_GdiPlus_Transform.md) |
+| 28 | 图像格式与编解码 | 已完成 | [28_ProgrammingGUI_Graphics_GdiPlus_ImageCodec.md](native_win32/28_ProgrammingGUI_Graphics_GdiPlus_ImageCodec.md) |
+
+### Direct2D / DirectWrite 篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 29 | Direct2D 架构与资源体系 | 已完成 | [29_ProgrammingGUI_Graphics_Direct2D_Architecture.md](native_win32/29_ProgrammingGUI_Graphics_Direct2D_Architecture.md) |
+| 30 | Direct2D 几何体系统 | 已完成 | [30_ProgrammingGUI_Graphics_Direct2D_Geometry.md](native_win32/30_ProgrammingGUI_Graphics_Direct2D_Geometry.md) |
+| 31 | Direct2D 效果与图层 | 已完成 | [31_ProgrammingGUI_Graphics_Direct2D_EffectsLayer.md](native_win32/31_ProgrammingGUI_Graphics_Direct2D_EffectsLayer.md) |
+| 32 | DirectWrite 高质量文字排版 | 已完成 | [32_ProgrammingGUI_Graphics_DirectWrite_Typography.md](native_win32/32_ProgrammingGUI_Graphics_DirectWrite_Typography.md) |
+| 33 | Direct2D 与 Win32/GDI 互操作 | 已完成 | [33_ProgrammingGUI_Graphics_Direct2D_GDIInterop.md](native_win32/33_ProgrammingGUI_Graphics_Direct2D_GDIInterop.md) |
+
+### HLSL 着色器篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 34 | HLSL 语言基础 | 已完成 | [34_ProgrammingGUI_Graphics_HLSL_Basics.md](native_win32/34_ProgrammingGUI_Graphics_HLSL_Basics.md) |
+| 35 | HLSL 编译与调试 | 已完成 | [35_ProgrammingGUI_Graphics_HLSL_CompileDebug.md](native_win32/35_ProgrammingGUI_Graphics_HLSL_CompileDebug.md) |
+| 36 | Constant Buffer 与数据传递 | 已完成 | [36_ProgrammingGUI_Graphics_HLSL_CBuffer.md](native_win32/36_ProgrammingGUI_Graphics_HLSL_CBuffer.md) |
+
+### Direct3D 11 篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 37 | D3D11 初始化与 SwapChain | 已完成 | [37_ProgrammingGUI_Graphics_D3D11_InitSwapChain.md](native_win32/37_ProgrammingGUI_Graphics_D3D11_InitSwapChain.md) |
+| 38 | 顶点缓冲与输入布局 | 已完成 | [38_ProgrammingGUI_Graphics_D3D11_VertexInput.md](native_win32/38_ProgrammingGUI_Graphics_D3D11_VertexInput.md) |
+| 39 | 纹理与采样器 | 已完成 | [39_ProgrammingGUI_Graphics_D3D11_TextureSampler.md](native_win32/39_ProgrammingGUI_Graphics_D3D11_TextureSampler.md) |
+| 40 | 深度缓冲与 3D 变换 | 已完成 | [40_ProgrammingGUI_Graphics_D3D11_Depth3D.md](native_win32/40_ProgrammingGUI_Graphics_D3D11_Depth3D.md) |
+| 41 | 光照模型基础 | 已完成 | [41_ProgrammingGUI_Graphics_D3D11_Lighting.md](native_win32/41_ProgrammingGUI_Graphics_D3D11_Lighting.md) |
+| 42 | 混合与透明渲染 | 已完成 | [42_ProgrammingGUI_Graphics_D3D11_BlendAlpha.md](native_win32/42_ProgrammingGUI_Graphics_D3D11_BlendAlpha.md) |
+
+### Direct3D 12 篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 43 | D3D12 设计哲学 | 已完成 | [43_ProgrammingGUI_Graphics_D3D12_Philosophy.md](native_win32/43_ProgrammingGUI_Graphics_D3D12_Philosophy.md) |
+| 44 | 命令列表、队列与围栏 | 已完成 | [44_ProgrammingGUI_Graphics_D3D12_CmdQueue.md](native_win32/44_ProgrammingGUI_Graphics_D3D12_CmdQueue.md) |
+| 45 | 资源与堆管理 | 已完成 | [45_ProgrammingGUI_Graphics_D3D12_ResourceHeap.md](native_win32/45_ProgrammingGUI_Graphics_D3D12_ResourceHeap.md) |
+| 46 | 描述符堆与根签名 | 已完成 | [46_ProgrammingGUI_Graphics_D3D12_DescRootSig.md](native_win32/46_ProgrammingGUI_Graphics_D3D12_DescRootSig.md) |
+| 47 | D3D12 与 D3D11 互操作 | 已完成 | [47_ProgrammingGUI_Graphics_D3D12_D3D11Interop.md](native_win32/47_ProgrammingGUI_Graphics_D3D12_D3D11Interop.md) |
+
+### 自定义控件篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 48 | Owner-Draw 控件 | 已完成 | [48_ProgrammingGUI_Graphics_CustomCtrl_OwnerDraw.md](native_win32/48_ProgrammingGUI_Graphics_CustomCtrl_OwnerDraw.md) |
+| 49 | 完全自绘控件架构 | 已完成 | [49_ProgrammingGUI_Graphics_CustomCtrl_FullCustom.md](native_win32/49_ProgrammingGUI_Graphics_CustomCtrl_FullCustom.md) |
+| 50 | 命中测试与鼠标事件路由 | 已完成 | [50_ProgrammingGUI_Graphics_CustomCtrl_HitTest.md](native_win32/50_ProgrammingGUI_Graphics_CustomCtrl_HitTest.md) |
+
+### OpenGL 篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 51 | Win32 嵌入 OpenGL | 已完成 | [51_ProgrammingGUI_Graphics_OpenGL_Win32.md](native_win32/51_ProgrammingGUI_Graphics_OpenGL_Win32.md) |
+| 52 | Qt QOpenGLWidget 封装 | 已完成 | [52_ProgrammingGUI_Graphics_OpenGL_QtGLWidget.md](native_win32/52_ProgrammingGUI_Graphics_OpenGL_QtGLWidget.md) |
 
 ### 配套示例代码
 

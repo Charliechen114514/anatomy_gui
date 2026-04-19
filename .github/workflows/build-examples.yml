@@ -1,0 +1,29 @@
+name: Build Code Examples
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/tutorial/native_win32/**'
+      - '.github/workflows/build-examples.yml'
+  pull_request:
+    paths:
+      - 'src/tutorial/native_win32/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSVC Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure CMake
+        run: cmake -B build -S src/tutorial/native_win32
+
+      - name: Build all examples
+        run: cmake --build build --config Release
