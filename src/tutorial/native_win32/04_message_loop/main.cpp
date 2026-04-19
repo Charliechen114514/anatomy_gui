@@ -142,8 +142,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     default:
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
-
-    return 0;
 }
 
 /*
@@ -219,7 +217,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine [[maybe_unuse
 {
     // 启用控制台输出（用于调试，可选）
     AllocConsole();
-    freopen("CONOUT$", "w", stdout);
+    FILE* fp;
+    freopen_s(&fp, "CONOUT$", "w", stdout);
     printf("=== Win32 消息循环示例程序 ===\n");
     printf("按 ESC 键或关闭窗口退出\n\n");
     printf("使用 DebugView 或 Visual Studio 输出窗口查看详细消息\n");
