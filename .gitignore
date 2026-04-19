@@ -1,4 +1,33 @@
-# AI Matters!
-.claude
-.vscode
+# AI / Editor
+.claude/
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# MkDocs
+site/
+
+# Build artifacts (CMake)
 build/
+cmake-build-*/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Compiled objects
+*.obj
+*.o
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk

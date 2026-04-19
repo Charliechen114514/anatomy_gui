@@ -12,6 +12,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Windows Unicode 设置
 add_definitions(-DUNICODE -D_UNICODE)
 
+# MSVC 编译选项
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 # 不使用控制台（所有示例都是 GUI 应用）
 set(CMAKE_WIN32_EXECUTABLE ON)
 

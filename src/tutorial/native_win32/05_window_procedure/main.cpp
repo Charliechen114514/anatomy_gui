@@ -81,7 +81,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
  * 当窗口通过 CreateWindowEx 创建时，此消息被发送。
  * 这是进行一次性初始化的好机会。
  */
-LRESULT OnCreate(HWND hwnd, CREATESTRUCT* createStruct)
+LRESULT OnCreate(HWND, CREATESTRUCT*)
 {
     // 在这里进行初始化工作
     // 例如：创建子窗口、分配内存、加载资源等
@@ -102,7 +102,7 @@ LRESULT OnCreate(HWND hwnd, CREATESTRUCT* createStruct)
  *   width - 客户区的新宽度
  *   height - 客户区的新高度
  */
-LRESULT OnSize(HWND hwnd, UINT flags, int width, int height)
+LRESULT OnSize(HWND hwnd, UINT, int, int)
 {
     // 窗口大小变化时的处理
     // 例如：重新排列子窗口、调整布局等
@@ -180,7 +180,7 @@ LRESULT OnPaint(HWND hwnd)
  *   x      - 鼠标 x 坐标
  *   y      - 鼠标 y 坐标
  */
-LRESULT OnLButtonDown(HWND hwnd, UINT flags, int x, int y)
+LRESULT OnLButtonDown(HWND hwnd, UINT, int x, int y)
 {
     // 使用 LOWORD/HIWORD 宏从 lParam 中提取坐标
     // 或者使用 GET_X_LPARAM/GET_Y_LPARAM 宏 (推荐用于多平台兼容)
@@ -294,7 +294,7 @@ LRESULT OnKeyDown(HWND hwnd, UINT vkCode)
  * 当窗口被销毁时发送。
  * 这是进行清理工作的机会。
  */
-LRESULT OnDestroy(HWND hwnd)
+LRESULT OnDestroy(HWND)
 {
     // 向消息队列投递 WM_QUIT 消息
     // 这会导致 GetMessage 返回 0，从而退出消息循环

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 提问
+    url: https://github.com/Charliechen114514/anatomy_gui/discussions
+    about: 一般性问题请在 Discussions 中提出

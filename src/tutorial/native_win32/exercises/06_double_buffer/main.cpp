@@ -143,19 +143,19 @@ struct Ball {
 
         // 边界碰撞检测
         if (x - radius < 0) {
-            x = radius;
+            x = static_cast<float>(radius);
             vx = -vx;
         }
         if (x + radius > clientWidth) {
-            x = clientWidth - radius;
+            x = static_cast<float>(clientWidth) - radius;
             vx = -vx;
         }
         if (y - radius < 0) {
-            y = radius;
+            y = static_cast<float>(radius);
             vy = -vy;
         }
         if (y + radius > clientHeight) {
-            y = clientHeight - radius;
+            y = static_cast<float>(clientHeight) - radius;
             vy = -vy;
         }
     }
