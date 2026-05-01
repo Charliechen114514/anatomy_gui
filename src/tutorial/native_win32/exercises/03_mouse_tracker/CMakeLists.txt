@@ -5,9 +5,6 @@ project(mouse_tracker CXX)
 # 生成 compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # Win32 GUI 应用程序
 add_executable(mouse_tracker WIN32
     main.cpp

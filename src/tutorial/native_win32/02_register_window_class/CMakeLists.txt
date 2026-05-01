@@ -13,10 +13,6 @@ project(02_register_window_class
 # 生成 compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# 设置 C++ 标准
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # 定义源文件
 set(SOURCES
     main.cpp

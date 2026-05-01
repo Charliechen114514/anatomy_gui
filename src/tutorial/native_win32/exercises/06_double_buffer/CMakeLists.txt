@@ -4,9 +4,6 @@ project(double_buffer CXX)
 # 生成 compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # 添加 Win32 窗口程序支持
 if(WIN32)
     set(CMAKE_WIN32_EXECUTABLE ON)

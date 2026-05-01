@@ -17,9 +17,9 @@
 第一篇  Win32 原生编程      地基（进行中 ███████░ 75%）
 第二篇  GUI 核心概念        跨框架通识
 第三篇  图形渲染            GDI → Direct2D → GPU（进行中 █████████░ 95%）
-第四篇  跨平台框架          Qt / wxWidgets / GTK
+第四篇  跨平台框架          GTK（GTK3 + GTK4）
 第五篇  现代 Windows 技术   WinUI 3 / WebView2
-第六篇  Web 混合方案        Electron / CEF
+第六篇  Web 混合方案        WebView2 / CEF
 第七篇  工程化专题          多线程、DPI、打包、i18n
 第八篇  综合实战项目        贯穿全系列的收尾
 ```
@@ -29,9 +29,8 @@
 ## 技术覆盖
 
 [![Win32](https://img.shields.io/badge/Win32-API-0078D4?style=for-the-badge&logo=windows&logoColor=white)]()
-[![Qt](https://img.shields.io/badge/Qt-Framework-41CD52?style=for-the-badge&logo=qt&logoColor=white)]()
-[![WinUI](https://img.shields.io/badge/WinUI-3-0078D4?style=for-the-badge&logo=windows&logoColor=white)]()
 [![GTK](https://img.shields.io/badge/GTK-4.0-4DB33D?style=for-the-badge&logo=gtk&logoColor=white)]()
+[![WinUI](https://img.shields.io/badge/WinUI-3-0078D4?style=for-the-badge&logo=windows&logoColor=white)]()
 [![WebView2](https://img.shields.io/badge/WebView2-Chromium-00CE7C?style=for-the-badge&logo=chromium&logoColor=white)]()
 
 ---
@@ -155,7 +154,6 @@
 | 章节 | 内容 | 状态 | 文件 |
 |:-----|:-----|:-----|:-----|
 | 51 | Win32 嵌入 OpenGL | 已完成 | [51_ProgrammingGUI_Graphics_OpenGL_Win32.md](native_win32/51_ProgrammingGUI_Graphics_OpenGL_Win32.md) |
-| 52 | Qt QOpenGLWidget 封装 | 已完成 | [52_ProgrammingGUI_Graphics_OpenGL_QtGLWidget.md](native_win32/52_ProgrammingGUI_Graphics_OpenGL_QtGLWidget.md) |
 
 ### 配套示例代码
 

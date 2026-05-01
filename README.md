@@ -33,9 +33,9 @@
 
 ## 为什么要做这个
 
-说实话，现在想系统地学习 GUI 编程并不容易。市面上要么是零散的博客文章，要么是官方文档那种冷冰冰的参考手册，缺乏一套能把整个知识体系串起来的教程。很多人想学客户端开发，但不知道从哪入手——Electron 太重、Qt 文档太厚、Win32 看起来像上古遗迹。
+说实话，现在想系统地学习 GUI 编程并不容易。市面上要么是零散的博客文章，要么是官方文档那种冷冰冰的参考手册，缺乏一套能把整个知识体系串起来的教程。很多人想学客户端开发，但不知道从哪入手——Electron 太重、Win32 看起来像上古遗迹。
 
-这个项目的目的就是填补这个空白。我们从 Windows 最底层的 Win32 API 开始，一路讲到 Qt、WinUI、WebView2 等现代技术。你可能会问：为什么不直接学框架？因为只有理解了底层的消息机制、窗口模型、绘制原理，切换任何框架时都会顺畅很多。
+这个项目的目的就是填补这个空白。我们从 Windows 最底层的 Win32 API 开始，一路讲到 GTK、WinUI、WebView2 等现代技术。你可能会问：为什么不直接学框架？因为只有理解了底层的消息机制、窗口模型、绘制原理，切换任何框架时都会顺畅很多。
 
 ---
 
@@ -47,8 +47,9 @@
 [![D3D11](https://img.shields.io/badge/Direct3D_11-3D_Rendering-0078D4?style=for-the-badge&logo=windows&logoColor=white)]()
 [![D3D12](https://img.shields.io/badge/Direct3D_12-Low_Level-0078D4?style=for-the-badge&logo=windows&logoColor=white)]()
 [![OpenGL](https://img.shields.io/badge/OpenGL-Cross_Platform-5586A4?style=for-the-badge&logo=opengl&logoColor=white)]()
-[![Qt](https://img.shields.io/badge/Qt-Framework-41CD52?style=for-the-badge&logo=qt&logoColor=white)]()
+[![GTK](https://img.shields.io/badge/GTK-4.0-4DB33D?style=for-the-badge&logo=gtk&logoColor=white)]()
 [![WinUI](https://img.shields.io/badge/WinUI-3-0078D4?style=for-the-badge&logo=windows&logoColor=white)]()
+[![WebView2](https://img.shields.io/badge/WebView2-Chromium-00CE7C?style=for-the-badge&logo=chromium&logoColor=white)]()
 
 ---
 
@@ -59,9 +60,9 @@
 第一篇  Win32 原生编程       地基（进行中 ███████░ 75%）
 第二篇  GUI 核心概念         跨框架通识
 第三篇  图形渲染             GDI → Direct2D → GPU（进行中 █████████░ 95%）
-第四篇  跨平台框架           Qt / wxWidgets / GTK
+第四篇  跨平台框架           GTK（GTK3 + GTK4）
 第五篇  现代 Windows 技术    WinUI 3 / WebView2
-第六篇  Web 混合方案         Electron / CEF / Tauri
+第六篇  Web 混合方案         WebView2 / CEF
 第七篇  工程化专题           多线程、DPI、打包、i18n
 第八篇  综合实战项目         贯穿全系列的收尾
 ```
@@ -92,7 +93,7 @@
 | Direct3D 11 | 37-42 | 6 | 已完成 |
 | Direct3D 12 | 43-47 | 5 | 已完成 |
 | 自定义控件 | 48-50 | 3 | 已完成 |
-| OpenGL | 51-52 | 2 | 已完成 |
+| OpenGL | 51 | 1 | 已完成 |
 
 更多细节请查看 [Roadmap.md](Roadmap.md) 完整规划。
 

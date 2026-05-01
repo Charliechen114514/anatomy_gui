@@ -8,10 +8,6 @@ project(close_window)
 # 生成 compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# 设置 C++ 标准
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # 可执行文件
 add_executable(${PROJECT_NAME}
     main.cpp

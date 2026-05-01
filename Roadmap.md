@@ -1,6 +1,6 @@
 # GUI 编程系列 · 完整路线图
 
-> **定位**：面向掌握 C++ 基础语法的读者，循序渐进，概念先行，覆盖 Win32 / Qt / WinUI / GTK / wxWidgets / Web 前端，配套 GitHub 代码仓库与博客文章。
+> **定位**：面向掌握 C++ 基础语法的读者，循序渐进，概念先行，覆盖 Win32 / WinUI / GTK / Web 前端，配套 GitHub 代码仓库与博客文章。
 
 ---
 
@@ -11,9 +11,9 @@
 第一篇  Win32 原生编程      ← 地基（进行中 75%）
 第二篇  GUI 核心概念        ← 跨框架通识
 第三篇  图形渲染            ← GDI → Direct2D → GPU
-第四篇  跨平台框架          ← Qt / wxWidgets / GTK
+第四篇  跨平台框架          ← GTK
 第五篇  现代 Windows 技术   ← WinUI 3 / WebView2
-第六篇  Web 混合方案        ← Electron / CEF / Tauri
+第六篇  Web 混合方案        ← WebView2 / CEF
 第七篇  工程化专题          ← 多线程、DPI、打包、i18n
 第八篇  综合实战项目        ← 贯穿全系列的收尾
 ```
@@ -21,7 +21,7 @@
 
 # GUI 编程系列 · 完整路线图（细化版）
 
-> **定位**：面向掌握 C++ 基础语法的读者，循序渐进，概念先行，覆盖 Win32 / Qt / WinUI / GTK / wxWidgets / Web 前端，配套 GitHub 代码仓库与博客文章。
+> **定位**：面向掌握 C++ 基础语法的读者，循序渐进，概念先行，覆盖 Win32 / WinUI / GTK / Web 前端，配套 GitHub 代码仓库与博客文章。
 >
 > **每节统一结构**：概念讲解 → 代码结构 → 常见坑 → 小作业
 
@@ -34,9 +34,9 @@
 第一篇  Win32 原生编程          ← 地基（进行中 75%）
 第二篇  GUI 核心概念            ← 跨框架通识
 第三篇  图形渲染（独立系列）    ← GDI → Direct2D → D3D11 → D3D12
-第四篇  跨平台框架              ← Qt / wxWidgets / GTK
+第四篇  跨平台框架              ← GTK
 第五篇  现代 Windows 技术       ← WinUI 3 / WebView2
-第六篇  Web 混合方案            ← Electron / CEF / Tauri
+第六篇  Web 混合方案            ← WebView2 / CEF
 第七篇  工程化专题              ← 多线程、DPI、打包、i18n
 第八篇  综合实战项目            ← 贯穿全系列的收尾
 ```
@@ -1118,272 +1118,11 @@ if (fence->GetCompletedValue() < fenceValue) {
 
 ---
 
-### ── Qt 篇 ──
-
-### 4.1 Qt 的世界观
-
-**概念讲解**
-- Qt 历史演进：Qt4 → Qt5 → Qt6（模块化拆分、CMake 优先、C++17 要求）
-- Qt 构建系统：qmake（.pro 文件，遗留）vs CMake（现代首选）+ `find_package(Qt6)`
-- QObject 三大特性：对象树（自动内存管理）、MOC（元对象编译器，信号槽基础）、属性系统
-
-**代码结构**
-```cmake
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-target_link_libraries(myapp PRIVATE Qt6::Widgets)
-set_target_properties(myapp PROPERTIES WIN32_EXECUTABLE TRUE)
-```
-
-**常见坑**
-- Qt6 中 `QString` 不再隐式从 `char*` 构造（需要 `QString::fromUtf8`）
-- 忘记在 `CMakeLists.txt` 中启用 `CMAKE_AUTOMOC` → 信号槽代码编译报错
-
-**小作业**
-- 用 Qt6 + CMake 搭建工程，创建一个带菜单栏的主窗口，菜单项触发消息框
-
----
-
-### 4.2 Qt 信号与槽
-
-**概念讲解**
-- 声明：`signals:` 区段（无需实现体）；`slots:` 区段（普通成员函数）
-- 连接函数重载：字符串宏 `SIGNAL/SLOT` vs 函数指针 vs Lambda（各自的类型安全与性能差异）
-- 连接类型：`Qt::DirectConnection`（同线程直接调用）、`Qt::QueuedConnection`（跨线程队列）、`Qt::BlockingQueuedConnection`（同步阻塞，慎用）
-
-**代码结构**
-```cpp
-// 现代函数指针连接（编译期类型检查）
-connect(slider, &QSlider::valueChanged,
-        label,  &QLabel::setNum);
-
-// Lambda 连接（捕获上下文）
-connect(button, &QPushButton::clicked, this, [this]() {
-    label->setText("Clicked!");
-});
-```
-
-**常见坑**
-- 函数指针连接时，信号/槽有重载版本 → 需要 `qOverload<int>(&QSpinBox::valueChanged)` 消歧义
-- Lambda 连接默认没有第三个 `context` 参数，发送者销毁后 Lambda 仍可能触发 → 内存访问违规
-
-**小作业**
-- 实现「温度转换器」：两个 `QDoubleSpinBox` 双向绑定，修改任一方实时更新另一方
-
----
-
-### 4.3 Qt Widgets 布局系统
-
-**概念讲解**
-- 布局类层次：`QHBoxLayout` / `QVBoxLayout` / `QGridLayout` / `QFormLayout` / `QStackedLayout`
-- `QSizePolicy`：水平/垂直方向的伸缩策略（Fixed、Minimum、Expanding、Preferred 等）
-- 伸缩因子（`setStretch`）：多控件分割可用空间的权重比
-
-**代码结构**
-- 「设置对话框」的嵌套布局实现：左侧列表 + 右侧内容区（`QSplitter` + `QStackedWidget`）
-
-**常见坑**
-- 直接 `setGeometry` 后再 `setLayout` → 布局接管几何管理，手动设置被覆盖
-- `QWidget` 设置了固定大小策略但父布局有 `Expanding` 子控件 → 出现意外留白
-
-**小作业**
-- 实现响应式「仪表板」界面：窗口缩放时，三个信息卡片按比例均匀排列
-
----
-
-### 4.4 Qt 常用控件全览
-
-**概念讲解**
-- 输入控件：`QLineEdit`（验证器 `QValidator`）、`QTextEdit`、`QSpinBox`/`QDoubleSpinBox`、`QComboBox`
-- 展示控件：`QLabel`（支持富文本 HTML）、`QProgressBar`、`QLCDNumber`
-- 容器控件：`QGroupBox`、`QTabWidget`、`QScrollArea`、`QSplitter`、`QDockWidget`
-- 对话框：`QFileDialog`、`QColorDialog`、`QFontDialog`、`QMessageBox`、`QInputDialog`
-
-**代码结构**
-- `QLineEdit` + `QIntValidator` 实现只允许输入端口号的输入框
-
-**常见坑**
-- `QLabel::setText` 传入含 `<` 字符的用户内容 → 被当作 HTML 解析（需要 `Qt::PlainText` 或转义）
-- `QComboBox::addItems` 与 `currentIndexChanged` 信号在初始化时的触发顺序问题
-
-**小作业**
-- 实现「颜色选择器」面板：RGB 三个滑块 + 十六进制输入框 + 颜色预览块，四者实时同步
-
----
-
-### 4.5 Qt Model/View 架构
-
-**概念讲解**
-- 三角色分离：Model（数据）/ View（显示）/ Delegate（渲染+编辑）
-- 标准模型：`QStringListModel`、`QStandardItemModel`、`QFileSystemModel`
-- 自定义 Model：继承 `QAbstractItemModel` 必须实现的五个纯虚函数（`index`、`parent`、`rowCount`、`columnCount`、`data`）
-
-**代码结构**
-```cpp
-// 最小自定义 List Model
-class MyModel : public QAbstractListModel {
-    int rowCount(const QModelIndex&) const override { return data_.size(); }
-    QVariant data(const QModelIndex& idx, int role) const override {
-        if (role == Qt::DisplayRole) return data_[idx.row()];
-        return {};
-    }
-    std::vector<QString> data_;
-};
-```
-
-**常见坑**
-- 修改 Model 数据前忘记调用 `beginInsertRows/beginRemoveRows` → View 不刷新或崩溃
-- 使用 `QStandardItemModel` 存储大量数据（万级行）→ 性能问题，应改用自定义 Model
-
-**小作业**
-- 实现「联系人管理」：自定义 Model 存储联系人（姓名/电话/邮件），`QTableView` 展示，支持排序和搜索过滤（`QSortFilterProxyModel`）
-
----
-
-### 4.6 Qt Style Sheets（QSS）
-
-**概念讲解**
-- QSS 语法：选择器（类型、类名 `#id`、伪状态 `:hover/:checked/:disabled`）+ 属性
-- 盒模型属性：`margin`、`padding`、`border`、`background`
-- QSS 与 CSS 的核心差异：不支持继承、不支持动画（需要 `QPropertyAnimation`）、`subcontrol`（`::handle`、`::item`）
-
-**代码结构**
-```css
-QPushButton {
-    background: #0078d4; color: white;
-    border-radius: 4px; padding: 6px 16px;
-}
-QPushButton:hover    { background: #106ebe; }
-QPushButton:pressed  { background: #005a9e; }
-QPushButton:disabled { background: #cccccc; color: #666; }
-```
-
-**常见坑**
-- `QGroupBox` 在 QSS 中设置背景色后子控件背景变透明 → 需要同时设置子控件背景
-- QSS 选择器优先级规则与 CSS 不同，多次 `setStyleSheet` 的覆盖顺序需要注意
-
-**小作业**
-- 用纯 QSS 实现一套「深色主题」，覆盖主窗口、菜单栏、工具栏、状态栏和常用控件
-
----
-
-### 4.7 Qt 多线程
-
-**概念讲解**
-- `QThread` 的两种用法：子类化 + 重写 `run()`（不推荐） vs Worker Object + `moveToThread()`（推荐）
-- Worker Object 模式：Worker 无 UI，通过信号槽与主线程通信
-- `QThreadPool` + `QRunnable` / `QtConcurrent::run`：任务并发，无需手动管理线程生命周期
-
-**代码结构**
-```cpp
-// Worker Object 模式（正确用法）
-auto* worker = new DownloadWorker;
-auto* thread = new QThread;
-worker->moveToThread(thread);
-connect(thread, &QThread::started, worker, &DownloadWorker::doWork);
-connect(worker, &DownloadWorker::finished, thread, &QThread::quit);
-connect(thread, &QThread::finished, worker, &QObject::deleteLater);
-thread->start();
-```
-
-**常见坑**
-- 在 Worker 的槽函数中直接操作 UI 控件（`setText` 等）→ 跨线程操作 UI，未定义行为
-- `QThread::terminate()` 强制终止 → 资源泄漏，几乎任何情况下都不应使用
-
-**小作业**
-- 实现带取消按钮的文件哈希计算器：Worker 线程计算，每处理 1MB 通过信号更新进度条，取消时正确停止线程
-
----
-
-### 4.8 Qt 网络与文件
-
-**概念讲解**
-- 文件系统：`QFile`（读写）、`QDir`（目录遍历）、`QFileSystemWatcher`（文件变化监听）
-- 序列化：`QDataStream`（二进制）、`QJsonDocument`（JSON）、`QXmlStreamReader/Writer`（XML）
-- 网络：`QTcpSocket` / `QUdpSocket`（低层）、`QNetworkAccessManager`（HTTP 高层）
-
-**代码结构**
-```cpp
-// HTTP GET 请求
-auto* manager = new QNetworkAccessManager(this);
-auto* reply = manager->get(QNetworkRequest(QUrl("https://example.com/api")));
-connect(reply, &QNetworkReply::finished, this, [reply]() {
-    if (reply->error() == QNetworkReply::NoError) {
-        auto json = QJsonDocument::fromJson(reply->readAll());
-    }
-    reply->deleteLater();
-});
-```
-
-**常见坑**
-- `QFile` 在 Windows 上路径分隔符：`/` 和 `\\` 都支持，但避免与 `QDir::separator()` 混用
-- `QNetworkReply` 必须手动 `deleteLater`，否则内存泄漏
-
-**小作业**
-- 实现「实时日志查看器」：`QFileSystemWatcher` 监听日志文件变化，`QPlainTextEdit` 追加显示新内容
-
----
-
-> **阶段小项目**：用 Qt 重新实现「文本编辑器」（对比 Win32 版本，体会框架抽象层次）
-
----
-
-### ── wxWidgets 篇 ──
-
-### 4.9 wxWidgets 设计哲学
-
-**概念讲解**
-- 核心理念：使用原生控件，外观与系统原生应用完全一致
-- 事件表（Event Table）机制：`BEGIN_EVENT_TABLE` 宏 vs 现代 `Bind` 方法
-- `wxApp`、`wxFrame`、`wxPanel` 的层次关系；`wxApp::OnInit` 作为程序入口
-
-**代码结构**
-```cpp
-class MyApp : public wxApp {
-public:
-    bool OnInit() override {
-        auto* frame = new MyFrame("Hello wxWidgets");
-        frame->Show();
-        return true;
-    }
-};
-wxIMPLEMENT_APP(MyApp);
-```
-
-**常见坑**
-- 在非主线程中创建或操作 wxWidgets 控件 → 跨线程 UI 操作，平台行为不一致
-- Windows 上需要 `wxMS_WINMAIN` 入口约定，CMake 中需设置 `WIN32` 可执行文件属性
-
-**小作业**
-- 搭建 wxWidgets CMake 工程，实现与 Qt 4.1 同等功能的带菜单主窗口
-
----
-
-### 4.10 wxWidgets 核心控件与布局
-
-**概念讲解**
-- Sizer 系统：`wxBoxSizer`（水平/垂直）、`wxGridSizer`、`wxFlexGridSizer`、`wxStaticBoxSizer`
-- `wxSizer::Add` 参数：proportion（伸缩比例）、flag（对齐/边框选项）、border（像素边距）
-- XRC 资源文件：XML 描述界面，`wxXmlResource::LoadFrame` 加载，实现界面与逻辑分离
-
-**代码结构**
-- `wxFlexGridSizer` 实现表单布局（标签列固定宽度，输入列自动伸缩）的完整示例
-
-**常见坑**
-- `proportion=0` 的控件不参与空间分配，窗口缩放时大小不变，这是设计，不是 Bug
-- XRC 文件中控件 `name` 属性必须唯一，`XRCCTRL` 宏通过名称查找
-
-**小作业**
-- 用 XRC 文件描述「偏好设置」对话框（三个标签页），C++ 代码只负责加载和事件处理
-
----
-
-> **阶段小项目**：wxWidgets 跨平台「图片查看器」（支持 Windows/Linux/macOS 编译）
-
----
-
 ### ── GTK 篇 ──
 
-### 4.11 GTK 生态与 C++ 绑定
+> 本篇以 GTK 为核心，**同时覆盖 GTK3 与 GTK4**，并重点讲解 C++ 绑定 gtkmm、自定义控件开发与 CSS 主题定制，形成完整的跨平台 GUI 开发能力。
+
+### 4.1 GTK 生态与 C++ 绑定
 
 **概念讲解**
 - GTK4 vs GTK3：GTK4 的 Snapshot/Widget 渲染模型变化，`GtkApplication` 强制化
@@ -1412,7 +1151,7 @@ int main(int argc, char* argv[]) {
 
 ---
 
-### 4.12 GTK 信号机制与 GObject
+### 4.2 GTK 信号机制与 GObject
 
 **概念讲解**
 - GObject 类型系统：C 实现的面向对象基础，`G_OBJECT` 宏家族
@@ -1430,7 +1169,7 @@ int main(int argc, char* argv[]) {
 
 ---
 
-### 4.13 GTK 布局容器
+### 4.3 GTK 布局容器
 
 **概念讲解**
 - GTK4 布局容器：`GtkBox`（线性）、`GtkGrid`（网格）、`GtkOverlay`（叠加层）、`GtkPaned`（可拖分割）
@@ -1608,22 +1347,6 @@ webview->add_WebMessageReceived(
 
 ---
 
-### 6.4 Tauri 简介（C++ 视角）
-
-**概念讲解**
-- Tauri 架构：Rust 后端 + 系统 WebView（Windows 用 WebView2 / macOS 用 WKWebView）
-- 与 Electron 的差异：无捆绑 Chromium，包体极小（< 5MB），但不支持 C++ 后端
-- 从 C++ 项目视角：可以通过 IPC 调用 Tauri sidecar 进程，或考虑 Tauri + C++ FFI（niche 用法）
-
-**代码结构**
-- Tauri 命令（`#[tauri::command]`）调用流程示意（Rust 侧），帮助 C++ 开发者理解类比关系
-
-**常见坑**
-- Tauri 不适合需要 C++ 深度集成的项目，更适合以 Web 前端为主、系统 API 为辅的工具类应用
-
-**小作业**
-- 调研对比：同一个「Markdown 编辑器」用 Electron vs Tauri vs Win32+WebView2 实现的包体大小、内存占用和启动速度
-
 ---
 
 ## 第七篇 · 工程化专题
@@ -1731,26 +1454,7 @@ webview->add_WebMessageReceived(
 
 ---
 
-### 7.6 辅助功能（Accessibility）
-
-**概念讲解**
-- 为什么要做无障碍：法规要求（美国 Section 508、欧盟 EN 301 549）+ 用户群体
-- Windows UI Automation（UIA）：控件提供者（`IRawElementProviderSimple`）与客户端（辅助技术软件）
-- ARIA（Web）与 Qt Accessibility（`QAccessible` 接口）的对应概念
-
-**代码结构**
-- 自绘控件实现 UIA 提供者接口的最小示例（使屏幕阅读器可以朗读控件内容）
-
-**常见坑**
-- 使用图片按钮未设置 Alt 文字 → 屏幕阅读器无法描述功能
-- 自绘控件未实现 `WM_GETOBJECT` 消息处理 → 完全对辅助技术不可见
-
-**小作业**
-- 用 Windows 自带「讲述人」（Narrator）测试文本编辑器，记录哪些控件无法被识别并修复
-
----
-
-### 7.7 性能优化
+### 7.6 性能优化
 
 **概念讲解**
 - 重绘性能优化：最小化脏区 `InvalidateRect`、避免 `WM_PAINT` 中的重量级计算、离屏缓冲
@@ -1786,9 +1490,7 @@ webview->add_WebMessageReceived(
 | 框架 | 侧重展示的知识点 | 章节依赖 |
 |------|----------------|----------|
 | Win32 + WebView2 | 第一篇 + 第六篇综合；原生窗口 + Web 预览通信 | 1.x, 6.2 |
-| Qt | Model/View、QSS 主题、多线程渲染、国际化 | 4.1–4.8, 7.1, 7.5 |
-| wxWidgets | 跨平台构建、原生外观、XRC 界面分离 | 4.9–4.10 |
-| GTK/gtkmm | Linux 原生集成、CSS 主题、GTK4 新特性 | 4.11–4.13 |
+| GTK/gtkmm | Linux 原生集成、CSS 主题、GTK3/GTK4 新特性 | 4.1–4.3 |
 | WinUI 3 | XAML 数据绑定、Fluent Design、MSIX 打包 | 5.1–5.4 |
 
 **阶段验收检查清单**

@@ -5,10 +5,6 @@ project(GlobalStateExample)
 # 生成 compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # Create executable
 add_executable(GlobalStateExample
     main.cpp
