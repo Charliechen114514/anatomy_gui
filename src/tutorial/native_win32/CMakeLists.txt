@@ -15,6 +15,9 @@ add_definitions(-DUNICODE -D_UNICODE)
 # MSVC 编译选项
 if(MSVC)
     add_compile_options(/utf-8)
+else()
+    # MinGW: 资源编译器使用 UTF-8 代码页
+    set(CMAKE_RC_FLAGS "--codepage=65001")
 endif()
 
 # 不使用控制台（所有示例都是 GUI 应用）
@@ -81,3 +84,52 @@ add_subdirectory(exercises/05_draggable_ball)
 
 # 06_double_buffer - 练习6: 双缓冲消除闪烁
 add_subdirectory(exercises/06_double_buffer)
+
+# =============================================================================
+# 扩展示例 11-25
+# =============================================================================
+
+# 11_dpi_aware - DPI 感知（Per-Monitor V2）
+add_subdirectory(11_dpi_aware)
+
+# 12_basic_controls - 基础控件（Button/Edit/ListBox/ComboBox）
+add_subdirectory(12_basic_controls)
+
+# 13_wm_notify - WM_NOTIFY 通知机制
+add_subdirectory(13_wm_notify)
+
+# 14_listview - ListView 报表视图
+add_subdirectory(14_listview)
+
+# 15_treeview - TreeView 树形控件
+add_subdirectory(15_treeview)
+
+# 16_more_controls - 更多控件（ProgressBar/TrackBar/UpDown/Tab）
+add_subdirectory(16_more_controls)
+
+# 17_modal_dialog - 模态对话框
+add_subdirectory(17_modal_dialog)
+
+# 18_modeless_dialog - 无模态对话框
+add_subdirectory(18_modeless_dialog)
+
+# 19_dialog_proc - DialogProc 高级模式
+add_subdirectory(19_dialog_proc)
+
+# 20_resource_files - .rc 资源文件基础
+add_subdirectory(20_resource_files)
+
+# 21_menu_resource - 菜单资源
+add_subdirectory(21_menu_resource)
+
+# 22_icon_cursor_bitmap - 图标/光标/位图资源
+add_subdirectory(22_icon_cursor_bitmap)
+
+# 23_string_table - 字符串表资源
+add_subdirectory(23_string_table)
+
+# 24_dialog_template - 对话框模板资源
+add_subdirectory(24_dialog_template)
+
+# 25_toolbar_statusbar - 工具栏 + 状态栏
+add_subdirectory(25_toolbar_statusbar)

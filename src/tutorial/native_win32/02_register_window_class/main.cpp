@@ -76,7 +76,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
  */
 BOOL RegisterWindowClass(HINSTANCE hInstance)
 {
-    WNDCLASS wc = { 0 };
+    WNDCLASS wc = {};
 
     // ============================================================
     // WNDCLASS 结构字段详解
@@ -299,7 +299,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // 步骤 3: 消息循环
     // 从消息队列中获取消息并分发给窗口过程
-    MSG msg = { 0 };
+    MSG msg = {};
     while (GetMessage(&msg, NULL, 0, 0))
     {
         // 将虚拟键消息转换为字符消息（处理键盘输入）

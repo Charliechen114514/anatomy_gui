@@ -1,0 +1,6 @@
+add_subdirectory(01_init_swapchain)
+add_subdirectory(02_vertex_input)
+add_subdirectory(03_texture_sampler)
+add_subdirectory(04_depth_3d)
+add_subdirectory(05_lighting)
+add_subdirectory(06_blend_alpha)

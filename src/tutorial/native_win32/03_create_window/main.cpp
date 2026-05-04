@@ -87,7 +87,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 void RegisterWindowClasses(HINSTANCE hInstance)
 {
     // 主窗口类 - 使用标准窗口样式
-    WNDCLASSEXW wcMain = {0};
+    WNDCLASSEXW wcMain = {};
     wcMain.cbSize = sizeof(WNDCLASSEXW);
     wcMain.style = CS_HREDRAW | CS_VREDRAW;
     wcMain.lpfnWndProc = WindowProc;
@@ -99,7 +99,7 @@ void RegisterWindowClasses(HINSTANCE hInstance)
     RegisterClassExW(&wcMain);
 
     // 弹出窗口类
-    WNDCLASSEXW wcPopup = {0};
+    WNDCLASSEXW wcPopup = {};
     wcPopup.cbSize = sizeof(WNDCLASSEXW);
     wcPopup.style = CS_HREDRAW | CS_VREDRAW;
     wcPopup.lpfnWndProc = WindowProc;
@@ -111,7 +111,7 @@ void RegisterWindowClasses(HINSTANCE hInstance)
     RegisterClassExW(&wcPopup);
 
     // 工具窗口类
-    WNDCLASSEXW wcTool = {0};
+    WNDCLASSEXW wcTool = {};
     wcTool.cbSize = sizeof(WNDCLASSEXW);
     wcTool.style = CS_HREDRAW | CS_VREDRAW;
     wcTool.lpfnWndProc = WindowProc;
@@ -123,7 +123,7 @@ void RegisterWindowClasses(HINSTANCE hInstance)
     RegisterClassExW(&wcTool);
 
     // 细边框窗口类
-    WNDCLASSEXW wcThin = {0};
+    WNDCLASSEXW wcThin = {};
     wcThin.cbSize = sizeof(WNDCLASSEXW);
     wcThin.style = CS_HREDRAW | CS_VREDRAW;
     wcThin.lpfnWndProc = WindowProc;
@@ -391,7 +391,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
 
     // 消息循环
-    MSG msg = {0};
+    MSG msg = {};
     while (GetMessageW(&msg, nullptr, 0, 0))
     {
         TranslateMessage(&msg);

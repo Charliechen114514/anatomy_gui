@@ -1,0 +1,5 @@
+add_subdirectory(01_d2d_hello)
+add_subdirectory(02_geometry)
+add_subdirectory(03_effects_layers)
+add_subdirectory(04_directwrite)
+add_subdirectory(05_gdi_interop)

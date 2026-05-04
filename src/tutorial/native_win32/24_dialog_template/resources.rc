@@ -1,0 +1,18 @@
+#include <windows.h>
+#include "resource.h"
+
+#pragma code_page(65001)
+
+IDD_ABOUT_DIALOG DIALOGEX 0, 0, 260, 160
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于"
+FONT 10, "Microsoft YaHei UI"
+BEGIN
+    LTEXT           "对话框模板示例", IDC_APP_NAME, 60, 15, 150, 16, SS_CENTER
+    LTEXT           "版本 1.0.0", IDC_APP_VERSION, 60, 35, 150, 12, SS_CENTER
+    LTEXT           "本对话框完全由 .rc 文件中的 DIALOG 模板定义。\n无需在代码中手动创建控件。",
+                    IDC_APP_DESC, 20, 60, 220, 40
+    DEFPUSHBUTTON   "确定", IDOK, 70, 120, 50, 24
+    PUSHBUTTON      "取消", IDCANCEL, 140, 120, 50, 24
+    ICON            "", -1, 20, 15, 20, 20
+END
