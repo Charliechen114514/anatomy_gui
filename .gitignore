@@ -16,6 +16,9 @@ site/
 
 # Build artifacts (CMake)
 build/
+build_msvc/
+build_mingw/
+build_test/
 cmake-build-*/
 
 # OS
