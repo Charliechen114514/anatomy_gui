@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.20)
+add_executable(02_geometry main.cpp)
+target_include_directories(02_geometry PRIVATE ${GRAPHICS_COMMON_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+target_link_libraries(02_geometry PRIVATE user32 d2d1)
+set_target_properties(02_geometry PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+if(NOT MSVC)
+    target_link_options(02_geometry PRIVATE -municode)
+endif()

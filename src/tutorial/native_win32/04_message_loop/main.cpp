@@ -10,6 +10,7 @@
 
 #include <windows.h>
 #include <cstdio>
+#include <locale.h>
 
 // 窗口类名称
 const wchar_t CLASS_NAME[] = L"MessageLoopWindow";
@@ -217,8 +218,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine [[maybe_unuse
 {
     // 启用控制台输出（用于调试，可选）
     AllocConsole();
+    SetConsoleOutputCP(CP_UTF8);
     FILE* fp;
     freopen_s(&fp, "CONOUT$", "w", stdout);
+    setlocale(LC_ALL, ".UTF-8");
     printf("=== Win32 消息循环示例程序 ===\n");
     printf("按 ESC 键或关闭窗口退出\n\n");
     printf("使用 DebugView 或 Visual Studio 输出窗口查看详细消息\n");

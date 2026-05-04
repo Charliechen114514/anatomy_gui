@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.20)
+add_executable(01_opengl_win32 main.cpp glad/glad.c)
+target_include_directories(01_opengl_win32 PRIVATE ${GRAPHICS_COMMON_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../.. ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(01_opengl_win32 PRIVATE user32 gdi32 opengl32)
+set_target_properties(01_opengl_win32 PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+if(NOT MSVC)
+    target_link_options(01_opengl_win32 PRIVATE -municode)
+endif()

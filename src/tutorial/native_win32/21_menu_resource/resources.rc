@@ -1,0 +1,32 @@
+#include <windows.h>
+#include "resource.h"
+
+#pragma code_page(65001)
+
+IDR_MAINMENU MENU
+BEGIN
+    POPUP "&文件"
+    BEGIN
+        MENUITEM "&新建\tCtrl+N",           IDM_FILE_NEW
+        MENUITEM "&打开...\tCtrl+O",        IDM_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "&保存\tCtrl+S",           IDM_FILE_SAVE, GRAYED
+        MENUITEM "另存为...",                IDM_FILE_SAVEAS, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "退出",                     IDM_FILE_EXIT
+    END
+
+    POPUP "&编辑"
+    BEGIN
+        MENUITEM "&撤销\tCtrl+Z",           IDM_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "剪切\tCtrl+X",            IDM_EDIT_CUT
+        MENUITEM "复制\tCtrl+C",            IDM_EDIT_COPY
+        MENUITEM "粘贴\tCtrl+V",            IDM_EDIT_PASTE
+    END
+
+    POPUP "&帮助"
+    BEGIN
+        MENUITEM "&关于...",                IDM_HELP_ABOUT
+    END
+END

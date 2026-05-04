@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.20)
+add_executable(01_init_swapchain main.cpp)
+target_include_directories(01_init_swapchain PRIVATE ${GRAPHICS_COMMON_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+target_link_libraries(01_init_swapchain PRIVATE user32 d3d11 dxgi d3dcompiler)
+set_target_properties(01_init_swapchain PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+if(NOT MSVC)
+    target_link_options(01_init_swapchain PRIVATE -municode)
+endif()

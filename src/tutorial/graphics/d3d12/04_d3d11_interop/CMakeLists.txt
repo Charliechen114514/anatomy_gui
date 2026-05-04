@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.20)
+add_executable(04_d3d11_interop main.cpp)
+target_include_directories(04_d3d11_interop PRIVATE ${GRAPHICS_COMMON_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+target_link_libraries(04_d3d11_interop PRIVATE user32 d3d12 dxgi d3d11 d3dcompiler d2d1 dwrite)
+set_target_properties(04_d3d11_interop PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+if(NOT MSVC)
+    target_link_options(04_d3d11_interop PRIVATE -municode)
+endif()
