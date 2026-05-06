@@ -133,3 +133,31 @@ add_subdirectory(24_dialog_template)
 
 # 25_toolbar_statusbar - 工具栏 + 状态栏
 add_subdirectory(25_toolbar_statusbar)
+
+# =============================================================================
+# 扩展示例 26-32
+# =============================================================================
+
+# 26_cross_thread_msg - 跨线程 PostMessage 进度条
+add_subdirectory(26_cross_thread_msg)
+
+# 27_borderless_window - 无边框可拖拽窗口
+add_subdirectory(27_borderless_window)
+
+# 28_subclassing - 子类化 Edit 控件拦截 Enter 键
+add_subdirectory(28_subclassing)
+
+# 29_hook_keyboard - 全局低级键盘钩子监听 Print Screen
+add_subdirectory(29_hook_keyboard)
+
+# 30_system_tray - 最小化到托盘 + 右键菜单 + 气泡通知
+add_subdirectory(30_system_tray)
+
+# 31_file_drop - WM_DROPFILES 文件拖入 ListView
+add_subdirectory(31_file_drop)
+
+# 32_timer_clock - WM_TIMER 模拟时钟
+add_subdirectory(32_timer_clock)
+
+# 07_cross_thread_postmsg - 练习7: 跨线程 PostMessage 进度条
+add_subdirectory(exercises/07_cross_thread_postmsg)
