@@ -155,6 +155,25 @@
 |:-----|:-----|:-----|:-----|
 | 51 | Win32 嵌入 OpenGL | 已完成 | [51_ProgrammingGUI_Graphics_OpenGL_Win32.md](native_win32/51_ProgrammingGUI_Graphics_OpenGL_Win32.md) |
 
+### 高级消息篇
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 52 | 高级输入消息：触控、Raw Input 与窗口管理 | 已完成 | [52_ProgrammingGUI_NativeWindows_AdvancedMessages.md](native_win32/52_ProgrammingGUI_NativeWindows_AdvancedMessages.md) |
+
+### Win32 进阶篇（续）
+
+| 章节 | 内容 | 状态 | 文件 |
+|:-----|:-----|:-----|:-----|
+| 53 | 子类化与超类化 | 已完成 | [53_ProgrammingGUI_NativeWindows_Subclassing.md](native_win32/53_ProgrammingGUI_NativeWindows_Subclassing.md) |
+| 54 | Hook 机制 | 已完成 | [54_ProgrammingGUI_NativeWindows_Hook.md](native_win32/54_ProgrammingGUI_NativeWindows_Hook.md) |
+| 55 | 系统托盘 | 已完成 | [55_ProgrammingGUI_NativeWindows_SystemTray.md](native_win32/55_ProgrammingGUI_NativeWindows_SystemTray.md) |
+| 56 | 拖放 | 已完成 | [56_ProgrammingGUI_NativeWindows_DragDrop.md](native_win32/56_ProgrammingGUI_NativeWindows_DragDrop.md) |
+| 57 | 定时器 | 已完成 | [57_ProgrammingGUI_NativeWindows_Timer.md](native_win32/57_ProgrammingGUI_NativeWindows_Timer.md) |
+| 58 | 加速键表与通用对话框 | 已完成 | [58_ProgrammingGUI_NativeWindows_AcceleratorCommonDialog.md](native_win32/58_ProgrammingGUI_NativeWindows_AcceleratorCommonDialog.md) |
+| 59 | 消息机制补充：SendMessage、PostMessage 与跨线程通信 | 已完成 | [59_ProgrammingGUI_NativeWindows_MsgMechanism.md](native_win32/59_ProgrammingGUI_NativeWindows_MsgMechanism.md) |
+| 60 | 常用系统消息补充：滚轮、命中测试、窗口限制与背景擦除 | 已完成 | [60_ProgrammingGUI_NativeWindows_SystemMessages.md](native_win32/60_ProgrammingGUI_NativeWindows_SystemMessages.md) |
+
 ### 配套示例代码
 
 每个章节都配有完整的可运行示例，位于 [src/tutorial/native_win32/](../src/tutorial/native_win32/) 目录：
