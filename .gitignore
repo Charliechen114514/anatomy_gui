@@ -11,8 +11,10 @@ __pycache__/
 venv/
 env/
 
-# MkDocs
-site/
+# VitePress
+node_modules/
+site/.vitepress/dist/
+site/.vitepress/cache/
 
 # Build artifacts (CMake)
 build/

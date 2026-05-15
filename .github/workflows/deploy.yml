@@ -1,4 +1,4 @@
-name: 自动部署 MkDocs
+name: Deploy VitePress
 
 on:
   push:
@@ -10,49 +10,33 @@ permissions:
   contents: write
 
 jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 检出仓库
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 设置 Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-          cache: 'pip'
-
-      - name: 安装依赖
-        run: pip install -r requirements.txt
-
-      - name: 验证构建
-        run: mkdocs build --clean --strict
-
   deploy:
-    needs: validate
     runs-on: ubuntu-latest
+
     steps:
-      - name: 检出仓库
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 设置 Python
-        uses: actions/setup-python@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.11"
-          cache: 'pip'
+          node-version: 22
 
-      - name: 安装依赖
-        run: pip install -r requirements.txt
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
-      - name: 构建网站
-        run: mkdocs build --clean
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: 部署到 GitHub Pages
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          publish_dir: ./site/.vitepress/dist
