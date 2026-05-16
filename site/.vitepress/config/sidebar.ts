@@ -54,6 +54,7 @@ const WIN32_GROUPS: ChapterGroup[] = [
   { title: 'OpenGL 篇', prefix: '51' },
   { title: '高级消息篇', prefix: '52' },
   { title: 'Win32 进阶篇', prefix: '60' },
+  { title: '阶段项目', prefix: '61' },
 ]
 
 function getGroupIndex(filename: string): number {

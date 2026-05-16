@@ -146,4 +146,4 @@
 每个章节都配有完整的可运行示例，位于 [src/tutorial/native_win32/](https://github.com/Charliechen114514/anatomy_gui/tree/main/src/tutorial/native_win32) 目录：
 
 - **基础示例**：01_hello_world ~ 10_oop_wrapper（10 个渐进式示例）
-- **练习项目**：6 个实战练习（点击计数器、随机方块、鼠标追踪器、简单记事本、拖动小球、双缓冲）
+- **练习项目**：7 个实战练习（点击计数器、随机方块、鼠标追踪器、简单记事本、拖动小球、双缓冲、RichEdit 文本编辑器）

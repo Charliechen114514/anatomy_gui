@@ -40,7 +40,7 @@
 | `13_system_tray/` | 最小托盘程序 + 右键菜单 + WM_TASKBARCREATED | shell32.lib |
 | `14_drag_drop/` | WM_DROPFILES 文件拖入 + IDropTarget OLE 示例 | ole32.lib |
 | `15_timer_clock/` | WM_TIMER 模拟时钟（GDI 绘制时分秒针） | gdi32.lib |
-| `exercises/07_text_editor/` | 全功能文本编辑器阶段项目 | comctl32.lib, riched20.lib |
+| `exercises/07_text_editor/` | 全功能文本编辑器阶段项目（已完成，实际目录 `exercises/08_text_editor/`） | comctl32.lib, riched20.lib |
 | `exercises/08_cross_thread_msg/` | 跨线程 PostMessage 进度条 | (纯 Win32) |
 
 ### 需修改的文件
@@ -51,48 +51,47 @@
 
 ---
 
-## 1B. 第三篇图形渲染收尾
+## 1B. 第三篇图形渲染收尾 — ✅ 已完成
 
 ### 教程文件
 
-| 编号 | 文件名 | 标题 |
-|:-----|:-------|:-----|
-| 61 | `61_ProgrammingGUI_Graphics_D3D11_SpriteRenderer.md` | 阶段项目：D3D11 2D 精灵渲染器 |
+| 编号 | 文件名 | 标题 | 状态 |
+|:-----|:-------|:-----|:-----|
+| 61 | `61_ProgrammingGUI_Graphics_D3D11_SpriteRenderer.md` | 阶段项目：D3D11 2D 精灵渲染器 | ✅ 已完成 |
 
 **精灵渲染器功能规格**：
 - 支持贴图精灵渲染（位置/旋转/缩放/颜色叠加/Alpha 透明）
 - 批处理合并（Sprite Batch）：同纹理精灵合并为一次 Draw Call
-- 精灵图集（Texture Atlas / Sprite Sheet）：UV 子区域采样
-- 文字渲染集成：DirectWrite 离屏渲染到纹理 → 精灵系统绘制
+- 顶点颜色调制：纯白纹理 × 顶点颜色 = 不同颜色的精灵
+- 文字渲染集成：GDI 离屏渲染到纹理 → 精灵系统绘制
 
 ### 代码示例
 
-| 目录 | 内容 | 链接库 |
-|:-----|:-----|:-------|
-| `src/tutorial/graphics/sprite_renderer/` | 完整 D3D11 Sprite Batch 项目 | d3d11.lib, d2d1.lib, dwrite.lib, d3dcompiler.lib |
+| 目录 | 内容 | 状态 |
+|:-----|:-----|:-----|
+| `src/tutorial/graphics/sprite_renderer/` | 完整 D3D11 Sprite Batch 项目 | ✅ 已完成 |
 
-### 需创建的文件
+### 已创建的文件
 
-- [ ] `src/tutorial/graphics/CMakeLists.txt` — 新建图形示例构建框架
-- [ ] 精灵渲染器完整项目（SpriteBatch 类、Atlas 支持、DirectWrite 文字渲染）
+- [x] `src/tutorial/graphics/CMakeLists.txt` — 已添加 sprite_renderer 子目录
+- [x] `src/tutorial/graphics/sprite_renderer/` — 完整项目（SpriteBatch、TextureLoader、TextRenderer、HLSL 着色器）
+- [x] `src/tutorial/graphics/common/RenderWindow.hpp` — 添加 HandleMessage 虚方法支持自定义消息
 
 ---
 
 ## 完成后更新
 
-- [ ] `tutorial/index.md` — 添加新章节行到对应篇
+- [x] `site/.vitepress/config/sidebar.ts` — 添加阶段项目分组 (prefix: '61')
 - [ ] `Roadmap.md` — 更新第一篇完成度 75% → 100%，第三篇 95% → 100%
 - [ ] `CHANGELOG.md` — 记录变更
 
 ## 验证
 
 ```bash
-# 文档
-mkdocs build --clean --strict
+# 代码编译（MSVC + MinGW）
+pwsh src/tutorial/build_msvc.ps1 graphics
+pwsh src/tutorial/build_mingw.ps1 graphics
 
-# Win32 代码
-cd src/tutorial/native_win32 && cmake -B build && cmake --build build --config Release
-
-# 图形代码
-cd src/tutorial/graphics && cmake -B build && cmake --build build --config Release
+# 文档构建（VitePress）
+pnpm run build
 ```
