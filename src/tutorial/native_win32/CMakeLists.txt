@@ -161,3 +161,6 @@ add_subdirectory(32_timer_clock)
 
 # 07_cross_thread_postmsg - 练习7: 跨线程 PostMessage 进度条
 add_subdirectory(exercises/07_cross_thread_postmsg)
+
+# 08_text_editor - 练习8: 全功能文本编辑器
+add_subdirectory(exercises/08_text_editor)

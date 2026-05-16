@@ -87,6 +87,10 @@ protected:
     // void Render();
     // void OnDestroy();
 
+    // 子类可重写以处理自定义消息（如鼠标点击、键盘输入等）
+    // 返回 true 表示消息已处理（不调用 DefWindowProc）
+    virtual bool HandleMessage(HWND, UINT, WPARAM, LPARAM, LRESULT&) { return false; }
+
     HWND m_hwnd = nullptr;
     bool m_running = true;
     int m_width = 0;
@@ -107,6 +111,7 @@ private:
         }
 
         case WM_CREATE:
+            self->m_hwnd = hwnd;
             static_cast<Derived*>(self)->OnCreate();
             return 0;
 
@@ -137,7 +142,12 @@ private:
             return 0;
 
         default:
+        {
+            LRESULT result = 0;
+            if (self && static_cast<Derived*>(self)->HandleMessage(hwnd, uMsg, wParam, lParam, result))
+                return result;
             return DefWindowProc(hwnd, uMsg, wParam, lParam);
+        }
         }
     }
 };
