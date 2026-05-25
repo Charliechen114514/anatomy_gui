@@ -1,3 +1,0 @@
-/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage3/hands_on_cairo/build_ci/CMakeFiles/hands_on_cairo.dir
-/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage3/hands_on_cairo/build_ci/CMakeFiles/edit_cache.dir
-/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage3/hands_on_cairo/build_ci/CMakeFiles/rebuild_cache.dir
