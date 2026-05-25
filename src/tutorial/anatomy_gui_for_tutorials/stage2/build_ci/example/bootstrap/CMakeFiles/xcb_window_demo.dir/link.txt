@@ -1,0 +1,1 @@
+/usr/sbin/c++ -Wl,--dependency-file=CMakeFiles/xcb_window_demo.dir/link.d CMakeFiles/xcb_window_demo.dir/main.cpp.o -o xcb_window_demo  -lxcb

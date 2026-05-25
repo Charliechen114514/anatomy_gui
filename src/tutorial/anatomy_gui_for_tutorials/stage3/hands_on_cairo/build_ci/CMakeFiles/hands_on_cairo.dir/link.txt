@@ -1,0 +1,1 @@
+/usr/sbin/c++ -Wl,--dependency-file=CMakeFiles/hands_on_cairo.dir/link.d CMakeFiles/hands_on_cairo.dir/main.cpp.o -o hands_on_cairo  -lxcb -lcairo -lxcb-render -lxcb -lcairo -lxcb-render

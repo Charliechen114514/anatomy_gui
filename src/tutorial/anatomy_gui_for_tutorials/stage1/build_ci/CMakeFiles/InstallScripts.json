@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage1/build_ci/cmake_install.cmake",
+		"/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage1/build_ci/example/cmake_install.cmake",
+		"/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage1/build_ci/example/bootstrap/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

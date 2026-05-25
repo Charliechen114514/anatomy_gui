@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage1/build_ci/example/bootstrap",
+  "command": "/usr/sbin/c++   -std=gnu++17 -o CMakeFiles/xcb_window_demo.dir/main.cpp.o -c /home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage1/example/bootstrap/main.cpp",
+  "file": "/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage1/example/bootstrap/main.cpp",
+  "output": "example/bootstrap/CMakeFiles/xcb_window_demo.dir/main.cpp.o"
+}
+]

@@ -1,0 +1,11 @@
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/CMakeFiles/AnatomyGui.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/CMakeFiles/edit_cache.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/CMakeFiles/rebuild_cache.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/CMakeFiles/edit_cache.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/CMakeFiles/rebuild_cache.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/bootstrap/CMakeFiles/xcb_window_demo.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/bootstrap/CMakeFiles/edit_cache.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/bootstrap/CMakeFiles/rebuild_cache.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/stage2/CMakeFiles/stage2_minidemo.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/stage2/CMakeFiles/edit_cache.dir
+/home/charliechen/anatomy_gui/src/tutorial/anatomy_gui_for_tutorials/stage2/build_ci/example/stage2/CMakeFiles/rebuild_cache.dir

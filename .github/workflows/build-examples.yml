@@ -5,14 +5,16 @@ on:
     branches: [main]
     paths:
       - 'src/tutorial/native_win32/**'
+      - 'src/tutorial/graphics/**'
       - '.github/workflows/build-examples.yml'
   pull_request:
     paths:
       - 'src/tutorial/native_win32/**'
+      - 'src/tutorial/graphics/**'
   workflow_dispatch:
 
 jobs:
-  build:
+  build-native-win32:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,5 +27,21 @@ jobs:
       - name: Configure CMake
         run: cmake -B build -S src/tutorial/native_win32
 
-      - name: Build all examples
+      - name: Build native_win32 examples
+        run: cmake --build build --config Release
+
+  build-graphics:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSVC Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure CMake
+        run: cmake -B build -S src/tutorial/graphics
+
+      - name: Build graphics examples
         run: cmake --build build --config Release
