@@ -8,10 +8,10 @@
 
 | 编号 | 文件名 | 标题 | 说明 |
 |:-----|:-------|:-----|:-----|
-| 86 | `86_ProgrammingGUI_ImGui_Basics.md` | Dear ImGui 基础 | 即时模式 GUI 原理、初始化、基本控件、Dear ImGui 生态 |
-| 87 | `87_ProgrammingGUI_ImGui_D3D11.md` | ImGui D3D11 后端集成 | D3D11 渲染后端、字体加载、输入处理、与 Win32 集成 |
-| 88 | `88_ProgrammingGUI_ImGui_OpenGL.md` | ImGui OpenGL 后端集成 | OpenGL3 后端、GLFW/GLAD 集成、多视口 |
-| 89 | `89_ProgrammingGUI_ImGui_Custom.md` | ImGui 自定义控件与主题 | 自定义绘制、Docking、主题定制、ImGui 工具开发实战 |
+| 91 | `91_ProgrammingGUI_ImGui_Basics.md` | Dear ImGui 基础 | 即时模式 GUI 原理、初始化、基本控件、Dear ImGui 生态 |
+| 92 | `92_ProgrammingGUI_ImGui_D3D11.md` | ImGui D3D11 后端集成 | D3D11 渲染后端、字体加载、输入处理、与 Win32 集成 |
+| 93 | `93_ProgrammingGUI_ImGui_OpenGL.md` | ImGui OpenGL 后端集成 | OpenGL3 后端、GLFW/GLAD 集成、多视口 |
+| 94 | `94_ProgrammingGUI_ImGui_Custom.md` | ImGui 自定义控件与主题 | 自定义绘制、Docking、主题定制、ImGui 工具开发实战 |
 
 ### 代码示例（`src/tutorial/imgui/`）
 
@@ -26,8 +26,8 @@
 
 | 编号 | 文件名 | 标题 | 说明 |
 |:-----|:-------|:-----|:-----|
-| 90 | `90_ProgrammingGUI_Vulkan_Basics.md` | Vulkan 基础 | 实例/物理设备/逻辑设备/队列、与 D3D12 概念对比 |
-| 91 | `91_ProgrammingGUI_Vulkan_Rendering.md` | Vulkan 渲染管线与 SwapChain | SwapChain、Render Pass、Pipeline、命令缓冲、帧同步 |
+| 95 | `95_ProgrammingGUI_Vulkan_Basics.md` | Vulkan 基础 | 实例/物理设备/逻辑设备/队列、与 D3D12 概念对比 |
+| 96 | `96_ProgrammingGUI_Vulkan_Rendering.md` | Vulkan 渲染管线与 SwapChain | SwapChain、Render Pass、Pipeline、命令缓冲、帧同步 |
 
 ### 代码示例（`src/tutorial/vulkan/`）
 

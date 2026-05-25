@@ -12,14 +12,14 @@
 
 | 编号 | 文件名 | 标题 | 说明 |
 |:-----|:-------|:-----|:-----|
-| 68 | `68_ProgrammingGUI_GTK_Intro.md` | GTK 生态与 C/C++ 绑定 | GTK3/4 历史、构建系统（Meson/vcpkg）、gtkmm 介绍 |
-| 69 | `69_ProgrammingGUI_GTK3_Basics.md` | GTK3 基础：控件/布局/事件 | GtkApplication、GtkWindow、GtkBox、GtkGrid、事件处理 |
-| 70 | `70_ProgrammingGUI_GTK4_Basics.md` | GTK4 基础：Snapshot 模型/新 API | GtkApplication、Snapshot 渲染、LayoutManager、新事件模型 |
-| 71 | `71_ProgrammingGUI_GTK_Signal.md` | 信号机制与 GObject | GObject 类型系统、g_signal_connect、gtkmm signal_xxx、属性通知 |
-| 72 | `72_ProgrammingGUI_GTK_Layout.md` | 布局容器与 CSS 主题 | GtkBox/Grid/Overlay/Paned、GtkCssProvider、GTK Inspector |
-| 73 | `73_ProgrammingGUI_GTK_CustomWidget.md` | GTK 自定义控件 | 绘制、状态机、无障碍（gtkmm）、事件路由 |
-| 74 | `74_ProgrammingGUI_GTK_gtkmm.md` | gtkmm C++ 绑定深度使用 | RAII、Lambda 信号、自定义 Widget、CMake 集成 |
-| 75 | `75_ProgrammingGUI_GTK_StageProject.md` | 阶段项目：系统信息面板 | Linux 原生风格，显示 CPU/内存/磁盘信息 |
+| 73 | `73_ProgrammingGUI_GTK_Intro.md` | GTK 生态与 C/C++ 绑定 | GTK3/4 历史、构建系统（Meson/vcpkg）、gtkmm 介绍 |
+| 74 | `74_ProgrammingGUI_GTK3_Basics.md` | GTK3 基础：控件/布局/事件 | GtkApplication、GtkWindow、GtkBox、GtkGrid、事件处理 |
+| 75 | `75_ProgrammingGUI_GTK4_Basics.md` | GTK4 基础：Snapshot 模型/新 API | GtkApplication、Snapshot 渲染、LayoutManager、新事件模型 |
+| 76 | `76_ProgrammingGUI_GTK_Signal.md` | 信号机制与 GObject | GObject 类型系统、g_signal_connect、gtkmm signal_xxx、属性通知 |
+| 77 | `77_ProgrammingGUI_GTK_Layout.md` | 布局容器与 CSS 主题 | GtkBox/Grid/Overlay/Paned、GtkCssProvider、GTK Inspector |
+| 78 | `78_ProgrammingGUI_GTK_CustomWidget.md` | GTK 自定义控件 | 绘制、状态机、无障碍（gtkmm）、事件路由 |
+| 79 | `79_ProgrammingGUI_GTK_gtkmm.md` | gtkmm C++ 绑定深度使用 | RAII、Lambda 信号、自定义 Widget、CMake 集成 |
+| 80 | `80_ProgrammingGUI_GTK_StageProject.md` | 阶段项目：系统信息面板 | Linux 原生风格，显示 CPU/内存/磁盘信息 |
 
 ### 各节内容要求
 
