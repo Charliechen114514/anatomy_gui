@@ -159,6 +159,9 @@ add_subdirectory(31_file_drop)
 # 32_timer_clock - WM_TIMER 模拟时钟
 add_subdirectory(32_timer_clock)
 
+# 48_owner_draw - Owner-Draw ListBox 与 ComboBox
+add_subdirectory(48_owner_draw)
+
 # 07_cross_thread_postmsg - 练习7: 跨线程 PostMessage 进度条
 add_subdirectory(exercises/07_cross_thread_postmsg)
 

@@ -70,6 +70,10 @@ typedef struct tagDRAWITEMSTRUCT {
 
 `itemData` 是你在添加列表项时通过 `SetItemData` 关联的自定义数据。这是一个 `ULONG_PTR`（指针大小的整数），通常用来存储一个指向自定义数据结构的指针。
 
+## 运行效果
+
+![Owner-Draw 控件示例运行效果](../images/48.png)
+
 ## 第一步——Owner-Draw ListBox 完整示例
 
 现在我们来实现一个完整的 Owner-Draw ListBox 示例。每个列表项显示一个彩色方块和一段描述文字，选中项有高亮背景。
