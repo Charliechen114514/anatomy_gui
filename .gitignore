@@ -3,6 +3,9 @@
 .vscode/
 .idea/
 
+# clangd
+.cache
+
 # Python
 __pycache__/
 *.py[cod]
@@ -18,6 +21,7 @@ site/.vitepress/cache/
 
 # Build artifacts (CMake)
 build/
+build_ci/
 build_msvc/
 build_mingw/
 build_test/

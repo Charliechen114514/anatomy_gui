@@ -10,11 +10,11 @@
 
 | 编号 | 文件名 | 标题 | 说明 |
 |:-----|:-------|:-----|:-----|
-| 81 | `81_ProgrammingGUI_WebHybrid_Overview.md` | 混合方案选型概览 | 原生 vs Web 权衡矩阵、适用场景、决策树 |
-| 82 | `82_ProgrammingGUI_WebView2.md` | WebView2 深度集成 | 架构、初始化流程、双向通信（C++↔JS）、Evergreen vs Fixed |
-| 83 | `83_ProgrammingGUI_WebView2_Advanced.md` | WebView2 进阶 | 虚拟主机映射、CDP 协议、打印、Cookie 管理、多实例 |
-| 84 | `84_ProgrammingGUI_CEF.md` | CEF 集成 | 进程模型、CefApp/CefClient/CefBrowserHost、JS↔C++ 桥接 |
-| 85 | `85_ProgrammingGUI_CEF_Advanced.md` | CEF 进阶 | 自定义协议/资源拦截、离屏渲染、多进程调试 |
+| 86 | `86_ProgrammingGUI_WebHybrid_Overview.md` | 混合方案选型概览 | 原生 vs Web 权衡矩阵、适用场景、决策树 |
+| 87 | `87_ProgrammingGUI_WebView2.md` | WebView2 深度集成 | 架构、初始化流程、双向通信（C++↔JS）、Evergreen vs Fixed |
+| 88 | `88_ProgrammingGUI_WebView2_Advanced.md` | WebView2 进阶 | 虚拟主机映射、CDP 协议、打印、Cookie 管理、多实例 |
+| 89 | `89_ProgrammingGUI_CEF.md` | CEF 集成 | 进程模型、CefApp/CefClient/CefBrowserHost、JS↔C++ 桥接 |
+| 90 | `90_ProgrammingGUI_CEF_Advanced.md` | CEF 进阶 | 自定义协议/资源拦截、离屏渲染、多进程调试 |
 
 ### 各节内容要求
 

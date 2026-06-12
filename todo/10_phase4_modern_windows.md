@@ -12,11 +12,11 @@
 
 | 编号 | 文件名 | 标题 | 说明 |
 |:-----|:-------|:-----|:-----|
-| 76 | `76_ProgrammingGUI_COM_Basics.md` | COM 基础 | IUnknown、引用计数、工厂模式、C++/WinRT 智能指针（com_ptr/wil::com_ptr） |
-| 77 | `77_ProgrammingGUI_WinUI3_Intro.md` | WinUI 3 与 Windows App SDK 入门 | 演进路径、WinAppSDK、部署方式、C++/WinRT 工程结构 |
-| 78 | `78_ProgrammingGUI_WinUI3_XAMLBinding.md` | XAML 标记语言与数据绑定 | XAML 语法、{Binding} vs {x:Bind}、INotifyPropertyChanged |
-| 79 | `79_ProgrammingGUI_WinUI3_WinRT.md` | WinRT API 使用 | C++/WinRT、IAsyncOperation、co_await、常用 WinRT API |
-| 80 | `80_ProgrammingGUI_WinUI3_MSIX.md` | MSIX 打包与部署 | 包结构、Capabilities、打包方式、调试部署 |
+| 81 | `81_ProgrammingGUI_COM_Basics.md` | COM 基础 | IUnknown、引用计数、工厂模式、C++/WinRT 智能指针（com_ptr/wil::com_ptr） |
+| 82 | `82_ProgrammingGUI_WinUI3_Intro.md` | WinUI 3 与 Windows App SDK 入门 | 演进路径、WinAppSDK、部署方式、C++/WinRT 工程结构 |
+| 83 | `83_ProgrammingGUI_WinUI3_XAMLBinding.md` | XAML 标记语言与数据绑定 | XAML 语法、{Binding} vs {x:Bind}、INotifyPropertyChanged |
+| 84 | `84_ProgrammingGUI_WinUI3_WinRT.md` | WinRT API 使用 | C++/WinRT、IAsyncOperation、co_await、常用 WinRT API |
+| 85 | `85_ProgrammingGUI_WinUI3_MSIX.md` | MSIX 打包与部署 | 包结构、Capabilities、打包方式、调试部署 |
 
 ### COM 章节定位
 
