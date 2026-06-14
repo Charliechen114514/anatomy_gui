@@ -799,6 +799,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 
 这个示例综合使用了 `WM_TOUCH`（触控绘制）、`WM_WINDOWPOSCHANGING`（最小尺寸限制）、`WM_PRINTCLIENT`（截图支持）和 `WM_DISPLAYCHANGE`（显示器变化处理）。
 
+## 运行效果
+
+示例启动时会预置一个彩色三角形作为演示笔画（鼠标拖动可继续绘制，`R`/`G`/`B` 切换颜色，`C` 清空）：
+
+![高级输入消息触控画板运行效果](../images/52.png)
+
 ---
 
 ## 消息速查表
