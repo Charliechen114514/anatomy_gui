@@ -328,6 +328,12 @@ void RenderGL(float angle)
 
 注意 `SwapBuffers` 是 Win32 的函数，不是 OpenGL 的。它负责将后台缓冲区的内容显示到窗口上——相当于 D3D11 的 `SwapChain->Present()`。
 
+## 运行效果
+
+把上面的流程组合起来，我们就得到了一个绕 Z 轴持续旋转的 RGB 彩色三角形：
+
+![Win32 嵌入 OpenGL 旋转三角形运行效果](../images/51.png)
+
 ## ⚠️ 踩坑预警
 
 **坑点一：旧式 wglCreateContext 只能创建兼容模式上下文**
