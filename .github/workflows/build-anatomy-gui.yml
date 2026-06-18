@@ -23,8 +23,4 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxcb1-dev libcairo2-dev
 
       - name: Build all anatomy stages
-        run: >
-          python src/tutorial/build_anatomy_gui_for_tutorials.py
-          --target anatomy-stage1
-          --target anatomy-stage2
-          --target anatomy-stage3
+        run: python src/tutorial/build_anatomy_gui_for_tutorials.py --target all

@@ -35,7 +35,35 @@ TARGETS = {
         "platform": "linux",
     },
     "anatomy-stage3": {
-        "source": ROOT / "anatomy_gui_for_tutorials" / "stage3" / "hands_on_cairo",
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage3",
+        "platform": "linux",
+    },
+    "anatomy-stage4": {
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage4",
+        "platform": "linux",
+    },
+    "anatomy-stage5": {
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage5",
+        "platform": "linux",
+    },
+    "anatomy-stage6": {
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage6",
+        "platform": "linux",
+    },
+    "anatomy-stage7": {
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage7",
+        "platform": "linux",
+    },
+    "anatomy-stage8": {
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage8",
+        "platform": "linux",
+    },
+    "anatomy-stage9": {
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage9",
+        "platform": "linux",
+    },
+    "anatomy-stage10": {
+        "source": ROOT / "anatomy_gui_for_tutorials" / "stage10",
         "platform": "linux",
     },
 }
