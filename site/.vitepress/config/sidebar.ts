@@ -1,5 +1,5 @@
 import type { DefaultTheme } from 'vitepress'
-import { readdirSync, statSync, readFileSync, existsSync } from 'fs'
+import { readdirSync, readFileSync, existsSync } from 'fs'
 import { join } from 'path'
 
 type SidebarItem = DefaultTheme.SidebarItem
@@ -38,22 +38,24 @@ interface ChapterGroup {
   prefix: string
 }
 
+// 注意：每组的 prefix 必须是该组【第一篇】文章的编号。getGroupIndex 用
+// `num >= groupNum` 从后往前匹配，若误填组末编号，会吞掉下一组的开头文章。
 const WIN32_GROUPS: ChapterGroup[] = [
   { title: '基础篇', prefix: '0' },
-  { title: '控件篇', prefix: '8' },
-  { title: '对话框篇', prefix: '11' },
-  { title: '资源篇', prefix: '17' },
+  { title: '控件篇', prefix: '4' },
+  { title: '对话框篇', prefix: '9' },
+  { title: '资源篇', prefix: '12' },
   { title: '工具栏与状态栏', prefix: '17_5' },
-  { title: 'GDI 图形篇', prefix: '25' },
-  { title: 'GDI+ 篇', prefix: '28' },
-  { title: 'Direct2D / DirectWrite 篇', prefix: '33' },
-  { title: 'HLSL 着色器篇', prefix: '36' },
-  { title: 'Direct3D 11 篇', prefix: '42' },
-  { title: 'Direct3D 12 篇', prefix: '47' },
-  { title: '自定义控件篇', prefix: '50' },
+  { title: 'GDI 图形篇', prefix: '18' },
+  { title: 'GDI+ 篇', prefix: '26' },
+  { title: 'Direct2D / DirectWrite 篇', prefix: '29' },
+  { title: 'HLSL 着色器篇', prefix: '34' },
+  { title: 'Direct3D 11 篇', prefix: '37' },
+  { title: 'Direct3D 12 篇', prefix: '43' },
+  { title: '自定义控件篇', prefix: '48' },
   { title: 'OpenGL 篇', prefix: '51' },
   { title: '高级消息篇', prefix: '52' },
-  { title: 'Win32 进阶篇', prefix: '60' },
+  { title: 'Win32 进阶篇', prefix: '53' },
   { title: '阶段项目', prefix: '61' },
 ]
 
@@ -106,11 +108,37 @@ function scanNativeWin32(dir: string): SidebarItem[] {
     result.push({
       text: group.title,
       items: group.items,
-      collapsed: false,
+      // 默认折叠：63 篇全铺开侧栏过长；VitePress 会自动展开当前文章所在组。
+      collapsed: true,
     })
   }
 
   return result
+}
+
+function scanHandbook(dir: string): SidebarItem[] {
+  let entries: string[]
+  try {
+    entries = readdirSync(dir)
+      .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
+      .sort(sortEntries)
+  } catch { return [] }
+
+  if (entries.length === 0) return []
+
+  return [
+    {
+      text: 'MiniUI Handbook',
+      collapsed: false,
+      items: entries.map(name => {
+        const title = extractTitle(join(dir, name)) || humanize(name.replace(/\.md$/, ''))
+        return {
+          text: title,
+          link: `/hands_on_ur_own_gui/handbook/${name.replace(/\.md$/, '')}`,
+        }
+      }),
+    },
+  ]
 }
 
 export function buildSidebar(): DefaultTheme.Sidebar {
@@ -119,6 +147,11 @@ export function buildSidebar(): DefaultTheme.Sidebar {
   const nativeWin32Dir = join(DOCS_ROOT, 'native_win32')
   if (existsSync(nativeWin32Dir)) {
     sidebar['/native_win32/'] = scanNativeWin32(nativeWin32Dir)
+  }
+
+  const handsOnDir = join(DOCS_ROOT, 'hands_on_ur_own_gui/handbook')
+  if (existsSync(handsOnDir)) {
+    sidebar['/hands_on_ur_own_gui/'] = scanHandbook(handsOnDir)
   }
 
   const bonusDir = join(DOCS_ROOT, 'bonus')
