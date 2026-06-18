@@ -39,9 +39,9 @@ export default defineConfig({
       light: 'github-light',
       dark: 'github-dark',
     },
-    languages: ['c'],
     languageAlias: {
       rc: 'c',
+      hlsl: 'cpp',
     },
     config(md) {
       cppTemplateEscapePlugin(md)

@@ -92,6 +92,15 @@ const layers = [
     desc: '触控、Raw Input、子类化、Hook、托盘、拖放、定时器、消息机制',
     link: '/native_win32/52_ProgrammingGUI_NativeWindows_AdvancedMessages',
   },
+  {
+    id: 'miniui',
+    title: 'MiniUI 实战',
+    status: 'done',
+    statusText: '已完成',
+    count: '10 章 · 从 XCB 到线程池',
+    desc: '用 XCB+Cairo 从零手搓教学级 GUI 框架：事件循环、控件树、布局引擎、信号系统、渲染管线、响应式与线程池',
+    link: '/hands_on_ur_own_gui/',
+  },
 ]
 </script>
 
