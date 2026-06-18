@@ -20,7 +20,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxcb1-dev libcairo2-dev
+        # stage4/8 引用 xcb/xcb_keysyms.h、stage7/9/10 引用 xcb/xcb_atom.h ——
+        # 二者不在 libxcb1-dev 内，分别由 xcb-keysyms / xcb-util 提供。
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxcb1-dev libxcb-util-dev libxcb-keysyms1-dev libcairo2-dev
 
       - name: Build all anatomy stages
         run: python src/tutorial/build_anatomy_gui_for_tutorials.py --target all
