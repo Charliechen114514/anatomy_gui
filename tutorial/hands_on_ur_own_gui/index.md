@@ -1,3 +1,5 @@
+<ChapterHero act="1" title="MiniUI 骨架手搓" subtitle="XCB + Cairo 从零造一具教学级 GUI 框架" motif="skeleton" count="10 章" />
+
 # 自己动手写 GUI · MiniUI Handbook
 
 > 用 XCB + Cairo，在 Linux 上从零手搓一个**教学级 GUI 框架**。

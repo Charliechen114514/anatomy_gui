@@ -3,6 +3,15 @@ import { withBase } from 'vitepress'
 
 const layers = [
   {
+    id: 'act0-theory',
+    title: 'Act 0 · GUI 理论篇',
+    status: 'done',
+    statusText: '新上线',
+    count: '10 篇 · 12 器官世界观',
+    desc: '保留 vs 即时、命令/声明/响应、事件循环、可访问性、隐藏成本——建立看穿任何框架的眼睛',
+    link: '/act0-theory/',
+  },
+  {
     id: 'win32-basic',
     title: 'Win32 基础',
     status: 'done',
@@ -30,26 +39,17 @@ const layers = [
     link: '/native_win32/12_ProgrammingGUI_NativeWindows_ResourceFiles',
   },
   {
-    id: 'gdi',
-    title: 'GDI 图形',
+    id: 'render-gdi',
+    title: '渲染栈 · GDI / GDI+',
     status: 'done',
     statusText: '已完成',
-    count: '8 章 · 设备上下文到 Alpha 混合',
-    desc: 'HDC、画笔画刷、图形绘制、文字渲染、位图、双缓冲、Region、Alpha',
+    count: '11 章 · 设备上下文到图像编解码',
+    desc: 'HDC、画笔画刷、图形绘制、文字、位图、双缓冲、Alpha、GDI+ 矩阵与编解码',
     link: '/native_win32/18_ProgrammingGUI_NativeWindows_GDI_HDC',
   },
   {
-    id: 'gdiplus',
-    title: 'GDI+',
-    status: 'done',
-    statusText: '已完成',
-    count: '3 章 · 抗锯齿到图像编解码',
-    desc: '架构、坐标变换与矩阵、图像格式与编解码',
-    link: '/native_win32/26_ProgrammingGUI_Graphics_GdiPlus_Architecture',
-  },
-  {
-    id: 'direct2d',
-    title: 'Direct2D / DirectWrite',
+    id: 'render-d2d',
+    title: '渲染栈 · Direct2D / DirectWrite',
     status: 'done',
     statusText: '已完成',
     count: '5 章 · 硬件加速 2D 渲染',
@@ -57,22 +57,13 @@ const layers = [
     link: '/native_win32/29_ProgrammingGUI_Graphics_Direct2D_Architecture',
   },
   {
-    id: 'hlsl-d3d11',
-    title: 'HLSL 与 Direct3D 11',
+    id: 'render-d3d',
+    title: '渲染栈 · HLSL / Direct3D 11/12',
     status: 'done',
     statusText: '已完成',
-    count: '9 章 · 着色器到 3D 渲染',
-    desc: 'HLSL 语言、编译调试、CBuffer、D3D11 初始化、纹理、光照、混合',
+    count: '14 章 · 着色器到现代图形 API',
+    desc: 'HLSL 语言、CBuffer、D3D11 光照混合、D3D12 命令队列/根签名、互操作',
     link: '/native_win32/34_ProgrammingGUI_Graphics_HLSL_Basics',
-  },
-  {
-    id: 'd3d12',
-    title: 'Direct3D 12',
-    status: 'done',
-    statusText: '已完成',
-    count: '5 章 · 现代图形 API',
-    desc: '设计哲学、命令队列、资源堆、描述符与根签名、D3D11 互操作',
-    link: '/native_win32/43_ProgrammingGUI_Graphics_D3D12_Philosophy',
   },
   {
     id: 'custom-opengl',
@@ -84,22 +75,40 @@ const layers = [
     link: '/native_win32/48_ProgrammingGUI_Graphics_CustomCtrl_OwnerDraw',
   },
   {
-    id: 'advanced',
+    id: 'win32-advanced',
     title: 'Win32 进阶',
     status: 'done',
     statusText: '已完成',
     count: '9 章 · 高级消息到系统通信',
-    desc: '触控、Raw Input、子类化、Hook、托盘、拖放、定时器、消息机制',
+    desc: '触控、Raw Input、子类化、Hook、托盘、拖放、定时器',
     link: '/native_win32/52_ProgrammingGUI_NativeWindows_AdvancedMessages',
   },
   {
-    id: 'miniui',
-    title: 'MiniUI 实战',
+    id: 'miniui-skeleton',
+    title: 'MiniUI 骨架手搓',
     status: 'done',
     statusText: '已完成',
-    count: '10 章 · 从 XCB 到线程池',
-    desc: '用 XCB+Cairo 从零手搓教学级 GUI 框架：事件循环、控件树、布局引擎、信号系统、渲染管线、响应式与线程池',
+    count: '10 章 · XCB + Cairo 从零造框架',
+    desc: '事件循环、控件树、布局引擎、信号系统、渲染管线、协程、响应式、线程池',
     link: '/hands_on_ur_own_gui/',
+  },
+  {
+    id: 'act2-compare',
+    title: 'Act 2 · 比较解剖',
+    status: 'progress',
+    statusText: '规划中',
+    count: 'GTK / WinUI 3 / ImGui',
+    desc: '拿 12 器官做尺，横向对照工业框架——同一器官在不同框架里的演化',
+    link: '/act0-theory/01_the_twelve_organs',
+  },
+  {
+    id: 'production',
+    title: '产品化主线',
+    status: 'progress',
+    statusText: '规划中',
+    count: 'DPI / IME / a11y / 打包',
+    desc: '把 demo 推向真实软件：高 DPI、输入法、可访问性、打包签名、崩溃上报',
+    link: '/native_win32/3_ProgrammingGUI_WhatAboutDPI',
   },
 ]
 </script>
@@ -166,7 +175,7 @@ const layers = [
 }
 
 .roadmap-node:hover {
-  background: var(--vp-c-default-soft);
+  background: var(--vp-c-brand-soft);
 }
 
 .node-indicator {
@@ -183,8 +192,8 @@ const layers = [
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--vp-c-green-1);
-  color: #fff;
+  background: var(--vp-c-brand-1);
+  color: var(--vp-c-bg-elv);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,6 +233,7 @@ const layers = [
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.15rem;
+  flex-wrap: wrap;
 }
 
 .node-title {
@@ -242,8 +252,8 @@ const layers = [
 }
 
 .node-badge.done {
-  background: var(--vp-c-green-soft);
-  color: var(--vp-c-green-1);
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
 }
 
 .node-badge.progress {

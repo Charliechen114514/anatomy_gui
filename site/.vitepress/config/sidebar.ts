@@ -141,6 +141,31 @@ function scanHandbook(dir: string): SidebarItem[] {
   ]
 }
 
+function scanAct0(dir: string): SidebarItem[] {
+  let entries: string[]
+  try {
+    entries = readdirSync(dir)
+      .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
+      .sort(sortEntries)
+  } catch { return [] }
+
+  if (entries.length === 0) return []
+
+  return [
+    {
+      text: 'Act 0 · GUI 理论篇',
+      collapsed: false,
+      items: entries.map(name => {
+        const title = extractTitle(join(dir, name)) || humanize(name.replace(/\.md$/, ''))
+        return {
+          text: title,
+          link: `/act0-theory/${name.replace(/\.md$/, '')}`,
+        }
+      }),
+    },
+  ]
+}
+
 export function buildSidebar(): DefaultTheme.Sidebar {
   const sidebar: DefaultTheme.Sidebar = {}
 
@@ -152,6 +177,11 @@ export function buildSidebar(): DefaultTheme.Sidebar {
   const handsOnDir = join(DOCS_ROOT, 'hands_on_ur_own_gui/handbook')
   if (existsSync(handsOnDir)) {
     sidebar['/hands_on_ur_own_gui/'] = scanHandbook(handsOnDir)
+  }
+
+  const act0Dir = join(DOCS_ROOT, 'act0-theory')
+  if (existsSync(act0Dir)) {
+    sidebar['/act0-theory/'] = scanAct0(act0Dir)
   }
 
   const bonusDir = join(DOCS_ROOT, 'bonus')
