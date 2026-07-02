@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://charliechen114514.github.io/anatomy_gui/sitemap.xml
