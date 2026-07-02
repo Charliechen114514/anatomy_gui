@@ -1,18 +1,12 @@
 import { nextTick, onMounted } from 'vue'
 import { useRouter } from 'vitepress'
 
-declare global {
-  interface Window {
-    mermaid?: {
-      initialize: (config: Record<string, unknown>) => void
-      render: (id: string, text: string) => Promise<{ svg: string; bindFunctions?: (el: Element) => void }>
-    }
-    __mermaidLoadingPromise__?: Promise<void>
-    __mermaidInitialized__?: boolean
-  }
-}
+// 本地打包 mermaid（dynamic import，客户端懒加载，SSR 不引入）。
+// 不走 CDN —— 避免 Edge Tracking Prevention 把跨域 CDN 脚本当 tracker 拦截，
+// 也避开网络可达性问题。Vite 会把 mermaid 自动 code-split 到独立 chunk。
 
-const MERMAID_CDN = 'https://cdn.jsdelivr.net/npm/mermaid@10.9.6/dist/mermaid.min.js'
+let mermaidApi: any = null
+let initialized = false
 
 // 解剖学配色 themeVariables（呼应站点主题：骨白底 / 解剖红强调 / 深炭文）
 const LIGHT_VARS = {
@@ -52,39 +46,16 @@ function isDark() {
     && document.documentElement.classList.contains('dark')
 }
 
-function loadMermaid(): Promise<void> {
-  if (typeof window === 'undefined') return Promise.resolve()
-
-  if (window.mermaid) {
-    initMermaid()
-    return Promise.resolve()
-  }
-
-  if (window.__mermaidLoadingPromise__) return window.__mermaidLoadingPromise__
-
-  window.__mermaidLoadingPromise__ = new Promise<void>((resolve, reject) => {
-    const existing = document.querySelector<HTMLScriptElement>('script[data-mermaid-runtime]')
-    if (existing) {
-      existing.addEventListener('load', () => { initMermaid(); resolve() })
-      existing.addEventListener('error', () => reject(new Error('Failed to load Mermaid')))
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = MERMAID_CDN
-    script.async = true
-    script.dataset.mermaidRuntime = 'true'
-    script.onload = () => { initMermaid(); resolve() }
-    script.onerror = () => reject(new Error(`Failed to load Mermaid from ${MERMAID_CDN}`))
-    document.head.appendChild(script)
-  })
-
-  return window.__mermaidLoadingPromise__
+async function ensureMermaid(): Promise<any> {
+  if (mermaidApi) return mermaidApi
+  mermaidApi = (await import('mermaid')).default
+  return mermaidApi
 }
 
-function initMermaid() {
-  if (!window.mermaid || window.__mermaidInitialized__) return
-  window.mermaid.initialize({
+async function initIfNeed() {
+  const m = await ensureMermaid()
+  if (initialized) return
+  m.initialize({
     startOnLoad: false,
     securityLevel: 'loose',
     theme: 'base',
@@ -96,18 +67,15 @@ function initMermaid() {
     },
     themeVariables: isDark() ? DARK_VARS : LIGHT_VARS,
   })
-  window.__mermaidInitialized__ = true
+  initialized = true
 }
 
 async function renderMermaidDiagrams() {
   if (typeof window === 'undefined') return
 
-  await loadMermaid()
+  await initIfNeed()
   await nextTick()
   await new Promise<void>((r) => requestAnimationFrame(() => r()))
-
-  const mermaid = window.mermaid
-  if (!mermaid) return
 
   const nodes = Array.from(
     document.querySelectorAll<HTMLElement>('.mermaid-diagram[data-rendered="false"]')
@@ -122,12 +90,14 @@ async function renderMermaidDiagrams() {
     const id = `mermaid-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 8)}`
 
     try {
-      const { svg } = await mermaid.render(id, source)
+      const m = await ensureMermaid()
+      const { svg } = await m.render(id, source)
       el.innerHTML = svg
       el.dataset.rendered = 'true'
-    } catch {
+    } catch (e) {
       el.dataset.rendered = 'error'
       el.innerHTML = `<pre class="mermaid-error">${escapeHtml(source)}</pre>`
+      console.error('[mermaid] render failed for:\n' + source, e)
     }
   }
 }

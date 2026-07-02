@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
-    "markdown-it-mathjax3": "^4.3.2"
+    "markdown-it-mathjax3": "^4.3.2",
+    "mermaid": "^10.9.6"
   }
 }
