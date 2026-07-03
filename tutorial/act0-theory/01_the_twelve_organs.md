@@ -85,7 +85,7 @@ while (GetMessage(&msg, NULL, 0, 0)) {  // 阻塞等一件事
 }
 ```
 
-而同一个器官，在声明式世界里长成了纯函数的模样。Elm 把它写成（见 *The Elm Architecture*）：
+而同一个器官，在声明式世界里长成了纯函数的模样。Elm 把它写成（见 《The Elm Architecture》）：
 
 > 1. Wait for user input.  
 > 2. Send a message to `update`.  
@@ -110,7 +110,7 @@ while (GetMessage(&msg, NULL, 0, 0)) {  // 阻塞等一件事
 
 您回头看看我们学过的 Win32：一个 `HWND` 是操作系统托管的东西，您创建它、销毁它，可它的「身份」是系统给的，您只是借用。换个框架，答案立刻变样——GTK 的 `GObject` 靠引用计数续命，Qt 的 `QObject` 靠父子关系撑起一整棵所有权树（父亲还在，孩子不许先走），WinUI 则抬出 `DependencyObject`。最拧巴的还得数 React：它的组件**根本没有持久身份**——每帧重新描述一遍，框架全靠一个 `key` 去猜「这帧的它」跟「上帧的它」是不是同一个。
 
-Fowler 在 *GUI Architectures* 里有一句挺毒舌，但是也很准的话：MVC 压根不是一个模式，它是一捆想法的集合，谁看谁抽走一部分。对象模型这个器官，就是这「一捆想法」的重灾区——同样写「控件」两个字，意思能差出十万八千里。我们到了 MiniUI 篇会亲手给控件安一个身份，到 Act 2 再把 QObject / GObject / DependencyObject 摆一块比。
+Fowler 在 《GUI Architectures》 里有一句挺毒舌，但是也很准的话：MVC 压根不是一个模式，它是一捆想法的集合，谁看谁抽走一部分。对象模型这个器官，就是这「一捆想法」的重灾区——同样写「控件」两个字，意思能差出十万八千里。我们到了 MiniUI 篇会亲手给控件安一个身份，到 Act 2 再把 QObject / GObject / DependencyObject 摆一块比。
 
 ### 5. 控件树
 
@@ -120,7 +120,7 @@ Fowler 在 *GUI Architectures* 里有一句挺毒舌，但是也很准的话：M
 
 刹车！我知道您要跟我开始画起来一颗又一颗多叉树了。懂你意思bro，但是不着急，「控件树」其实不是一棵树，是一族树。逻辑树管的是「谁是容器、谁是子项」，视觉树管的是「最后真画出来的层级」，还有一棵语义树专门给屏幕阅读器看（这个我们到第 12 个器官还会再提）。同一个界面，能画出三棵不一样的树来。
 
-React 那篇 *Thinking in React*，第一步就让您把 UI 拆成组件层级——那就是声明式世界的控件树。它还有个挺有意思的观察：UI 长成的树形，常常跟数据模型长成的树形一模一样。
+React 那篇 《Thinking in React》，第一步就让您把 UI 拆成组件层级——那就是声明式世界的控件树。它还有个挺有意思的观察：UI 长成的树形，常常跟数据模型长成的树形一模一样。
 
 ### 6. 布局
 
@@ -138,7 +138,7 @@ React 那篇 *Thinking in React*，第一步就让您把 UI 拆成组件层级�
 
 **谁决定什么时候重画？状态攥在谁手里？**
 
-Casey Muratori 在 2005 年那篇 *Immediate-Mode GUI* 里划了一刀，他说：**保留式（retained）GUI 的那些毛病，跟 retained-mode 图形 API 的毛病一模一样**——状态全攥在框架手里，应用这边想保持一致，难如登天。于是 ImGui 反着来：每帧由您的代码把整个 UI 重新描述一遍，框架什么都不留。
+Casey Muratori 在 2005 年那篇 《Immediate-Mode GUI》 里划了一刀，他说：**保留式（retained）GUI 的那些毛病，跟 retained-mode 图形 API 的毛病一模一样**——状态全攥在框架手里，应用这边想保持一致，难如登天。于是 ImGui 反着来：每帧由您的代码把整个 UI 重新描述一遍，框架什么都不留。
 
 这就是 GUI 圈那桩最著名的公案——「保留 vs 即时」。**说白了，它争的根本不是新旧，是状态到底该归谁管。**
 
@@ -174,7 +174,7 @@ CSS 是最出名的那个，它索性把样式做成了一门单独的语言。Q
 
 命令式的世界（比如我们的 Win32），全靠您自己——数据一变，您老老实实 `SetWindowText` 把新值塞回去。声明式的世界把这事整个翻过来：您只描述「状态长这样的时候，界面该长什么样」，状态一动，界面自动重算。
 
-React 那篇 *Thinking in React* 给了两条挺硬的纪律：**单向数据流，外加 state 最小化**——凡是能从已有的 state 算出来的，就千万别再存一份。Elm 更绝，`Model → view → Msg → update → Model` 一个闭环，全程没有一个隐式突变。我们会在 MiniUI 篇亲手把信号和响应式造出来。
+React 那篇 《Thinking in React》 给了两条挺硬的纪律：**单向数据流，外加 state 最小化**——凡是能从已有的 state 算出来的，就千万别再存一份。Elm 更绝，`Model → view → Msg → update → Model` 一个闭环，全程没有一个隐式突变。我们会在 MiniUI 篇亲手把信号和响应式造出来。
 
 ### 11. 异步并发
 
@@ -230,6 +230,6 @@ GUI 有条铁律：主线程不能卡。您要是在主线程里读个大文件�
 > **延伸阅读**（本章论点的原始出处）
 >
 > - Casey Muratori, *Immediate-Mode Graphical User Interfaces* (2005) — 保留 vs 即时模式之争的源头。
-> - Martin Fowler, *GUI Architectures* — MVC / MVP / Presentation Model / MVVM 的演进梳理。
-> - Evan Czaplicki, *The Elm Architecture* — Model-View-Update 循环。
-> - React 团队, *Thinking in React* — 单向数据流与 state 最小化。
+> - Martin Fowler, 《GUI Architectures》 — MVC / MVP / Presentation Model / MVVM 的演进梳理。
+> - Evan Czaplicki, 《The Elm Architecture》 — Model-View-Update 循环。
+> - React 团队, 《Thinking in React》 — 单向数据流与 state 最小化。
