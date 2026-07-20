@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vitepress'
+import { subscribeAfterRouteChange } from '../router-hooks'
 
 // 顶部阅读进度条：滚动时按 scrollTop / (scrollHeight - clientHeight) 算百分比。
 // brand 渐变 + 微光，固定在视口顶部。路由切换重算（短页也要归零）。
 const progress = ref(0)
-const router = useRouter()
 
 function update() {
   const el = document.documentElement
@@ -20,10 +19,10 @@ onMounted(() => {
   window.addEventListener('resize', update, { passive: true })
 })
 
-router.onAfterRouteChange = () => {
+subscribeAfterRouteChange(() => {
   requestAnimationFrame(update)
   setTimeout(update, 300)
-}
+})
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', update)
