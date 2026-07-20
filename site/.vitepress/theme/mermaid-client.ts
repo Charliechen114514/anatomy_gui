@@ -1,5 +1,5 @@
 import { nextTick, onMounted } from 'vue'
-import { useRouter } from 'vitepress'
+import { subscribeAfterRouteChange } from './router-hooks'
 
 // 本地打包 mermaid（dynamic import，客户端懒加载，SSR 不引入）。
 // 不走 CDN —— 避免 Edge Tracking Prevention 把跨域 CDN 脚本当 tracker 拦截，
@@ -108,8 +108,9 @@ function escapeHtml(s: string) {
 }
 
 export function setupMermaid() {
-  const router = useRouter()
-
-  onMounted(() => renderMermaidDiagrams())
-  router.onAfterRouteChange = () => renderMermaidDiagrams()
+  // 用订阅器而非直接赋值 router.onAfterRouteChange:后者是单值属性,
+  // 会被 ReadingProgress 等组件覆盖,导致 SPA 跳转后 mermaid 不渲染。
+  // .catch 治「静默失败」:之前 onMounted 调用没接住 reject,加载失败时图直接消失无痕。
+  onMounted(() => renderMermaidDiagrams().catch((e) => console.error('[mermaid] onMounted 渲染失败', e)))
+  subscribeAfterRouteChange(() => renderMermaidDiagrams().catch((e) => console.error('[mermaid] 路由切换渲染失败', e)))
 }
