@@ -1,6 +1,7 @@
 # AI / Editor
 .claude/
 .vscode/
+.vs/
 .idea/
 
 # clangd

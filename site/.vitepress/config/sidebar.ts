@@ -139,5 +139,24 @@ export function buildSidebar(): DefaultTheme.Sidebar {
     }
   }
 
+  // ModernWindows 系列：线性分阶段，按文件名前缀数字排序（00_、01_、…）。
+  const modernWindowsDir = join(DOCS_ROOT, 'modern_windows')
+  if (existsSync(modernWindowsDir)) {
+    let entries: string[]
+    try {
+      entries = readdirSync(modernWindowsDir)
+        .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
+        .sort(sortEntries)
+    } catch { entries = [] }
+
+    if (entries.length > 0) {
+      sidebar['/modern_windows/'] = entries.map(name => {
+        const fullPath = join(modernWindowsDir, name)
+        const title = extractTitle(fullPath) || humanize(name.replace(/\.md$/, ''))
+        return { text: title, link: `/modern_windows/${name.replace(/\.md$/, '')}` }
+      })
+    }
+  }
+
   return sidebar
 }

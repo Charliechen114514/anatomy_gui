@@ -10,10 +10,13 @@ hero:
       text: 开始学习 Win32
       link: /native_win32/0_ProgrammingGUI_Basic
     - theme: alt
-      text: 补充专题
-      link: /bonus/EnableThemeDialogTexture_TabControl
+      text: ModernWindows 框架（C++ 协程 + DComp）
+      link: /modern_windows/01a_ModernWindows_工具链与工程骨架
 
 features:
+  - title: ModernWindows 框架（连载中）
+    details: 用现代 C++（C++20 协程、std::expected）+ 现代 Win32 栈（Direct2D 1.1 / DirectComposition）从零造一个 GUI 框架，一器官一篇手搓到底
+    link: /modern_windows/01a_ModernWindows_工具链与工程骨架
   - title: Win32 原生编程
     details: 61 章 · 从消息机制到 D3D12 · 覆盖 GUI 编程全部核心知识
     link: /native_win32/0_ProgrammingGUI_Basic
@@ -32,4 +35,7 @@ features:
   - title: OpenGL / Win32
     details: Win32 窗口嵌入 OpenGL 渲染上下文
     link: /native_win32/51_ProgrammingGUI_Graphics_OpenGL_Win32
+  - title: 补充专题
+    details: 主题对话框纹理、TabControl 等零散但实用的进阶技巧
+    link: /bonus/EnableThemeDialogTexture_TabControl
 ---
