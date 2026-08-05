@@ -1,3 +1,5 @@
+<ChapterHero act="1" title="Win32 标本解剖" subtitle="最透明的一具 GUI 标本，从消息机制到 D3D12" motif="specimen" count="61 章" />
+
 # Win32 原生编程
 
 从 Windows 最底层的 Win32 API 开始，系统学习窗口管理、消息机制、控件、对话框、资源文件、GDI/GDI+ 绘图、Direct2D、D3D11/D3D12 渲染。

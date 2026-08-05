@@ -1,7 +1,69 @@
-/* Chinese Typography */
+/* ================================================================
+   解剖学主题 · Anatomy Theme
+   呼应「剖析 GUI —— 从零造一具骨架」
+   亮：骨白底 / 解剖红强调 / 深炭文
+   暗：炭墨底 / 朱红强调 / 暖灰文
+   红只作强调，不通篇红底。
+   ================================================================ */
+
+:root {
+  /* ── 品牌色 · 解剖红（亮色）── */
+  --vp-c-brand-1: #B5394A;
+  --vp-c-brand-2: #8E2B3A;
+  --vp-c-brand-3: #D45F6E;
+  --vp-c-brand-soft: rgba(181, 57, 74, 0.10);
+  --vp-c-brand: var(--vp-c-brand-1);
+
+  /* ── 背景 · 骨白 ── */
+  --vp-c-bg: #F7F3EC;
+  --vp-c-bg-soft: #EFE8DC;
+  --vp-c-bg-soft-up: #FBF8F2;
+  --vp-c-bg-elv: #FFFCF7;
+
+  /* ── 文字 · 深炭 ── */
+  --vp-c-text-1: #2A2622;
+  --vp-c-text-2: #5C544D;
+  --vp-c-text-3: #8A8077;
+
+  /* ── 分隔 / 边框 ── */
+  --vp-c-divider: #E0D8CC;
+  --vp-c-border: #D6CDBF;
+
+  /* ── CJK 字体栈（T9）── */
+  --vp-font-family: system-ui, -apple-system, 'Segoe UI', Roboto,
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑',
+    'Source Han Sans SC', 'Noto Sans CJK SC', sans-serif;
+}
+
+.dark {
+  /* ── 品牌色 · 朱红（暗色提亮）── */
+  --vp-c-brand-1: #D85968;
+  --vp-c-brand-2: #E87683;
+  --vp-c-brand-3: #F09AA5;
+  --vp-c-brand-soft: rgba(216, 89, 104, 0.16);
+
+  /* ── 背景 · 炭墨 ── */
+  --vp-c-bg: #161412;
+  --vp-c-bg-soft: #1F1B18;
+  --vp-c-bg-soft-up: #24201D;
+  --vp-c-bg-elv: #24201D;
+
+  /* ── 文字 · 暖灰 ── */
+  --vp-c-text-1: #E0D8CA;
+  --vp-c-text-2: #B5AC9E;
+  --vp-c-text-3: #7F776C;
+
+  /* ── 分隔 / 边框 ── */
+  --vp-c-divider: #332E29;
+  --vp-c-border: #3D3733;
+}
+
+/* ================================================================
+   Chinese Typography
+   ================================================================ */
 .vp-doc {
   line-height: 1.85;
-  font-size: 0.82rem;
+  font-size: 1rem;
 }
 
 .vp-doc h1 { line-height: 1.4; }
@@ -21,23 +83,23 @@
 /* Code Blocks */
 .vp-doc div[class*='language-'] {
   border-radius: 8px;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   line-height: 1.6;
 }
 
 .vp-doc div[class*='language-'] code {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 
 .vp-doc :not(pre) > code {
-  font-size: 0.78em;
+  font-size: 0.875em;
   padding: 0.15em 0.35em;
   border-radius: 4px;
 }
 
 /* Tables */
 .vp-doc table {
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   line-height: 1.6;
   border-radius: 8px;
   overflow: hidden;
@@ -56,7 +118,7 @@
 .vp-doc blockquote {
   border-left: 4px solid var(--vp-c-brand-1);
   border-radius: 0 4px 4px 0;
-  background: rgba(81, 107, 232, 0.04);
+  background: var(--vp-c-brand-soft);
 }
 
 /* Links */
@@ -110,7 +172,7 @@
     135deg,
     var(--vp-c-brand-soft) 0%,
     transparent 50%,
-    var(--vp-c-indigo-soft) 100%
+    var(--vp-c-brand-soft) 100%
   );
   opacity: 0.5;
   pointer-events: none;
@@ -120,8 +182,8 @@
   background: linear-gradient(
     135deg,
     var(--vp-c-brand-1) 0%,
-    var(--vp-c-indigo-1) 50%,
-    var(--vp-c-purple-1) 100%
+    var(--vp-c-brand-2) 50%,
+    var(--vp-c-brand-3) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -200,7 +262,7 @@
   background: linear-gradient(
     135deg,
     var(--vp-c-brand-soft) 0%,
-    var(--vp-c-indigo-soft) 100%
+    var(--vp-c-brand-soft) 100%
   ) !important;
   color: var(--vp-c-brand-1) !important;
   font-size: 22px !important;
@@ -263,7 +325,7 @@
 /* ── Content Dark Mode ─────────────────────────────────────────── */
 
 .dark .vp-doc blockquote {
-  background: rgba(81, 107, 232, 0.08);
+  background: var(--vp-c-brand-soft);
 }
 
 .dark .vp-doc table tr:nth-child(even) {
@@ -295,4 +357,184 @@
   .VPFeature .details {
     font-size: 12.5px !important;
   }
+}
+
+/* ================================================================
+   Organ Grid · 12 器官卡片网格（Act0 理论篇首页）
+   ================================================================ */
+.organ-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.85rem;
+  margin: 1.5rem 0 2rem;
+}
+
+/* ================================================================
+   代码折叠 · vp-code-fold（纯 CSS :has 控制，零 JS）
+   ================================================================ */
+.vp-code-fold {
+  margin: 16px 0;
+  position: relative;
+}
+
+.vp-code-fold > details summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  border: 1px solid var(--vp-c-brand-1);
+  border-radius: 999px;
+  margin-bottom: 12px;
+  transition: background 0.2s ease;
+}
+
+.vp-code-fold > details summary::-webkit-details-marker { display: none; }
+.vp-code-fold > details summary em { font-style: normal; color: var(--vp-c-text-3); }
+
+.vp-code-fold > details summary:hover {
+  background: var(--vp-c-brand-1);
+  color: var(--vp-c-bg-elv);
+}
+.vp-code-fold > details summary:hover em { color: var(--vp-c-bg-elv); opacity: 0.8; }
+
+.vp-code-fold .vp-cf-open { display: none; }
+.vp-code-fold:has(details[open]) .vp-cf-closed { display: none; }
+.vp-code-fold:has(details[open]) .vp-cf-open { display: inline; }
+
+/* 收起时隐藏代码块；展开时显示 */
+.vp-code-fold:not(:has(details[open])) > div[class*='language-'] { display: none; }
+.vp-code-fold:has(details[open]) > div[class*='language-'] { display: block; }
+
+@media print {
+  .vp-code-fold > div[class*='language-'] { display: block !important; }
+  .vp-code-fold > details { display: none; }
+}
+
+/* ================================================================
+   键盘按键 · kbd
+   ================================================================ */
+.vp-doc kbd {
+  font-family: var(--vp-font-family-mono, ui-monospace, monospace);
+  font-size: 0.85em;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin: 0 2px;
+  color: var(--vp-c-text-1);
+  white-space: nowrap;
+}
+
+/* ================================================================
+   Mermaid 图表容器
+   ================================================================ */
+.mermaid-diagram {
+  margin: 1.75rem auto;
+  text-align: center;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-diagram .mermaid-error {
+  color: var(--vp-c-brand-1);
+  text-align: left;
+  font-size: 0.85rem;
+  background: var(--vp-c-brand-soft);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--vp-c-brand-1);
+}
+
+/* ================================================================
+   字号切换器 zoom（FontSizeSwitcher 写 html[data-font-size]）
+   ================================================================ */
+html[data-font-size='xxsmall'] { zoom: 0.85; }
+html[data-font-size='small']   { zoom: 0.92; }
+html[data-font-size='normal']  { zoom: 1; }
+html[data-font-size='large']   { zoom: 1.08; }
+html[data-font-size='xxlarge'] { zoom: 1.16; }
+
+@media (max-width: 959px) {
+  html[data-font-size='xxsmall'] { zoom: 0.9; }
+  html[data-font-size='small']   { zoom: 0.95; }
+  html[data-font-size='large']   { zoom: 1.05; }
+  html[data-font-size='xxlarge'] { zoom: 1.12; }
+}
+
+/* ================================================================
+   可拖拽侧栏 · ResizableSidebar
+   ================================================================ */
+:root {
+  --vp-sidebar-width: 272px;
+  --vp-aside-width: 256px;
+}
+
+.VPDoc.has-aside .aside {
+  width: var(--vp-aside-width);
+  max-width: var(--vp-aside-width);
+}
+
+.rs-handle {
+  position: fixed;
+  top: var(--vp-nav-height, 64px);
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  z-index: 50;
+  background: transparent;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.rs-handle:hover,
+.rs-handle.is-active {
+  background: var(--vp-c-brand-1);
+  opacity: 0.45;
+}
+
+.rs-handle.is-active {
+  opacity: 0.65;
+}
+
+.rs-handle--right {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  bottom: 0;
+  width: 6px;
+}
+
+body.rs-resizing {
+  user-select: none;
+  cursor: col-resize;
+}
+
+body.rs-resizing * {
+  pointer-events: none !important;
+}
+
+@media (max-width: 959px) {
+  .rs-handle { display: none !important; }
+}
+
+/* ================================================================
+   code-group tabs（VitePress 内置 :::code-group）—— 解剖学 hover 增强
+   ================================================================ */
+.vp-code-group .tabs label {
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.vp-code-group .tabs label:hover {
+  color: var(--vp-c-brand-1);
 }

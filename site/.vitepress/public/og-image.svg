@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- 骨白底 -->
+  <rect width="1200" height="630" fill="#F7F3EC"/>
+
+  <!-- 右上 brand 红晕 -->
+  <circle cx="1080" cy="80" r="240" fill="#B5394A" opacity="0.06"/>
+  <circle cx="1100" cy="560" r="160" fill="#B5394A" opacity="0.04"/>
+
+  <!-- 右侧骨架几何（呼应 AnatomyHero） -->
+  <g transform="translate(740, 90)" stroke="#B5394A" fill="none">
+    <!-- 控件树分叉 -->
+    <g stroke-width="1.4" stroke="#C9BFAC">
+      <path d="M184 138 L120 86 L78 96"/>
+      <path d="M256 138 L320 86 L362 96"/>
+      <path d="M184 202 L120 254 L78 264"/>
+      <path d="M256 202 L320 254 L362 264"/>
+      <path d="M120 86 L96 60"/>
+      <path d="M320 86 L344 60"/>
+    </g>
+    <!-- 末端控件方块 -->
+    <g stroke-width="1.6" fill="#F7F3EC">
+      <rect x="68" y="86" width="20" height="20" rx="3"/>
+      <rect x="352" y="86" width="20" height="20" rx="3"/>
+      <rect x="68" y="254" width="20" height="20" rx="3"/>
+      <rect x="352" y="254" width="20" height="20" rx="3"/>
+      <rect x="86" y="50" width="14" height="14" rx="2"/>
+      <rect x="340" y="50" width="14" height="14" rx="2"/>
+    </g>
+    <!-- 信号弧 -->
+    <path d="M78 96 Q160 40 220 122" stroke="#D45F6E" stroke-width="1.4" stroke-dasharray="3 4"/>
+    <path d="M362 264 Q280 320 220 218" stroke="#D45F6E" stroke-width="1.4" stroke-dasharray="3 4"/>
+    <!-- 中央事件循环 -->
+    <circle cx="220" cy="170" r="52" stroke-width="2.4"/>
+    <circle cx="220" cy="170" r="36" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.7"/>
+    <circle cx="220" cy="170" r="5" fill="#B5394A"/>
+  </g>
+
+  <!-- 左侧 kicker -->
+  <text x="84" y="140" font-family="'PingFang SC','Microsoft YaHei',system-ui,sans-serif" font-size="26" font-weight="700" letter-spacing="6" fill="#B5394A">C++ GUI 解剖学教程</text>
+
+  <!-- 主标题 -->
+  <text x="78" y="280" font-family="'PingFang SC','Microsoft YaHei',system-ui,sans-serif" font-size="130" font-weight="800" letter-spacing="-2" fill="#2A2622">剖析<tspan fill="#B5394A">GUI</tspan></text>
+
+  <!-- tagline -->
+  <text x="84" y="345" font-family="'PingFang SC','Microsoft YaHei',system-ui,sans-serif" font-size="34" fill="#5C544D">从零造一具骨架，看穿每一个框架的内部设计</text>
+
+  <!-- 底部 brand 线 -->
+  <line x1="84" y1="540" x2="1116" y2="540" stroke="#B5394A" stroke-width="2.5"/>
+
+  <!-- URL -->
+  <text x="84" y="582" font-family="system-ui,sans-serif" font-size="22" fill="#8A8077">charliechen114514.github.io/anatomy_gui</text>
+</svg>
