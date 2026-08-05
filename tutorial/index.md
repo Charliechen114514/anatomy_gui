@@ -12,8 +12,15 @@ hero:
     - theme: alt
       text: 直奔 Win32 标本解剖
       link: /native_win32/
+    - theme: alt
+      text: ModernWindows 框架（C++ 协程 + DComp）
+      link: /modern_windows/01a_ModernWindows_工具链与工程骨架
 
 features:
+  - icon: 🪟
+    title: ModernWindows 框架（连载中）
+    details: 用现代 C++（C++20 协程、std::expected）+ 现代 Win32 栈（Direct2D 1.1 / DirectComposition）从零造一个 GUI 框架，一器官一篇手搓到底
+    link: /modern_windows/01a_ModernWindows_工具链与工程骨架
   - icon: 🩻
     title: Act 0 · GUI 理论篇
     details: 10 篇 · 12 器官世界观 · 保留 vs 即时、命令/声明/响应、事件循环、可访问性、隐藏成本
