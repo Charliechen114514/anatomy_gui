@@ -222,8 +222,9 @@ LRESULT CALLBACK TabPageProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
     {
-        // 获取标签页索引（通过窗口长整形存储）
-        int index = (int)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+        // 获取标签页索引（通过 CREATESTRUCT 在窗口创建时传入，
+        // 避免在 WM_CREATE 里读到尚未设置的 GWLP_USERDATA）
+        int index = (int)(INT_PTR)((LPCREATESTRUCT)lParam)->lpCreateParams;
 
         // 根据索引创建不同的内容
         const wchar_t* texts[] = {
@@ -265,10 +266,10 @@ void CreateTabPage(HWND hParent, int index, const wchar_t* title, HINSTANCE hIns
         0, L"TabPageClass", L"",
         WS_CHILD | WS_CLIPSIBLINGS,
         10, 40, 380, 150,
-        hParent, (HMENU)(ID_TAB_CONTENT + index), hInstance, NULL
+        hParent, (HMENU)(ID_TAB_CONTENT + index), hInstance, (LPVOID)(INT_PTR)index
     );
 
-    // 保存索引到窗口用户数据
+    // 保存索引到窗口用户数据（供后续消息使用；WM_CREATE 已通过上面的 lpCreateParams 取到）
     SetWindowLongPtr(hPage, GWLP_USERDATA, index);
     g_hTabPages[index] = hPage;
 }
