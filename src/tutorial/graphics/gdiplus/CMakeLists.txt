@@ -1,3 +1,0 @@
-add_subdirectory(01_gdiplus_hello)
-add_subdirectory(02_transform_matrix)
-add_subdirectory(03_image_codec)

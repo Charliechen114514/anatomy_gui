@@ -2,7 +2,7 @@
 
 > 用现代 C++（C++20 协程、Concepts、`std::expected`）+ 现代 GUI 思想（细粒度响应式、数据绑定）+ 现代 Win32 栈（Direct2D 1.1 / DirectComposition / DirectWrite），在 Windows 上从零再造一具 GUI 骨架——把“任何一个 GUI 框架藏起来的假设”一个一个摊开给你看。本系列自包含，不预设你读过任何其它教程。
 
-> 没碰过 Win32 也能读：每个 Win32 概念第一次用到时都会就地讲清。想深挖某一步可参考 [Win32 原生编程](/native_win32/)，但它不是前置门槛。
+> 没碰过 Win32 也能读：每个 Win32 概念第一次用到时都会就地讲清，不预设你读过任何 Win32 教程。
 
 ## 从这里开始
 

@@ -1,7 +1,9 @@
 # GUI 编程剖析 · 总路线图（anatomy edition）
 
+> ⚠ **历史文档**：本文描述的是旧结构（八幕 / 72 章），已不作为执行依据。当前执行路线见 [todo/route.md](todo/route.md)。
+
 > **定位**：剖析 GUI —— 从零造一具骨架，看穿每一个框架的内部设计。
-> 本文件是对外权威路线；执行清单与逐幕大纲在 [`todo/`](todo/README.md)。
+> ~~本文件是对外权威路线~~ —— 已作废。当前执行路线见 [`todo/route.md`](todo/route.md)，索引见 [`todo/README.md`](todo/README.md)。
 
 ---
 
@@ -77,8 +79,8 @@
 
 ```
 anatomy_gui/
-├─ tutorial/        内容（现有 native_win32/ + hands_on_ur_own_gui/ 为 v1.0 主干；新内容增量挂新目录）
-├─ src/tutorial/    可编译示例（CMake + C++20，CI 覆盖 stage1-10 + win32 + graphics）
+├─ tutorial/        内容（现只剩 Act 0 理论篇 + ModernWindows；旧结构已归档）
+├─ src/tutorial/    可编译示例（现只剩 modern_windows）
 ├─ site/            VitePress 站点
 ├─ todo/            规划（见 todo/README.md）
 ├─ Roadmap.md       本文件（对外路线）
@@ -86,15 +88,16 @@ anatomy_gui/
 └─ CONTRIBUTING.md  贡献规范
 ```
 
-> `tutorial/` 保持现有结构（D1 不重组）；新内容写到新目录（如 `tutorial/act2-dissect/`），侧边栏加扫描即可接入。
+> D1「不重组」已作废：旧结构整体归档进 `intern/legacy/`，站点上只剩 Act 0 理论篇与 ModernWindows。
 
 ---
 
 ## 七、进度
 
-- ✅ **主干已就绪**：Win32 全栈 + MiniUI 62–71（72 章），站点可见、CI 全绿
-- 🟢 **增量首选**：Act0 思想史、Act2 现代 Win32、Act6 产品化
-- 🟡 **待深化 / 扩展**：Act3 Anatomy v2 深化、Act4 比较解剖（核心）、Act5 渲染扩展、Act7 毕业项目
-- 📋 **规划就绪**：`todo/` 已理顺，按第一批顺序逐篇开写
+> 本节随重构作废。**当前进度以 [`todo/route.md`](todo/route.md) 的总览表为准。**
+
+- 旧结构（Win32 全栈 + MiniUI，72 章）与配套示例已归档进私有的 `intern/legacy/`，已从站点下线
+- 站点上现只剩 **Act 0 理论篇** 与 **ModernWindows**（连载中）
+- 新骨架按「具象 → 抽象 → 落回具象」推进，**第 0 步（清场）已完成**
 
 > 一直在路上，持续剖析中。

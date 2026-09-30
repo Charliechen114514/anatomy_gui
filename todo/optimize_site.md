@@ -1,5 +1,7 @@
 # 站点优化清单（VitePress）
 
+> ⚠ **已失效（历史记录）**：本文针对重构前的旧站点结构，其中的路径与条目均已不适用。
+
 > 本文件是 **anatomy_gui** VitePress 站点（配置在 `site/.vitepress/`，内容 srcDir 在 `tutorial/`）的可执行优化清单。每条都标注了 `文件:行` 与可直接粘贴的改动，可按优先级独立实施。
 >
 > 站点基本信息：VitePress 1.6.4 + Vue 3，部署在 GitHub Pages，在线地址 `https://charliechen114514.github.io/anatomy_gui/`，`base='/anatomy_gui/'`，`srcDir='../tutorial'`。
@@ -301,6 +303,8 @@ description: 系统 DPI、Per-Monitor DPI、DPI Aware manifest 与 Win32 API 适
 ---
 
 # 编程GUI到底什么是DPI —— Windows 平台 DPI 适配实战指南
+
+> ⚠ **已失效（历史记录）**：本文针对重构前的旧站点结构，其中的路径与条目均已不适用。
 ...
 ```
 > 建议同时精简侧边栏显示标题（`sidebar.ts:extractTitle` 已优先读 frontmatter title）。

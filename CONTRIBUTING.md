@@ -34,7 +34,7 @@
 
 ### 教程内容
 
-> **适用范围**：本规范适用于 **Win32 / graphics 篇**（`tutorial/native_win32/`）——工程教程基调，每章配 `src/` 可编译示例。**MiniUI 篇**（`tutorial/hands_on_ur_own_gui/`）为启发式手册基调（不给函数签名 / 骨架 / 代码，引导读者自行实现框架），不在此规范约束内。
+> **适用范围**：重构期间站点只剩 **Act 0 理论篇** 与 **ModernWindows**（工程教程基调）。旧结构（Win32 篇 / MiniUI 篇）与其示例代码已归档进私有的 `intern/legacy/`，不再对外发布，也不在本规范约束内。
 
 - 保持与现有文章一致的写作风格
 - 每节遵循：概念讲解 → 代码结构 → 常见坑 → 小作业
@@ -59,13 +59,9 @@
 pnpm install
 pnpm build          # 构建产物；或 pnpm dev 本地实时预览
 
-# 代码示例 —— Windows（Win32 / graphics）
-cmake -B build -S src/tutorial/native_win32
+# 代码示例 —— Windows（ModernWindows）
+cmake -B build -S src/tutorial/modern_windows
 cmake --build build --config Release
-
-# 代码示例 —— Linux（MiniUI stages，需 xcb + cairo）
-sudo apt-get install -y libxcb1-dev libxcb-util-dev libxcb-keysyms1-dev libcairo2-dev
-python src/tutorial/build_anatomy_gui_for_tutorials.py --target all
 ```
 
 ## 有问题？

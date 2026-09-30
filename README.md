@@ -6,66 +6,58 @@
 
 > **剖析 GUI —— 从零造一具骨架，看穿每一个框架的内部设计。**
 
-一套面向 C++ 开发者的 GUI 编程**剖析式**教程：先用 Win32 解剖最透明的标本，再亲手造一个 MiniUI 骨架，最后拿这具骨架去对照解剖 GTK / WinUI 3 / ImGui。
+一个面向 C++ 开发者的 GUI 编程**解剖式**教程。
 
-📚 在线阅读：[anatomy_gui 教程站](https://charliechen114514.github.io/anatomy_gui/)
+🔗 在线阅读：[anatomy_gui 教程站](https://charliechen114514.github.io/anatomy_gui/)
 
----
-
-## 这是什么
-
-市面上要么是零散博客，要么是冷冰冰的官方文档，缺一套能把 GUI 知识体系串起来的**剖析式**教程。本系列不只教「怎么用框架」，而是带你从底层理解每一个 GUI 框架的内部构造——**亲手造一遍，再看任何框架都通透**。
-
-**论点**：所有 GUI 框架都由同一组器官构成——窗口、事件循环、输入、对象模型、控件树、布局、绘制、文本、样式、状态绑定、异步、可访问性（共 12 个，摊开地图见 [Act 0 理论篇](https://charliechen114514.github.io/anatomy_gui/act0-theory/)）。把这群器官造过一遍，任何框架都只是一组你已熟知的变奏。
+> ⚠ **仓库正在重构**：旧结构（Win32 篇 63 章 + MiniUI 篇 10 章）与配套示例已移入私有的 `intern/legacy/`（该目录被 gitignore，不对外发布），站点上相应内容已下线。新骨架的路线见 [`todo/route.md`](todo/route.md)。
 
 ---
 
-## 路线总览（六幕 · 顺序与大纲）
+## 论点
 
-| 幕 | 内容 | 角色 | 进度 |
-|:---|:---|:---|:---|
-| **Act 0 · 理论** | GUI 思想史 / 12 器官 / 范式分叉 | 入口 | ✅ 已就绪 |
-| **Act 1 · 标本与骨架** | 解剖 Win32 标本 + 造 MiniUI 骨架 | 建立解剖词汇 | ✅ 已就绪 |
-| **Act 2 · 比较解剖** | 8 器官 × 多标本对照（Win32/GTK/WinUI3/ImGui） | **系列核心** | 🚧 增量中 |
-| **Act 3 · 渲染栈** | GDI → Direct2D → D3D | 像素如何被制造 | ✅ 已就绪 |
-| **Act 4 · 成型与交付** | DPI / theming / 性能 / 打包 / i18n / a11y | 把 demo 变产品 | 🚧 待写 |
-| **Act 5 · 独立解剖** | Markdown 编辑器（比较版毕业项目） | 闭环 | 🚧 待写 |
-
-> 完整路线见 [Roadmap.md](Roadmap.md)；逐幕计划见 [todo/](todo/)。
+所有 GUI 框架，无论多"魔法"，都由同一组器官构成——窗口、事件循环、输入、对象模型、控件树、布局、绘制、文本、样式、状态绑定、异步、可访问性。亲手把这组器官造一遍，就能把**任何**框架读成一组你已经熟知的变奏。
 
 ---
 
-## 已有内容（约 82 章 · 主干已就绪）
+## 重构后的路线
 
-- **Act 0 · GUI 理论篇**（新增）：12 个器官的世界地图、保留 vs 即时、命令 / 声明 / 响应、事件循环、可访问性、隐藏成本等 10 篇
-- **Win32 原生编程**（→ Act 1 标本）：基础 / 控件 / 对话框 / 资源 / 进阶消息 / 子类化 / Hook / 托盘 / 拖放 / 定时器
-- **图形渲染**（→ Act 3 渲染栈）：GDI → GDI+ → Direct2D / DirectWrite → HLSL → Direct3D 11 → Direct3D 12 → OpenGL
-- **MiniUI Handbook**（→ Act 1 骨架）：用 XCB + Cairo 从零手搓一个教学级 GUI 框架（事件循环 / 控件树 / 布局 / 信号 / 渲染管线 / 协程 / 响应式 / 线程池）
+**具象 → 抽象 → 落回具象**
+
+| 步 | 内容 | 状态 |
+|:--:|:---|:---|
+| 0 | 清场：旧结构归档、站点与 CI 断引用 | ✅ 已完成 |
+| 1 | **具象**：裸 Win32 写一遍，故意不做封装 | ⬜ |
+| 2 | **抽象**：五个痛点 → 五层封装 | ⬜ |
+| 3 | **落回具象**：用框架重写同一个 demo | ⬜ |
+| 4 | M1 收口：`tag m1` + "控件如何上屏"专题 | ⬜ |
+| 5 | M2：接管轴七档（自绘 / 自管合成 / 文本 / 输入 / 无障碍 / 响应式） | ⬜ |
+
+完整的步骤、验收与红线见 [`todo/route.md`](todo/route.md)；定位与架构见 [`todo/`](todo/)。
 
 ---
 
-## 配套代码
+## 站点上现有内容
 
-[src/tutorial/](src/tutorial/) —— 每章独立可编译示例（CMake + C++20，生成 `compile_commands.json`）。
+- **Act 0 · GUI 理论篇**（10 篇）：12 器官世界观、保留 vs 即时、命令 / 声明 / 响应式、事件循环、可访问性、隐藏成本
+- **ModernWindows**（连载中）：用现代 C++ + 现代 Win32 栈，从零造一具骨架
 
-## 开发环境
+## 构建
 
-- **Windows**：Visual Studio 2022 / MSVC（或 MinGW），Windows SDK，CMake 3.20+
-- **Linux**（MiniUI / GTK）：`libxcb1-dev libcairo2-dev`，WSL2 + XLaunch / WSLg
-- **构建**：
-  ```bash
-  cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-  cmake --build build --config Release
-  ```
+```bash
+# 站点
+pnpm install
+pnpm dev            # 本地预览；pnpm build 构建产物
+
+# 代码示例（ModernWindows，Windows + MSVC）
+cmake -B build -S src/tutorial/modern_windows
+cmake --build build --config Release
+```
 
 ## 贡献
 
-见 [CONTRIBUTING.md](CONTRIBUTING.md)。规划与执行清单见 [todo/](todo/)。
+见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可证
 
 [MIT](LICENSE) · Copyright © 2024-2026 [Charliechen114514](https://github.com/Charliechen114514)
-
----
-
-> 一直在路上，持续剖析中。

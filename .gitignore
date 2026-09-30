@@ -41,3 +41,8 @@ desktop.ini
 *.lib
 *.pdb
 *.ilk
+
+# internal privates
+intern/
+
+

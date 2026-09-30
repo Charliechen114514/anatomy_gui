@@ -8,7 +8,7 @@
 
 ## 前言：为什么必须推倒 `shared_ptr` 的所有权
 
-说实话，笔者在做 stage03 之前，先回头把 `anatomy_gui_for_tutorials/stage10` 那套 miniui 翻出来过了一遍。你看，stage10 的 `Widget` 长这样（节选）：
+说实话，笔者在做 stage03 之前，先回头把上一版的 miniui 骨架翻出来过了一遍（那份素材已归档到私有库，不在站点上）。你看，它当时的 `Widget` 长这样（节选）：
 
 ```cpp
 class Widget : public std::enable_shared_from_this<Widget> {
