@@ -36,7 +36,7 @@ widget-behavior.md、win32-essentials.md 五份文档，
 | 步 | 名称 | 产出 | 一句话验收 | 状态 |
 |:--:|:---|:---|:---|:--:|
 | 0 | 清场 | 老教程 + 配套代码移入 `intern/legacy/`、站点与 CI 断引用、删掉两个失效工作流 | 站点构建通过，产物只剩理论篇与 ModernWindows | ✅ |
-| 1 | **具象** · 裸 Win32 | 单文件 demo + 一篇 | 七条判据全过，五条痛点显式留着 | 🟡 第 1 节已落地 |
+| 1 | **具象** · 裸 Win32 | 单文件 demo + 一篇 | 七条判据全过，五条痛点显式留着 | 🟡 第 1、2 节已落地 |
 | 2 | **抽象** · 五个痛点五层 | 五小步的封装 + 五篇 | 每步能指出它解决了第 1 步的哪个痛点 | ⬜ |
 | 3 | **落回具象** · 框架版 | 同一个 demo 的框架版 | 行为与第 1 步逐条一致 + 代码显著更短 | ⬜ |
 | 4 | M1 收口 | tag `m1` + "控件如何上屏"专题 | 七条判据复验通过 | ⬜ |
@@ -171,12 +171,14 @@ widget-behavior.md、win32-essentials.md 五份文档，
 ### 构建约定（已落地）
 
 - **入口两条命令**：`cmake -G Ninja -B build -S .` + `cmake --build build -j`；**不用 CMakePresets**，也不需要开「开发者命令行」
+- **depot_tools 挡路**：PATH 里排前面的 `E:\chromesrc\depot_tools` 会劫持 `ninja`（configure 报 "inappropriate file type or format"，它只有无扩展名的 bash 脚本）和 `clang-format`（报 "Python was not found"）。解法：configure 加 `-DCMAKE_MAKE_PROGRAM=` 指向真 ninja.exe（winget 装的那个）；格式化/检查直接用 `C:\LLVM\bin\clang-format.exe` / `clang-tidy.exe`
 - **工具链 clang-cl + Ninja**：clang-cl 自己定位 VS/SDK，所以**不需要 vcvars**；不产 `.sln` / `.vcxproj`；装它只要 `winget install LLVM.LLVM`
 - **CMakeLists 会挡住非 clang-cl**：`COMPILER_ID=Clang` 且 `SIMULATE_ID=MSVC` 才放行；找不到 clang-cl 时当场给出安装命令
 - **单配置，默认 Debug**；**静态 CRT（/MT）** —— 产物双击就跑，只依赖 USER32/KERNEL32
 - **顶层选项**：`/utf-8 /std:c++20 -Wall -Wextra`，另关掉 `-Wno-c++98-compat` 与 `-Wno-nonportable-system-include-path`（理由写在 CMakeLists 注释里）；产物统一落 `build/bin/`
 - **IDE**：`.vscode/settings.json` —— CMake Tools 驱动 configure/build（`cmake.generator: Ninja`），补全交给 clangd 读 `build/compile_commands.json`
 - ⚠ **PowerShell 坑**：`cmake -DXXX=$Var` 这种裸参数里，`=` 后面的变量**不会展开**（传进去是字面量 `$Var`）；必须写成 `"-DXXX=$Var"` 或数组展开
+- **注释规矩**（2026-10 立）：代码注释一律英文、祈使句、无第一人称、无将来时；头文件需结构化 doxygen。检查：`python scripts/doxygen/lint.py`；规范详见 `CONTRIBUTING.md`「代码注释规矩」
 - ⚠ **生成器没法在 CMakeLists 里定**：想「不加 `-G` 也是 Ninja」，设一次 `CMAKE_GENERATOR=Ninja`；不设则装了 VS 的机器会选 VS 生成器并产出 `.sln`
 
 ### 已解决的坑（留着当教材）
@@ -185,6 +187,7 @@ widget-behavior.md、win32-essentials.md 五份文档，
 |:---|:---|:---|
 | 中文版 cl 的 `/showIncludes` 前缀被本地化 | 刷 231 行「注意: 包含文件:」，`build/.ninja_deps` 只有 88 字节（空）→ **改 `.h` 不重编** | 换 clang-cl 后彻底消失：clang-cl 走 GCC 风格的 `-MD/-MT/-MF` depfile，与 `msvc_deps_prefix` 无关。`VSLANG=1033` 对 cl **实测无效** |
 | MSVC 配 Ninja 必须先进 vcvars 环境 | 裸跑 `cmake -G Ninja` 报找不到编译器，于是要写一个补 vcvars 的脚本 | clang-cl 自己定位 VS/SDK，这一笔税不用交 —— 那个 `scripts/build.ps1` 因此删掉了 |
+| depot_tools 劫持 PATH 里的 `ninja` / `clang-format` | `cmake -G Ninja` 报 "inappropriate file type or format"（抓到无扩展名 bash 脚本）；`clang-format` 报 "Python was not found" | 真身在 `C:\LLVM\bin\`；ninja 用 `-DCMAKE_MAKE_PROGRAM` 显式指向 winget 的 ninja.exe |
 
 ---
 
@@ -197,4 +200,5 @@ widget-behavior.md、win32-essentials.md 五份文档，
   - 已冒烟：窗口起得来、不崩、能干净关掉
 - 老教程：已移入 `intern/legacy/`（教程 82 个文件 + 代码 412 个文件；496 个文件从 git 索引中移除，**尚未提交**）
 - 站点：构建通过，线上只有 `act0-theory` 与 `modern_windows`
-- **下一步**：M1a 第 2 节（放三个控件、接住点击）
+- **下一步**：M1a 第 3 节（算账：manifest / DPI；WM_SIZE 手算布局是否入节，动笔时定）
+- 第 2 节已落地：三控件（EDIT/BUTTON/STATIC）+ WM_COMMAND 点击链，146 行；四道关卡（lint / format / build / tidy）全绿

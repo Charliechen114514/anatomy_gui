@@ -48,6 +48,20 @@
 - 代码需通过 `.clang-format` 格式化
 - 确保示例可编译运行
 
+### 代码注释规矩（骨架代码 `src/gui/`）
+
+> 执行工具：`python scripts/doxygen/lint.py`（全量扫描，也可 `--files <paths>` 只查指定文件）。规则改编自 Cinux 项目，全文以脚本为准，要点：
+
+| 规矩 | 说明 |
+|:-----|:-----|
+| 注释一律英文 | 注释里出现 CJK 字符即违规；字符串字面量不查（UI 中文显示是本教程的验收判据） |
+| 祈使句、无人称 | 不出现 I / we / our / my |
+| 不用将来时 | 禁 will，用一般现在时描述行为 |
+| 头文件结构化文档 | `.h/.hpp` 需 `/** @file */` 文件头；公开类型与函数需 doxygen 块：`@brief` 必填，`@param` 需方向 `[in]/[out]`，非 void 函数需 `@return` |
+| 行宽 100 | 与 `.clang-format` 的 `ColumnLimit` 一致 |
+
+> 教学示例（`src/tutorial/` 与站点内嵌代码）不在此约束内 —— 它们随文章行文。
+
 ## 开发环境
 
 详见 [README.md](README.md) 中的「开发环境」章节。
