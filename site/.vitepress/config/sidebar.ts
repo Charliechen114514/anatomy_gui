@@ -85,5 +85,24 @@ export function buildSidebar(): DefaultTheme.Sidebar {
     }
   }
 
+  // 造骨架（主线）：按文件名前缀数字排序。
+  const guiDir = join(DOCS_ROOT, 'gui')
+  if (existsSync(guiDir)) {
+    let entries: string[]
+    try {
+      entries = readdirSync(guiDir)
+        .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
+        .sort(sortEntries)
+    } catch { entries = [] }
+
+    if (entries.length > 0) {
+      sidebar['/gui/'] = entries.map(name => {
+        const fullPath = join(guiDir, name)
+        const title = extractTitle(fullPath) || humanize(name.replace(/\.md$/, ''))
+        return { text: title, link: `/gui/${name.replace(/\.md$/, '')}` }
+      })
+    }
+  }
+
   return sidebar
 }

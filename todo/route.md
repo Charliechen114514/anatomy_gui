@@ -36,10 +36,10 @@ widget-behavior.md、win32-essentials.md 五份文档，
 | 步 | 名称 | 产出 | 一句话验收 | 状态 |
 |:--:|:---|:---|:---|:--:|
 | 0 | 清场 | 老教程 + 配套代码移入 `intern/legacy/`、站点与 CI 断引用、删掉两个失效工作流 | 站点构建通过，产物只剩理论篇与 ModernWindows | ✅ |
-| 1 | **具象** · 裸 Win32 | 单文件 demo + 一篇 | 七条判据全过，五条痛点显式留着 | 🟡 第 1、2 节已落地 |
-| 2 | **抽象** · 五个痛点五层 | 五小步的封装 + 五篇 | 每步能指出它解决了第 1 步的哪个痛点 | ⬜ |
-| 3 | **落回具象** · 框架版 | 同一个 demo 的框架版 | 行为与第 1 步逐条一致 + 代码显著更短 | ⬜ |
-| 4 | M1 收口 | tag `m1` + "控件如何上屏"专题 | 七条判据复验通过 | ⬜ |
+| 1 | **具象** · 裸 Win32 | 单文件 demo（277 行）+ 正文一篇 | 七条判据全过，五条痛点显式留着 | ✅ 已完成 |
+| 2 | **抽象** · 五个痛点五层 | 五小步的封装 + 五篇 | 每步能指出它解决了第 1 步的哪个痛点 | ✅ 5/5 完成 |
+| 3 | **落回具象** · 框架版 | 对照总账一篇（demo 已在第 2 步逐层迁移完成） | 五条痛点逐条对照 + 「加控件」实测 | ✅ 完成（实测 3 行/1 处，非"一行"） |
+| 4 | M1 收口 | tag `m1` + [控件如何上屏](../../tutorial/gui/08_控件如何上屏.md) | 七条判据复验通过 | ✅ 完成 |
 | 5 | M2 · 接管轴七档 | 七档接管 + 七组内容 | 每档换掉一个实现，上层行为不变 | ⬜ |
 | 6 | 骨架收口 | 毕业项目 / 收尾 | 待定 | ⬜ |
 
@@ -200,5 +200,43 @@ widget-behavior.md、win32-essentials.md 五份文档，
   - 已冒烟：窗口起得来、不崩、能干净关掉
 - 老教程：已移入 `intern/legacy/`（教程 82 个文件 + 代码 412 个文件；496 个文件从 git 索引中移除，**尚未提交**）
 - 站点：构建通过，线上只有 `act0-theory` 与 `modern_windows`
-- **下一步**：M1a 第 3 节（算账：manifest / DPI；WM_SIZE 手算布局是否入节，动笔时定）
-- 第 2 节已落地：三控件（EDIT/BUTTON/STATIC）+ WM_COMMAND 点击链，146 行；四道关卡（lint / format / build / tidy）全绿
+- 站点新增 `/gui/`（造骨架主线）：`tutorial/gui/index.md` + `01_具象_裸Win32.md`；nav 与 sidebar 已接入
+- 第 2 步第 1 层已落地（窗口对象）
+  - `platform/window.h`（75 行，含 doxygen）+ `platform/window.cpp`（78 行）
+  - `app/demo.cpp`（222 行）：demo 变成 `Window` 子类，全局变量全部变成员
+  - **`gui_naked` 保留为第二个目标**：裸版冻结不删，用来做"行为逐条一致"的对照
+  - 实测两版行为一致（控件宽度 259→1371、Button 恒 48）；四道关卡全绿
+  - 诚实的账：应用代码 277→222（短 55 行），框架新增 153 行，**合计反而长了 98 行**
+- 第 2 步第 2 层已落地（控件树）
+  - 新增 `framework/geometry.h`、`framework/widget.h/.cpp`、`platform/native_widget.h/.cpp`
+  - **关键缝合**：节点的 id 就是 Win32 控件 id，`WM_COMMAND` → `find_by_id` 一步找回节点
+  - 层规矩落定：`NativeWidget` 住 `platform/`（`framework/` 不 include windows.h）；framework 不认识 platform，platform 继承 framework
+  - 端到端实测：`WM_SETTEXT` + `BM_CLICK` → 标签正确更新；两版行为一致；四道关卡全绿
+  - 账：合计 727 行（纯代码 369）；**应用侧纯代码反而 +19 行** —— `set_bounds` 的指定初始化器太啰嗦，记为待磨的 API 毛刺
+  - 新坑：**clang-tidy 要求指定初始化器，编译器却报 `-Wpre-c++20-compat-pedantic`** —— 两个工具打架；已在顶层加 `-Wno-pre-c++20-compat-pedantic`
+  - 另一条 tidy 规则：参数名不得短于 3 字符（`id` → `node_id`）
+- 第 2 步第 3–5 层已落地
+  - **3 事件路由**：`framework/event.h` + `event_router.h/.cpp`；`Widget::accepts`（收不收）+ `on_event`（处理了没有）；路由归组件，WndProc 退化成翻译层
+  - **4 布局**：`framework/layout.h`（策略，不是基类）+ `stack_layout.h/.cpp`；`Widget::preferred_size` + `set_bounds` 自动重排；手算 30 行 → 6 行，顺序陷阱消失
+  - **5 属性与重画**：`framework/property.h`（值变了才通知）+ `Widget::invalidate` 冒泡到根 + `Window::invalidate`；`DrawnLine` 三行自己接线，痛点 5 结构性消失
+  - 实测：几何逐项不变（259/48/259 → 1371/48/1371）；点击链路端到端通过；四道关卡全绿
+  - ⚠ **未验证**：痛点 5 的修复只做了结构验证。`PrintWindow` 像素对比因 DWM 淡入导致基准不稳，结论不可信 —— 需要肉眼确认"那行字现在会更新"
+  - 规模：`src/gui/` 全部 1439 行（纯代码 662），**M1 预算 1500 行已用掉 96%**
+- 第 3 步已完成：`tutorial/gui/07_落回具象_两种写法.md`（五条痛点总表 + 逐条对照 + 实测账）
+  - **实测推翻了口号**：加第四个控件是 **3 个逻辑行 / 净增 4 物理行 / 集中在 1 处**（裸版估算约 11 行散在 5 处）—— 第 1 篇里"只改一行"已在正文更正
+- 第 4 步已完成：`tutorial/gui/08_控件如何上屏.md` —— 补上 M1 欠的问题（系统窗口类画 / 视觉样式决定样子 / DWM 重定向表面合成）
+- **M1 全部完成**：八篇正文（01 具象 · 02–06 抽象五层 · 07 落回具象 · 08 上屏专题），代码四道关卡全绿
+- **下一步**：第 5 步（M2 接管轴第一档）—— 把一个控件改成自绘，或者先做 `todo/` 里排的其它事
+- 第 2 节：三控件（EDIT/BUTTON/STATIC）+ WM_COMMAND 点击链
+- 第 3 节（2026-10 补）：拆成 3a / 3b
+  - **3a**：`WM_SIZE` + `layout_controls` 手算三控件几何（痛点 4 上身）
+  - **3b**：`app/gui.manifest`（PerMonitorV2 + Common Controls v6）+ `WM_DPICHANGED` + 自绘一行字（**痛点 5 的载体，故意不调 InvalidateRect**）+ `WM_ERASEBKGND` / 双缓冲（不闪）
+  - 四道关卡全绿；实测：manifest 已嵌入、缩放后 Edit/Static 宽度 259→1371、Button 保持 120
+
+### 验证手法备忘
+
+| 坑 | 说明 |
+|:---|:---|
+| 测量进程自身 DPI-unaware | 用 PowerShell 量 `GetWindowRect` 拿到的是**虚拟化坐标**（本机 2.5 倍缩放，720 显示成 288）。要物理值得声明 DPI 感知，或只比相对变化 |
+| `FindWindow` 按类名找不到 | 实测返回 0（原因未查明）。稳的做法：`EnumWindows` + `GetWindowThreadProcessId` 按 PID 匹配 |
+| `EnumChildWindows(NULL, ...)` | 父窗口传 0 会枚举**整个桌面**，输出爆炸。先拿到正确 HWND 再枚举 |

@@ -56,15 +56,23 @@ endif()
 
 # 全系列基线，放在顶层让所有目标继承。
 #
-# 两个关掉的警告都跟"我们到底在写什么"有关：
-#   · -Wno-c++98-compat：我们在写 C++20，"这在 C++98 里不行"是纯噪音
+# 三个关掉的警告都跟"我们到底在写什么"有关：
+#   · -Wno-c++98-compat / -Wno-pre-c++20-compat-pedantic：我们在写 C++20，
+#     "这在 C++98 / C++17 里不行"是纯噪音；注意 clang-tidy 的
+#     modernize-use-designated-initializers 恰好要求用 C++20 的指定初始化器，
+#     两个工具在这件事上互相打架，这里选择满足 tidy
 #   · -Wno-nonportable-system-include-path：SDK 里盘上那个文件叫 Windows.h，
 #     而所有人写 <windows.h>，为大小写吵一架没有意义
+#   · -Wno-padded：持有 HWND / RECT / 以后的 D3D 结构体时 padding 是常态；
+#     这条检查关心 ABI 布局，不关心 bug
 add_compile_options(
     /utf-8 /std:c++20
     -Wall -Wextra
     -Wno-c++98-compat
-    -Wno-nonportable-system-include-path)
+    -Wno-c++98-compat-pedantic
+    -Wno-pre-c++20-compat-pedantic
+    -Wno-nonportable-system-include-path
+    -Wno-padded)
 add_compile_definitions(UNICODE _UNICODE)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
