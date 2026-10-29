@@ -12,13 +12,22 @@ const layers = [
     link: '/act0-theory/',
   },
   {
-    id: 'modern-windows',
-    title: 'ModernWindows 骨架',
+    id: 'gui',
+    title: '造骨架 · 从具象到抽象',
+    status: 'done',
+    statusText: 'M1 完成',
+    count: '8 篇 · 两个可执行文件',
+    desc: '裸 Win32 → 五层封装 → 写回同一个程序；先攒痛点，再让抽象从痛处长出来',
+    link: '/gui/',
+  },
+  {
+    id: 'takeover',
+    title: '接管阶段',
     status: 'progress',
     statusText: '连载中',
-    count: '已发布 00 / 01 / 02 / 03',
-    desc: '用现代 C++（C++20 协程）+ 现代 Win32 栈（Direct2D 1.1 / DirectComposition）从零造一具骨架',
-    link: '/modern_windows/',
+    count: '六档 · 一档一个标签',
+    desc: '自绘、合成、文本、输入、无障碍、响应式——同一棵树，换掉一个器官的实现',
+    link: '/gui/',
   },
 ]
 </script>

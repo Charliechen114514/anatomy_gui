@@ -34,7 +34,7 @@
 
 ### 教程内容
 
-> **适用范围**：重构期间站点只剩 **Act 0 理论篇** 与 **ModernWindows**（工程教程基调）。旧结构（Win32 篇 / MiniUI 篇）与其示例代码已归档进私有的 `intern/legacy/`，不再对外发布，也不在本规范约束内。
+> **适用范围**：站点现有三块——**造骨架**（主线）、**Win32 图形基础**（补充书架）、**Act 0 理论篇**。MiniUI 那条线与其余旧结构已从站点下线，不再对外发布，也不在本规范约束内。
 
 - 保持与现有文章一致的写作风格
 - 每节遵循：概念讲解 → 代码结构 → 常见坑 → 小作业
@@ -73,9 +73,9 @@
 pnpm install
 pnpm build          # 构建产物；或 pnpm dev 本地实时预览
 
-# 代码示例 —— Windows（ModernWindows）
-cmake -B build -S src/tutorial/modern_windows
-cmake --build build --config Release
+# 骨架代码（Windows + clang-cl + Ninja）
+cmake -G Ninja -B build -S .
+cmake --build build -j
 ```
 
 ## 有问题？

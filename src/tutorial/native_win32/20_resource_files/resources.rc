@@ -1,0 +1,50 @@
+#include <windows.h>
+#include "resource.h"
+
+#pragma code_page(65001)
+
+// 版本信息资源
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION 1,0,0,0
+PRODUCTVERSION 1,0,0,0
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGS 0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "Charliechen114514"
+            VALUE "FileDescription", "资源文件基础示例"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "ProductName", "anatomy_gui"
+            VALUE "ProductVersion", "1.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0804, 1200
+    END
+END
+
+// 字符串表
+STRINGTABLE
+BEGIN
+    IDS_APP_TITLE   "资源文件基础示例"
+    IDS_DESCRIPTION "本示例演示 .rc 资源文件的用法"
+    IDS_VERSION     "版本 1.0.0"
+END
+
+// 简单菜单
+IDR_MYMENU MENU
+BEGIN
+    POPUP "&帮助"
+    BEGIN
+        MENUITEM "&关于...", IDM_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "&退出", IDM_EXIT
+    END
+END

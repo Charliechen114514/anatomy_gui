@@ -33,6 +33,44 @@ function sortEntries(a: string, b: string): number {
   return a.localeCompare(b, 'zh-CN')
 }
 
+interface ChapterGroup {
+  title: string
+  prefix: string
+}
+
+// prefix 必须是该组第一篇的编号。getGroupIndex 从后往前匹配，误填组末编号
+// 会把下一组的开头文章吞进来。
+const WIN32_GROUPS: ChapterGroup[] = [
+  { title: '基础篇', prefix: '0' },
+  { title: '控件篇', prefix: '4' },
+  { title: '对话框篇', prefix: '9' },
+  { title: '资源篇', prefix: '12' },
+  { title: '工具栏与状态栏', prefix: '17_5' },
+  { title: 'GDI 图形篇', prefix: '18' },
+  { title: 'GDI+ 篇', prefix: '26' },
+  { title: 'Direct2D / DirectWrite 篇', prefix: '29' },
+  { title: 'HLSL 着色器篇', prefix: '34' },
+  { title: 'Direct3D 11 篇', prefix: '37' },
+  { title: 'Direct3D 12 篇', prefix: '43' },
+  { title: '自定义控件篇', prefix: '48' },
+  { title: 'OpenGL 篇', prefix: '51' },
+  { title: '高级消息篇', prefix: '52' },
+  { title: 'Win32 进阶篇', prefix: '53' },
+  { title: '阶段项目', prefix: '61' },
+]
+
+function getGroupIndex(filename: string): number {
+  const numStr = filename.match(/^(\d+(?:_\d+)?)/)?.[1]
+  if (!numStr) return -1
+  const num = parseFloat(numStr.replace('_', '.'))
+
+  for (let i = WIN32_GROUPS.length - 1; i >= 0; i--) {
+    const groupNum = parseFloat(WIN32_GROUPS[i].prefix.replace('_', '.'))
+    if (num >= groupNum) return i
+  }
+  return 0
+}
+
 function scanAct0(dir: string): SidebarItem[] {
   let entries: string[]
   try {
@@ -58,6 +96,52 @@ function scanAct0(dir: string): SidebarItem[] {
   ]
 }
 
+function scanNativeWin32(dir: string): SidebarItem[] {
+  let entries: string[]
+  try {
+    entries = readdirSync(dir).filter(e =>
+      !e.startsWith('.') &&
+      e.endsWith('.md') &&
+      e !== 'index.md'
+    )
+  } catch { return [] }
+
+  entries.sort(sortEntries)
+
+  const groups = new Map<number, { title: string; items: SidebarItem[] }>()
+
+  for (const name of entries) {
+    const groupIdx = getGroupIndex(name)
+    if (groupIdx < 0) continue
+
+    const fullPath = join(dir, name)
+    if (!groups.has(groupIdx)) {
+      groups.set(groupIdx, {
+        title: WIN32_GROUPS[groupIdx].title,
+        items: [],
+      })
+    }
+
+    const title = extractTitle(fullPath) || humanize(name.replace(/\.md$/, ''))
+    groups.get(groupIdx)!.items.push({
+      text: title,
+      link: `/native_win32/${name.replace(/\.md$/, '')}`,
+    })
+  }
+
+  const result: SidebarItem[] = []
+  for (const [_, group] of groups) {
+    result.push({
+      text: group.title,
+      items: group.items,
+      // 默认折叠：63 篇全铺开侧栏过长；VitePress 会自动展开当前文章所在组。
+      collapsed: true,
+    })
+  }
+
+  return result
+}
+
 export function buildSidebar(): DefaultTheme.Sidebar {
   const sidebar: DefaultTheme.Sidebar = {}
 
@@ -66,23 +150,10 @@ export function buildSidebar(): DefaultTheme.Sidebar {
     sidebar['/act0-theory/'] = scanAct0(act0Dir)
   }
 
-  // ModernWindows 系列：线性分阶段，按文件名前缀数字排序（00_、01_、…）。
-  const modernWindowsDir = join(DOCS_ROOT, 'modern_windows')
-  if (existsSync(modernWindowsDir)) {
-    let entries: string[]
-    try {
-      entries = readdirSync(modernWindowsDir)
-        .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
-        .sort(sortEntries)
-    } catch { entries = [] }
-
-    if (entries.length > 0) {
-      sidebar['/modern_windows/'] = entries.map(name => {
-        const fullPath = join(modernWindowsDir, name)
-        const title = extractTitle(fullPath) || humanize(name.replace(/\.md$/, ''))
-        return { text: title, link: `/modern_windows/${name.replace(/\.md$/, '')}` }
-      })
-    }
+  // Win32 图形基础：63 篇按主题分组，默认折叠。
+  const nativeWin32Dir = join(DOCS_ROOT, 'native_win32')
+  if (existsSync(nativeWin32Dir)) {
+    sidebar['/native_win32/'] = scanNativeWin32(nativeWin32Dir)
   }
 
   // 造骨架（主线）：按文件名前缀数字排序。

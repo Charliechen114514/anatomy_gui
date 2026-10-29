@@ -1,0 +1,16 @@
+#include <windows.h>
+#include "resource.h"
+
+#pragma code_page(65001)
+
+STRINGTABLE
+BEGIN
+    IDS_APP_TITLE     "字符串表示例"
+    IDS_GREETING      "你好！这是通过字符串表加载的文本。"
+    IDS_DESCRIPTION   "本示例演示 STRINGTABLE 资源的用法。\n所有 UI 文字都来自字符串表，便于国际化。"
+    IDS_BTN_CLICK     "点我"
+    IDS_CLICK_MSG     "你已经点击了 %d 次！"
+    IDS_FILE_MENU     "文件(&F)"
+    IDS_HELP_MENU     "帮助(&H)"
+    IDS_EXIT_CONFIRM  "确定要退出吗？"
+END

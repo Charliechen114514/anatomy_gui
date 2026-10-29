@@ -1,6 +1,7 @@
 # GUI 编程剖析 · 总路线图（anatomy edition）
 
 > ⚠ **历史文档**：本文描述的是旧结构（八幕 / 72 章），已不作为执行依据。当前执行路线见 [todo/route.md](todo/route.md)。
+> 2026-10-29：ModernWindows 已废弃；Win32 旧教程已归位为「Windows 图形基础」书架（63 章）。以下历史描述仅存档。
 
 > **定位**：剖析 GUI —— 从零造一具骨架，看穿每一个框架的内部设计。
 > ~~本文件是对外权威路线~~ —— 已作废。当前执行路线见 [`todo/route.md`](todo/route.md)，索引见 [`todo/README.md`](todo/README.md)。

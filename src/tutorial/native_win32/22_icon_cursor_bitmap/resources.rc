@@ -1,0 +1,7 @@
+#include <windows.h>
+#include "resource.h"
+
+// 图标资源 — 需要实际的 .ico 文件
+// IDI_APP_ICON    ICON    "app.ico"
+// 实际项目中会在此处引用 .ico 文件
+// 本示例使用系统图标 (IDI_APPLICATION) 作为后备方案

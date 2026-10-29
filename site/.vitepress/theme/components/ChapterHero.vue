@@ -1,6 +1,7 @@
 <script setup>
 defineProps({
   act: { type: String, required: true },
+  label: { type: String, default: 'ACT' },
   title: { type: String, required: true },
   subtitle: { type: String, default: '' },
   motif: { type: String, default: 'theory' },
@@ -12,7 +13,7 @@ defineProps({
   <div class="chapter-hero" :class="`motif-${motif}`">
     <div class="chapter-hero__inner">
       <div class="chapter-hero__mark">
-        <span class="chapter-hero__act-label">ACT</span>
+        <span class="chapter-hero__act-label">{{ label }}</span>
         <span class="chapter-hero__act-num">{{ act }}</span>
         <svg v-if="motif === 'theory'" class="chapter-hero__motif" viewBox="0 0 40 40" aria-hidden="true">
           <circle cx="20" cy="20" r="14" fill="none" stroke="var(--vp-c-brand-1)" stroke-width="1.2" opacity="0.45" />
