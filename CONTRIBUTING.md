@@ -34,7 +34,7 @@
 
 ### 教程内容
 
-> **适用范围**：本规范适用于 **Win32 / graphics 篇**（`tutorial/native_win32/`）——工程教程基调，每章配 `src/` 可编译示例。**MiniUI 篇**（`tutorial/hands_on_ur_own_gui/`）为启发式手册基调（不给函数签名 / 骨架 / 代码，引导读者自行实现框架），不在此规范约束内。
+> **适用范围**：站点现有三块——**造骨架**（主线）、**Win32 图形基础**（补充书架）、**Act 0 理论篇**。MiniUI 那条线与其余旧结构已从站点下线，不再对外发布，也不在本规范约束内。
 
 - 保持与现有文章一致的写作风格
 - 每节遵循：概念讲解 → 代码结构 → 常见坑 → 小作业
@@ -48,6 +48,20 @@
 - 代码需通过 `.clang-format` 格式化
 - 确保示例可编译运行
 
+### 代码注释规矩（骨架代码 `src/gui/`）
+
+> 执行工具：`python scripts/doxygen/lint.py`（全量扫描，也可 `--files <paths>` 只查指定文件）。规则改编自 Cinux 项目，全文以脚本为准，要点：
+
+| 规矩 | 说明 |
+|:-----|:-----|
+| 注释一律英文 | 注释里出现 CJK 字符即违规；字符串字面量不查（UI 中文显示是本教程的验收判据） |
+| 祈使句、无人称 | 不出现 I / we / our / my |
+| 不用将来时 | 禁 will，用一般现在时描述行为 |
+| 头文件结构化文档 | `.h/.hpp` 需 `/** @file */` 文件头；公开类型与函数需 doxygen 块：`@brief` 必填，`@param` 需方向 `[in]/[out]`，非 void 函数需 `@return` |
+| 行宽 100 | 与 `.clang-format` 的 `ColumnLimit` 一致 |
+
+> 教学示例（`src/tutorial/` 与站点内嵌代码）不在此约束内 —— 它们随文章行文。
+
 ## 开发环境
 
 详见 [README.md](README.md) 中的「开发环境」章节。
@@ -59,13 +73,9 @@
 pnpm install
 pnpm build          # 构建产物；或 pnpm dev 本地实时预览
 
-# 代码示例 —— Windows（Win32 / graphics）
-cmake -B build -S src/tutorial/native_win32
-cmake --build build --config Release
-
-# 代码示例 —— Linux（MiniUI stages，需 xcb + cairo）
-sudo apt-get install -y libxcb1-dev libxcb-util-dev libxcb-keysyms1-dev libcairo2-dev
-python src/tutorial/build_anatomy_gui_for_tutorials.py --target all
+# 骨架代码（Windows + clang-cl + Ninja）
+cmake -G Ninja -B build -S .
+cmake --build build -j
 ```
 
 ## 有问题？

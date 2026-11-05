@@ -1,8 +1,20 @@
-<ChapterHero act="1" title="Win32 标本解剖" subtitle="最透明的一具 GUI 标本，从消息机制到 D3D12" motif="specimen" count="61 章" />
+<ChapterHero act="01" label="标本" title="Win32 标本解剖" subtitle="最透明的一具 GUI 标本，从消息机制到 D3D12" motif="specimen" count="63 章" />
 
 # Win32 原生编程
 
 从 Windows 最底层的 Win32 API 开始，系统学习窗口管理、消息机制、控件、对话框、资源文件、GDI/GDI+ 绘图、Direct2D、D3D11/D3D12 渲染。
+
+> 写于 2024–2025，保留原样；示例按章节独立构建，未逐章复验。
+
+## 怎么用这套东西
+
+如果你好奇 Windows 图形界面的底子，来这里补；不补也能跟主线。主线在 [造骨架](/gui/)，这里不抢它的门。
+
+| 层 | 章节 | 什么时候看 |
+|:---|:---|:---|
+| 打底 | 0–23 | 想补窗口、消息、控件、资源、GDI 的底子 |
+| 主线会用 | 29–33、48–50、52–53、59–60 | 读到造骨架的对应一档，再回来查 |
+| 扩展 | 24–28、34–47、51、61 | 纯好奇：GDI+、HLSL、D3D、OpenGL |
 
 ## 章节列表
 
@@ -143,9 +155,15 @@
 | 59 | 消息机制补充：SendMessage、PostMessage 与跨线程通信 | [59_ProgrammingGUI_NativeWindows_MsgMechanism](59_ProgrammingGUI_NativeWindows_MsgMechanism.md) |
 | 60 | 常用系统消息补充：滚轮、命中测试、窗口限制与背景擦除 | [60_ProgrammingGUI_NativeWindows_SystemMessages](60_ProgrammingGUI_NativeWindows_SystemMessages.md) |
 
+### 阶段项目
+
+| 章节 | 内容 | 文件 |
+|:-----|:-----|:-----|
+| 61 | D3D11 2D 精灵渲染器 | [61_ProgrammingGUI_Graphics_D3D11_SpriteRenderer](61_ProgrammingGUI_Graphics_D3D11_SpriteRenderer.md) |
+
 ## 配套示例代码
 
-每个章节都配有完整的可运行示例，位于 [src/tutorial/native_win32/](https://github.com/Charliechen114514/anatomy_gui/tree/main/src/tutorial/native_win32) 目录：
+多数章节配有示例，位于 [src/tutorial/native_win32/](https://github.com/Charliechen114514/anatomy_gui/tree/main/src/tutorial/native_win32) 目录；示例按章节独立构建，未逐章复验。
 
 - **基础示例**：01_hello_world ~ 10_oop_wrapper（10 个渐进式示例）
 - **练习项目**：7 个实战练习（点击计数器、随机方块、鼠标追踪器、简单记事本、拖动小球、双缓冲、RichEdit 文本编辑器）

@@ -38,8 +38,8 @@ interface ChapterGroup {
   prefix: string
 }
 
-// 注意：每组的 prefix 必须是该组【第一篇】文章的编号。getGroupIndex 用
-// `num >= groupNum` 从后往前匹配，若误填组末编号，会吞掉下一组的开头文章。
+// prefix 必须是该组第一篇的编号。getGroupIndex 从后往前匹配，误填组末编号
+// 会把下一组的开头文章吞进来。
 const WIN32_GROUPS: ChapterGroup[] = [
   { title: '基础篇', prefix: '0' },
   { title: '控件篇', prefix: '4' },
@@ -71,6 +71,31 @@ function getGroupIndex(filename: string): number {
   return 0
 }
 
+function scanAct0(dir: string): SidebarItem[] {
+  let entries: string[]
+  try {
+    entries = readdirSync(dir)
+      .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
+      .sort(sortEntries)
+  } catch { return [] }
+
+  if (entries.length === 0) return []
+
+  return [
+    {
+      text: 'Act 0 · GUI 理论篇',
+      collapsed: false,
+      items: entries.map(name => {
+        const title = extractTitle(join(dir, name)) || humanize(name.replace(/\.md$/, ''))
+        return {
+          text: title,
+          link: `/act0-theory/${name.replace(/\.md$/, '')}`,
+        }
+      }),
+    },
+  ]
+}
+
 function scanNativeWin32(dir: string): SidebarItem[] {
   let entries: string[]
   try {
@@ -86,9 +111,10 @@ function scanNativeWin32(dir: string): SidebarItem[] {
   const groups = new Map<number, { title: string; items: SidebarItem[] }>()
 
   for (const name of entries) {
-    const fullPath = join(dir, name)
     const groupIdx = getGroupIndex(name)
+    if (groupIdx < 0) continue
 
+    const fullPath = join(dir, name)
     if (!groups.has(groupIdx)) {
       groups.set(groupIdx, {
         title: WIN32_GROUPS[groupIdx].title,
@@ -116,107 +142,35 @@ function scanNativeWin32(dir: string): SidebarItem[] {
   return result
 }
 
-function scanHandbook(dir: string): SidebarItem[] {
-  let entries: string[]
-  try {
-    entries = readdirSync(dir)
-      .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
-      .sort(sortEntries)
-  } catch { return [] }
-
-  if (entries.length === 0) return []
-
-  return [
-    {
-      text: 'MiniUI Handbook',
-      collapsed: false,
-      items: entries.map(name => {
-        const title = extractTitle(join(dir, name)) || humanize(name.replace(/\.md$/, ''))
-        return {
-          text: title,
-          link: `/hands_on_ur_own_gui/handbook/${name.replace(/\.md$/, '')}`,
-        }
-      }),
-    },
-  ]
-}
-
-function scanAct0(dir: string): SidebarItem[] {
-  let entries: string[]
-  try {
-    entries = readdirSync(dir)
-      .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
-      .sort(sortEntries)
-  } catch { return [] }
-
-  if (entries.length === 0) return []
-
-  return [
-    {
-      text: 'Act 0 · GUI 理论篇',
-      collapsed: false,
-      items: entries.map(name => {
-        const title = extractTitle(join(dir, name)) || humanize(name.replace(/\.md$/, ''))
-        return {
-          text: title,
-          link: `/act0-theory/${name.replace(/\.md$/, '')}`,
-        }
-      }),
-    },
-  ]
-}
-
 export function buildSidebar(): DefaultTheme.Sidebar {
   const sidebar: DefaultTheme.Sidebar = {}
-
-  const nativeWin32Dir = join(DOCS_ROOT, 'native_win32')
-  if (existsSync(nativeWin32Dir)) {
-    sidebar['/native_win32/'] = scanNativeWin32(nativeWin32Dir)
-  }
-
-  const handsOnDir = join(DOCS_ROOT, 'hands_on_ur_own_gui/handbook')
-  if (existsSync(handsOnDir)) {
-    sidebar['/hands_on_ur_own_gui/'] = scanHandbook(handsOnDir)
-  }
 
   const act0Dir = join(DOCS_ROOT, 'act0-theory')
   if (existsSync(act0Dir)) {
     sidebar['/act0-theory/'] = scanAct0(act0Dir)
   }
 
-  const bonusDir = join(DOCS_ROOT, 'bonus')
-  if (existsSync(bonusDir)) {
-    let entries: string[]
-    try {
-      entries = readdirSync(bonusDir)
-        .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
-        .sort(sortEntries)
-    } catch { entries = [] }
-
-    if (entries.length > 0) {
-      sidebar['/bonus/'] = entries.map(name => {
-        const fullPath = join(bonusDir, name)
-        const title = extractTitle(fullPath) || humanize(name.replace(/\.md$/, ''))
-        return { text: title, link: `/bonus/${name.replace(/\.md$/, '')}` }
-      })
-    }
+  // Win32 图形基础：63 篇按主题分组，默认折叠。
+  const nativeWin32Dir = join(DOCS_ROOT, 'native_win32')
+  if (existsSync(nativeWin32Dir)) {
+    sidebar['/native_win32/'] = scanNativeWin32(nativeWin32Dir)
   }
 
-  // ModernWindows 系列：线性分阶段，按文件名前缀数字排序（00_、01_、…）。
-  const modernWindowsDir = join(DOCS_ROOT, 'modern_windows')
-  if (existsSync(modernWindowsDir)) {
+  // 造骨架（主线）：按文件名前缀数字排序。
+  const guiDir = join(DOCS_ROOT, 'gui')
+  if (existsSync(guiDir)) {
     let entries: string[]
     try {
-      entries = readdirSync(modernWindowsDir)
+      entries = readdirSync(guiDir)
         .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
         .sort(sortEntries)
     } catch { entries = [] }
 
     if (entries.length > 0) {
-      sidebar['/modern_windows/'] = entries.map(name => {
-        const fullPath = join(modernWindowsDir, name)
+      sidebar['/gui/'] = entries.map(name => {
+        const fullPath = join(guiDir, name)
         const title = extractTitle(fullPath) || humanize(name.replace(/\.md$/, ''))
-        return { text: title, link: `/modern_windows/${name.replace(/\.md$/, '')}` }
+        return { text: title, link: `/gui/${name.replace(/\.md$/, '')}` }
       })
     }
   }

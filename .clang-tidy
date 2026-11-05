@@ -1,0 +1,105 @@
+---
+# anatomy_gui clang-tidy 配置
+# 改编自 Cinux 项目的 .clang-tidy。
+#
+# 与原版的差异（仅两处）：
+#   · HeaderFilterRegex 指向本仓库的源码目录
+#   · ParameterThreshold 4 -> 6：GUI 代码里 (parent, text, x, y, w, h)
+#     这类几何参数天然超过 4 个，卡 4 会逼出假抽象
+
+Checks:
+  - 'bugprone-*'
+  - 'clang-analyzer-*'
+  - 'clang-diagnostic-*'
+  - 'misc-*'
+  - 'modernize-*'
+  - 'performance-*'
+  - 'portability-*'
+  - 'readability-*'
+  - 'cppcoreguidelines-pro-type-member-init'
+  - 'cert-flp30-c'
+  - 'google-readability-casting'
+  - '-bugprone-easily-swappable-parameters'
+  - '-readability-convert-member-functions-to-static'
+  - '-readability-magic-numbers'
+  - '-readability-use-anyofallof'
+  - '-misc-non-private-member-variables-in-classes'
+  - '-misc-no-recursion'
+  # windows.h 是伞形头，include-cleaner 认不出它的符号归属，误报成灾 —— 关。
+  - '-misc-include-cleaner'
+  # Win32 回调/自由函数惯用 static（教学上要跟 MSDN 对得上），不强推匿名命名空间。
+  - '-misc-use-anonymous-namespace'
+  - '-modernize-avoid-c-arrays'
+  - '-modernize-avoid-variadic-functions'
+  - '-modernize-use-trailing-return-type'
+  - '-modernize-deprecated-headers'
+  - '-clang-diagnostic-unknown-warning-option'
+  - '-portability-avoid-pragma-once'
+
+WarningsAsErrors: '*'
+
+HeaderFilterRegex: '.*/(src|tutorial)/.*\.h(pp)?$'
+
+FormatStyle: file
+
+CheckOptions:
+  - key: readability-identifier-naming.TypeCase
+    value: CamelCase
+  - key: readability-identifier-naming.ConceptCase
+    value: CamelCase
+  - key: readability-identifier-naming.TemplateParameterCase
+    value: CamelCase
+  - key: readability-identifier-naming.ScopedEnumConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.ScopedEnumConstantPrefix
+    value: 'k'
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.ConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.ConstantPrefix
+    value: 'k'
+  - key: readability-identifier-naming.StaticConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.StaticConstantPrefix
+    value: 'k'
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalVariablePrefix
+    value: 'g_'
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PublicMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.ProtectedMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalFunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.StaticFunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.MethodCase
+    value: lower_case
+  - key: readability-identifier-naming.ClassMethodCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.LocalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.LocalConstantPrefix
+    value: 'k'
+  - key: readability-identifier-naming.LocalConstantCase
+    value: CamelCase
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+  - key: readability-implicit-bool-conversion.AllowPointerConditions
+    value: true
+  - key: readability-identifier-length.IgnoredVariableNames
+    value: '^(i|j|k)$'
+  - key: readability-function-size.ParameterThreshold
+    value: '6'
