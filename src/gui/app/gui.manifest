@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Two declarations the plain Win32 window does without, and the two
+     symptoms their absence causes: a window bitmap-stretched by the system
+     (blurry text on a high-DPI monitor) and controls painted in the pre-XP
+     flat style. One file settles both. -->
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity type="win32" name="AnatomyGui.M1a" version="1.0.0.0"/>
+
+  <!-- Visual styles: pulls in Common Controls v6, so BUTTON and EDIT draw
+       themed instead of the antique flat look. -->
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls"
+                        version="6.0.0.0" processorArchitecture="*"
+                        publicKeyToken="6595b64144ccf1df" language="*"/>
+    </dependentAssembly>
+  </dependency>
+
+  <!-- DPI awareness: the process declares itself per-monitor aware, so the
+       system stops stretching the window and sends WM_DPICHANGED instead. -->
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <dpiAware
+          xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/pm</dpiAware>
+      <dpiAwareness
+          xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2</dpiAwareness>
+    </windowsSettings>
+  </application>
+</assembly>

@@ -1,9 +1,0 @@
-# GDI 图形系列
-add_subdirectory(01_hdc_basics)
-add_subdirectory(02_gdi_objects)
-add_subdirectory(03_shapes)
-add_subdirectory(04_text_rendering)
-add_subdirectory(05_bitmap_operations)
-add_subdirectory(06_double_buffer)
-add_subdirectory(07_region_clipping)
-add_subdirectory(08_alpha_blend)

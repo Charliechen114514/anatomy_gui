@@ -1,3 +1,0 @@
-add_subdirectory(01_hlsl_hello)
-add_subdirectory(02_compile_debug)
-add_subdirectory(03_cbuffer)
