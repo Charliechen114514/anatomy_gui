@@ -6,6 +6,7 @@ import AnatomyHero from './components/AnatomyHero.vue'
 import ResizableSidebar from './components/ResizableSidebar.vue'
 import FontSizeSwitcher from './components/FontSizeSwitcher.vue'
 import ReadingProgress from './components/ReadingProgress.vue'
+import StatusToast from './components/StatusToast.vue'
 import ChapterHero from './components/ChapterHero.vue'
 import OrganCard from './components/OrganCard.vue'
 import { setupMermaid } from './mermaid-client'
@@ -22,7 +23,7 @@ const Layout = defineComponent({
         'home-features-after': () => h(HomeRoadmap),
         'nav-bar-content-after': () => h(FontSizeSwitcher),
         'nav-screen-content-after': () => h(FontSizeSwitcher),
-        'layout-top': () => [h(ReadingProgress), h(ResizableSidebar)],
+        'layout-top': () => [h(ReadingProgress), h(ResizableSidebar), h(StatusToast)],
       })
   },
 })

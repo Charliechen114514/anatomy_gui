@@ -252,7 +252,7 @@ void GetTextMetrics(IDWriteTextLayout* pLayout)
     // metrics.widthIncludingTrailingWhitespace - 包含尾部空白的宽度
     // metrics.layoutWidth  - 布局约束宽度（你传入的 maxWidth）
     // metrics.layoutHeight - 布局约束高度（你传入的 maxHeight）
-    // metrics.maxBidiDepthReordering - 最大双向文字重排深度
+    // metrics.maxBidiReorderingDepth - 最大双向文字重排深度
     // metrics.lineCount    - 行数
 
     wchar_t msg[256];
