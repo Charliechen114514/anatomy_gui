@@ -175,5 +175,51 @@ export function buildSidebar(): DefaultTheme.Sidebar {
     }
   }
 
+  // 渲染管线：按文件名前缀数字分七段。
+  const pipelineDir = join(DOCS_ROOT, 'pipeline')
+  if (existsSync(pipelineDir)) {
+    const PIPELINE_GROUPS: ChapterGroup[] = [
+      { title: '全景', prefix: '01' },
+      { title: 'GDI 标本', prefix: '04' },
+      { title: 'Direct2D', prefix: '06' },
+      { title: 'Skia', prefix: '13' },
+      { title: '文本', prefix: '19' },
+      { title: 'Direct3D', prefix: '23' },
+      { title: '合成与系统', prefix: '30' },
+    ]
+    let entries: string[]
+    try {
+      entries = readdirSync(pipelineDir)
+        .filter(e => !e.startsWith('.') && e.endsWith('.md') && e !== 'index.md')
+        .sort(sortEntries)
+    } catch { entries = [] }
+
+    const groups = new Map<number, { title: string; items: SidebarItem[] }>()
+    for (const name of entries) {
+      const num = parseFloat(name.match(/^(\d+)/)?.[1] ?? '-1')
+      if (num < 0) continue
+      let gi = PIPELINE_GROUPS.findIndex((g, i) => {
+        const next = PIPELINE_GROUPS[i + 1]
+        const cur = parseFloat(g.prefix)
+        return num >= cur && (next === undefined || num < parseFloat(next.prefix))
+      })
+      if (gi < 0) gi = PIPELINE_GROUPS.length - 1
+      if (!groups.has(gi)) {
+        groups.set(gi, { title: PIPELINE_GROUPS[gi].title, items: [] })
+      }
+      groups.get(gi)!.items.push({
+        text: extractTitle(join(pipelineDir, name)) || humanize(name.replace(/\.md$/, '')),
+        link: `/pipeline/${name.replace(/\.md$/, '')}`,
+      })
+    }
+    const pipelineResult: SidebarItem[] = []
+    for (const [_, group] of groups) {
+      pipelineResult.push({ text: `管线 · ${group.title}`, items: group.items, collapsed: true })
+    }
+    if (pipelineResult.length > 0) {
+      sidebar['/pipeline/'] = pipelineResult
+    }
+  }
+
   return sidebar
 }

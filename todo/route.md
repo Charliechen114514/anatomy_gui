@@ -238,6 +238,10 @@ widget-behavior.md、win32-essentials.md 五份文档，
 - 第 4 步已完成：`tutorial/gui/08_widget_on_screen.md` —— 补上 M1 欠的问题（系统窗口类画 / 视觉样式决定样子 / DWM 重定向表面合成）
 - **M1 全部完成**：八篇正文（01 具象 · 02–06 抽象五层 · 07 落回具象 · 08 上屏专题），代码四道关卡全绿
 - **下一步**：第 5 步（M2 接管轴第一档）—— 把一个控件改成自绘，或者先做 `todo/` 里排的其它事
+- **渲染管线线开工**（2026-11-07）：新内容线 `tutorial/pipeline/`（7 段 36 篇，一概念一篇），定位是决策记录里的支线「图形栈本身怎么工作」。索引页与站点导航已挂（nav「渲染管线」+ sidebar 七段分组，临时开 ignoreDeadLinks 直到 36 篇齐）。每篇按 content_forge single-editorial 五道关产出：写手独立起稿、四道走查（声音/保真/连续性/指代）、修订留痕、humanizer_lint 机械门禁。大纲正本在 `todo/act5-rendering.md`（R00–R15 草稿）与 `tutorial/pipeline/index.md`（定稿篇目）
+- **跨篇内容承诺登记**（写手修订时立的字据，对应篇写到时必须兑现）：02 篇向 27 篇（交换链与呈现）押了四件事——PresentMon 实测、独占全屏优化如何判定、SyncInterval 各取值展开、等待对象（DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT）压输入延迟的机制
+- **管线进度**（2026-11-08 中午）：**36 篇全部完成**。每篇走完 content_forge 五道关（写手独立起稿、声音/保真/连续性/指代四道独立走查、修订留痕、接缝复查）加机械门禁，humanizer_lint 全系列（含 index）ERROR 0 REVIEW 0。全链清扫已完成：各篇互链指向真实文件、ignoreDeadLinks 已关闭。走查问题单合计约 900 条，全部修订或由主控终裁；复查残留 30 余条由主控亲自清零。书架被顺手修正一处（32 章 DWRITE_TEXT_METRICS 字段名 maxBidiReorderingDepth）。收尾待办只剩：CI 构建验证 + 用户过目后提交
+- **状态提示组件移植**（2026-11-08 晚）：从 Tutorial_AwesomeModernCPP 抄来 StatusToast.vue（右下角 MC 成就风弹窗，frontmatter 带 current_status 即触发，polishing/draft/verified 三档），挂进 layout-top 槽。管线 36 篇 frontmatter 已注入 polishing 档（「正在打磨」：审稿门禁已过、骨架未经上机）。用户过目后可逐篇改成 verified 或删状态块。本地构建受沙箱限制未能验证渲染，CI 兜底
 - 第 2 节：三控件（EDIT/BUTTON/STATIC）+ WM_COMMAND 点击链
 - 第 3 节（2026-10 补）：拆成 3a / 3b
   - **3a**：`WM_SIZE` + `layout_controls` 手算三控件几何（痛点 4 上身）
